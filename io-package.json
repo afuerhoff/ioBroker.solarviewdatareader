@@ -1,0 +1,79 @@
+{
+	"common": {
+		"name": "solarviewdatareader",
+		"version": "0.0.1",
+		"news": {
+			"0.0.1": {
+				"en": "initial release",
+				"de": "Erstveröffentlichung",
+				"ru": "Начальная версия",
+				"pt": "lançamento inicial",
+				"nl": "Eerste uitgave",
+				"fr": "Première version",
+				"it": "Versione iniziale",
+				"es": "Versión inicial",
+				"pl": "Pierwsze wydanie",
+				"zh-cn": "首次出版"
+			}
+		},
+		"title": "SolarViewDataReader",
+		"titleLang": {
+			"en": "SolarViewDataReader",
+			"de": "SolarViewDataReader",
+			"ru": "SolarViewDataReader",
+			"pt": "SolarViewDataReader",
+			"nl": "SolarViewDataReader",
+			"fr": "SolarViewDataReader",
+			"it": "SolarViewDataReader",
+			"es": "SolarViewDataReader",
+			"pl": "SolarViewDataReader",
+			"zh-cn": "SolarViewDataReader"
+		},
+		"desc": {
+			"en": "Get Data from SolarView",
+			"de": "Daten von SolarView abrufen",
+			"ru": "Получить данные из SolarView",
+			"pt": "Obter dados do SolarView",
+			"nl": "Verkrijg gegevens van SolarView",
+			"fr": "Obtenir des données de SolarView",
+			"it": "Ottieni dati da SolarView",
+			"es": "Obtener datos de SolarView",
+			"pl": "Uzyskaj dane z SolarView",
+			"zh-cn": "从SolarView获取数据"
+		},
+		"authors": [
+			"Achim Fürhoff <achim.fuerhoff@outlook.de>"
+		],
+		"keywords": [
+			"SolarView",
+			"Data Logger",
+			"Photovoltaik"
+		],
+		"license": "MIT",
+		"platform": "Javascript/Node.js",
+		"main": "main.js",
+		"icon": "solarviewdatareader.png",
+		"enabled": true,
+		"extIcon": "https://raw.githubusercontent.com/afuerhoff/ioBroker.solarviewdatareader/master/admin/solarviewdatareader.png",
+		"readme": "https://github.com/afuerhoff/ioBroker.solarviewdatareader/blob/master/README.md",
+		"loglevel": "info",
+		"mode": "daemon",
+		"type": "energy",
+		"compact": true,
+		"materialize": true,
+		"dependencies": [
+			{
+				"admin": ">=3.0.0"
+			},
+			{
+				"js-controller": ">=1.4.2"
+			}
+		]
+	},
+	"native": {
+		"option1": true,
+		"option2": "42"
+	},
+	"objects": [],
+	"instanceObjects": []
+}
