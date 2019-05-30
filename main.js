@@ -151,9 +151,9 @@ class Solarviewdatareader extends utils.Adapter {
 		var j = schedule.scheduleJob(this.config.interval, function(){
 			const dnow = new Date();
 			var dstart = new Date(dnow.getFullYear() + "-" + (dnow.getMonth()+1) + "-" + dnow.getDate() + " " + starttime);
-			gthis.log.info(dstart.toDateString());
+			//gthis.log.info(dstart.toDateString());
 			var dend = new Date(dnow.getFullYear() + "-" + (dnow.getMonth()+1) + "-" + dnow.getDate() + " " + endtime);
-			gthis.log.info(dend.toDateString());
+			//gthis.log.info(dend.toDateString());
 			if (dnow >= dstart && dnow <= dend ){
 				sv_cmd = "00*";
 				client.start();     //SolarView abfragen
@@ -196,19 +196,19 @@ class Solarviewdatareader extends utils.Adapter {
 			//{21,17,04,2015,16,21,0030.1,00459,001182,00001182,03290,000,000.0,000,000.0,000,000.0,000,000.0,00},!
 			// Tagesertrag= 30.1, Monatsertrag=495, Jahresertrag=1182, Gesamtertrag=1182 kWh., Leistung=3290W
 			var value = Number(sv_data[10]);
-			gthis.setStateAsync(sv_prefix + "PAC", { val: value, ack: true });
+			gthis.setStateAsync(sv_prefix + "Actualy", { val: value, ack: true });
 			
 			value = Number(sv_data[6]);
-			gthis.setStateAsync(sv_prefix + "DailyYield", { val: value, ack: true });
+			gthis.setStateAsync(sv_prefix + "Daily", { val: value, ack: true });
 			
 			value = Number(sv_data[7]);
-			gthis.setStateAsync(sv_prefix + "MonthlyYield", { val: value, ack: true });
+			gthis.setStateAsync(sv_prefix + "Monthly", { val: value, ack: true });
 			
 			value = Number(sv_data[8]);
-			gthis.setStateAsync(sv_prefix + "YearlyYield", { val: value, ack: true });
+			gthis.setStateAsync(sv_prefix + "Yearly", { val: value, ack: true });
 			
 			value = Number(sv_data[9]);
-			gthis.setStateAsync(sv_prefix + "TotalYield", { val: value, ack: true });		
+			gthis.setStateAsync(sv_prefix + "Total", { val: value, ack: true });		
 
 			var sDate = Number(sv_data[3]) + "-" + Number(sv_data[2]) + "-" + Number(sv_data[1]) + " " + Number(sv_data[4]) + ":" + Number(sv_data[5])
 			gthis.setStateAsync(sv_prefix + "LastUpdate", { val: sDate, ack: true });		
