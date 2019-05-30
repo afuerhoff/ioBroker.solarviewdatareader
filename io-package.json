@@ -71,8 +71,13 @@
 		]
 	},
 	"native": {
-		"option1": true,
-		"option2": "42"
+		"ipaddress": "",
+		"port": "15000",
+		"interval": "* * * * *",
+		"intervalstart": "00:00:00",
+		"intervalend": "00:00:00",
+		"d0converter": false,
+		"s0converter": false
 	},
 	"objects": [],
 	"instanceObjects": []
