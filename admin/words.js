@@ -1,41 +1,19 @@
 /*global systemDictionary:true */
-"use strict";
+'use strict';
 
 systemDictionary = {
-	"solarviewdatareader adapter settings": {
-		"en": "Adapter settings for solarviewdatareader",
-		"de": "Adaptereinstellungen für solarviewdatareader",
-		"ru": "Настройки адаптера для solarviewdatareader",
-		"pt": "Configurações do adaptador para solarviewdatareader",
-		"nl": "Adapterinstellingen voor solarviewdatareader",
-		"fr": "Paramètres d'adaptateur pour solarviewdatareader",
-		"it": "Impostazioni dell'adattatore per solarviewdatareader",
-		"es": "Ajustes del adaptador para solarviewdatareader",
-		"pl": "Ustawienia adaptera dla solarviewdatareader",
-		"zh-cn": "solarviewdatareader的适配器设置"
-	},
-	"option1": {
-		"en": "option1",
-		"de": "Option 1",
-		"ru": "Опция 1",
-		"pt": "Opção 1",
-		"nl": "Optie 1",
-		"fr": "Option 1",
-		"it": "opzione 1",
-		"es": "Opción 1",
-		"pl": "opcja 1",
-		"zh-cn": "选项1"
-	},
-	"option2": {
-		"en": "option2",
-		"de": "Option 2",
-		"ru": "option2",
-		"pt": "opção 2",
-		"nl": "Optie 2",
-		"fr": "Option 2",
-		"it": "opzione 2",
-		"es": "opcion 2",
-		"pl": "Opcja 2",
-		"zh-cn": "选项2"
-	}
+    "option1": {                                     "en": "option1",                                         "de": "Option 1",                                        "ru": "Опция 1",                                         "pt": "Opção 1",                                         "nl": "Optie 1",                                         "fr": "Option 1",                                        "it": "opzione 1",                                       "es": "Opción 1",                                        "pl": "opcja 1",                                         "zh-cn": "选项1"},
+    "option2": {                                     "en": "option2",                                         "de": "Option 2",                                        "ru": "option2",                                         "pt": "opção 2",                                         "nl": "Optie 2",                                         "fr": "Option 2",                                        "it": "opzione 2",                                       "es": "opcion 2",                                        "pl": "Opcja 2",                                         "zh-cn": "选项2"},
+    "solarviewdatareader adapter settings": {        "en": "Adapter settings for solarviewdatareader",        "de": "Adaptereinstellungen für solarviewdatareader",    "ru": "Настройки адаптера для solarviewdatareader",      "pt": "Configurações do adaptador para solarviewdatareader", "nl": "Adapterinstellingen voor solarviewdatareader",    "fr": "Paramètres d'adaptateur pour solarviewdatareader", "it": "Impostazioni dell'adattatore per solarviewdatareader", "es": "Ajustes del adaptador para solarviewdatareader",  "pl": "Ustawienia adaptera dla solarviewdatareader",     "zh-cn": "solarviewdatareader的适配器设置"},
+    "IP-Address": {                                  "en": "IP-Address",                                      "de": "IP Adresse",                                      "ru": "Айпи адрес",                                      "pt": "Endereço de IP",                                  "nl": "IP adres",                                        "fr": "Adresse IP",                                      "it": "Indirizzo IP",                                    "es": "Dirección IP",                                    "pl": "Adres IP",                                        "zh-cn": "IP地址"},
+    "Please enter the IP-Address from your SolarView data logger": {"en": "Please enter the IP-Address from your SolarView data logger", "de": "Bitte geben Sie die IP-Adresse Ihres SolarView-Datenloggers ein", "ru": "Пожалуйста, введите IP-адрес из вашего регистратора данных SolarView", "pt": "Por favor, digite o endereço IP do seu data logger SolarView", "nl": "Voer het IP-adres in vanuit uw SolarView datalogger", "fr": "Veuillez saisir l'adresse IP de votre enregistreur de données SolarView.", "it": "Inserisci l'indirizzo IP dal tuo data logger SolarView", "es": "Introduzca la dirección IP de su registrador de datos SolarView", "pl": "Wprowadź adres IP z rejestratora danych SolarView", "zh-cn": "请从SolarView数据记录器输入IP地址"},
+    "Please enter the port": {                       "en": "Please enter the port",                           "de": "Bitte geben Sie den Hafen ein",                   "ru": "Пожалуйста, введите порт",                        "pt": "Por favor, insira o porto",                       "nl": "Voer de poort in",                                "fr": "S'il vous plaît entrer le port",                  "it": "Si prega di inserire il porto",                   "es": "Por favor ingrese el puerto",                     "pl": "Proszę wejść do portu",                           "zh-cn": "请输入端口"},
+    "Please enter the interval (cron format)": {     "en": "Please enter the interval (cron format)",         "de": "Bitte geben Sie das Intervall ein (Cron-Format)", "ru": "Пожалуйста, введите интервал (cron формат)",      "pt": "Por favor insira o intervalo (formato cron)",     "nl": "Voer het interval in (cron-formaat)",             "fr": "S'il vous plaît entrer l'intervalle (format cron)", "it": "Si prega di inserire l'intervallo (formato cron)", "es": "Por favor ingrese el intervalo (formato cron)",   "pl": "Wprowadź interwał (format cron)",                 "zh-cn": "请输入间隔（cron格式）"},
+    "Please enter the interval start (00:00:00)": {  "en": "Please enter the interval start (00:00:00)",      "de": "Bitte geben Sie den Intervallstart ein (00:00:00)", "ru": "Пожалуйста, введите интервал начала (00:00:00)",  "pt": "Por favor, insira o início do intervalo (00:00:00)", "nl": "Voer de interval start in (00:00:00)",            "fr": "Veuillez entrer le début de l'intervalle (00:00:00)", "it": "Si prega di inserire l'intervallo di inizio (00:00:00)", "es": "Por favor ingrese el intervalo de inicio (00:00:00)", "pl": "Wprowadź początek interwału (00:00:00)",          "zh-cn": "请输入间隔开始（00:00:00）"},
+    "Please enter the interval end (00:00:00)": {    "en": "Please enter the interval end (00:00:00)",        "de": "Bitte geben Sie das Intervallende ein (00:00:00)", "ru": "Пожалуйста, введите конец интервала (00:00:00)",  "pt": "Por favor insira o final do intervalo (00:00:00)", "nl": "Voer het interval in (00:00:00)",                 "fr": "Veuillez entrer la fin de l'intervalle (00:00:00)", "it": "Si prega di inserire l'intervallo fine (00:00:00)", "es": "Por favor ingrese el intervalo de finalización (00:00:00)", "pl": "Wprowadź koniec interwału (00:00:00)",            "zh-cn": "请输入间隔结束（00:00:00）"},
+    "Interval end": {                                "en": "Interval end",                                    "de": "Intervallende",                                   "ru": "Конец интервала",                                 "pt": "Fim do intervalo",                                "nl": "Interval einde",                                  "fr": "Fin d'intervalle",                                "it": "Intervallo di fine",                              "es": "Fin de intervalo",                                "pl": "Koniec interwału",                                "zh-cn": "间隔结束"},
+    "Interval start": {                              "en": "Interval start",                                  "de": "Intervallstart",                                  "ru": "Интервальный старт",                              "pt": "Início do intervalo",                             "nl": "Interval start",                                  "fr": "Début d'intervalle",                              "it": "Inizio intervallo",                               "es": "Inicio de intervalo",                             "pl": "Początek przerwy",                                "zh-cn": "间隔开始"},
+    "Please enter if you have a d0-converter": {     "en": "Please enter if you have a d0-converter",         "de": "Bitte geben Sie an, ob Sie einen d0-Konverter haben", "ru": "Пожалуйста, введите, если у вас есть d0-конвертер", "pt": "Por favor, digite se você tem um conversor de d0", "nl": "Voer alstublieft in als u een d0-converter heeft", "fr": "S'il vous plaît entrer si vous avez un convertisseur d0", "it": "Si prega di inserire se si dispone di un convertitore d0", "es": "Por favor ingresa si tienes un convertidor d0",   "pl": "Wprowadź, jeśli masz konwerter d0",               "zh-cn": "如果您有d0转换器，请输入"},
+    "Data logger and web based analysis software for Solarmax, SMA, Kaco, Fronius and Kostal inverters. For more information please click the link.": {"en": "Data logger and web based analysis software for Solarmax, SMA, Kaco, Fronius and Kostal inverters. For more information please click the link.", "de": "Datenlogger und webbasierte Analysesoftware für Wechselrichter von Solarmax, SMA, Kaco, Fronius und Kostal. ", "ru": "Регистратор данных и программное обеспечение для веб-анализа для инверторов Solarmax, SMA, Kaco, Fronius и Kostal. ", "pt": "Data logger e software de análise baseado na web para inversores Solarmax, SMA, Kaco, Fronius e Kostal. ", "nl": "Datalogger en webgebaseerde analysesoftware voor Solarmax, SMA, Kaco, Fronius en Kostal-omvormers. ", "fr": "Enregistreur de données et logiciel d’analyse Web pour les onduleurs Solarmax, SMA, Kaco, Fronius et Kostal. ", "it": "Data logger e software di analisi web based per inverter Solarmax, SMA, Kaco, Fronius e Kostal. ", "es": "Registrador de datos y software de análisis basado en web para los inversores Solarmax, SMA, Kaco, Fronius y Kostal. ", "pl": "Rejestrator danych i internetowe oprogramowanie do analizy falowników Solarmax, SMA, Kaco, Fronius i Kostal. ", "zh-cn": "Solarmax，SMA，Kaco，Fronius和Kostal逆变器的数据记录器和基于Web的分析软件。"},
+    "Interval": {                                    "en": "Interval",                                        "de": "Intervall",                                       "ru": "интервал",                                        "pt": "Intervalo",                                       "nl": "Interval",                                        "fr": "Intervalle",                                      "it": "Intervallo",                                      "es": "Intervalo",                                       "pl": "Interwał",                                        "zh-cn": "间隔"},
 };
