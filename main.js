@@ -154,17 +154,19 @@ class Solarviewdatareader extends utils.Adapter {
 			//gthis.log.info(dstart.toDateString());
 			var dend = new Date(dnow.getFullYear() + "-" + (dnow.getMonth()+1) + "-" + dnow.getDate() + " " + endtime);
 			//gthis.log.info(dend.toDateString());
+			if (gthis.config.d0converter == true){
+				sv_cmd = "22*";
+				client.start();
+			}
 			if (dnow >= dstart && dnow <= dend ){
-				sv_cmd = "00*";
-				client.start();     //SolarView abfragen
+				setTimeout(function() {
+					sv_cmd = "00*";
+					client.start();
+				}, 3000);
 				if (gthis.config.d0converter == true){
 					setTimeout(function() {
 						sv_cmd = "21*";
-						client.start()
-					}, 3000);
-					setTimeout(function() {
-						sv_cmd = "22*";
-						client.start() 
+						client.start();
 					}, 6000);
 				}
 			}
