@@ -77,7 +77,9 @@
         "intervalstart": "00:00:00",
         "intervalend": "00:00:00",
         "d0converter": false,
-        "s0converter": false
+        "s0converter": false,
+		"setCCU": false,
+		"CCUSystemV": ""
     },
     "objects": [],
     "instanceObjects": []

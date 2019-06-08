@@ -12,11 +12,13 @@ const utils = require("@iobroker/adapter-core");
 // const fs = require("fs");
 const schedule = require('node-schedule');
 const netcat = require('node-netcat');
+//const request = require('request');
 
-var gthis = 0; //Global verfügbar machen
+var gthis; //Global verfügbar machen
 var sv_data;
 var sv_cmd = "00*";
 var sv_array = ['PV.', 'D0supply.', 'D0consumption.'];
+
 
 class Solarviewdatareader extends utils.Adapter {
 
@@ -46,7 +48,7 @@ class Solarviewdatareader extends utils.Adapter {
 
 		// The adapters config (in the instance object everything under the attribute "native") is accessible via
 		// this.config:
-		this.log.info("ipadress: " + this.config.ipadress);
+		this.log.info("ipadress: " + ip_address);
 		this.log.info("port: " + this.config.port);
 
 		/*
@@ -145,8 +147,8 @@ class Solarviewdatareader extends utils.Adapter {
 		this.log.info(this.config.interval);
 		this.log.info(this.config.intervalstart);
 		this.log.info(this.config.intervalend);
-		this.log.info(this.config.d0converter);
-		this.log.info(this.config.s0converter);
+		this.log.info(this.config.d0converter.toString());
+		//this.log.info(this.config.s0converter);
 
 		var j = schedule.scheduleJob(this.config.interval, function(){
 			const dnow = new Date();
@@ -199,6 +201,11 @@ class Solarviewdatareader extends utils.Adapter {
 			// Tagesertrag= 30.1, Monatsertrag=495, Jahresertrag=1182, Gesamtertrag=1182 kWh., Leistung=3290W
 			var value = Number(sv_data[10]);
 			gthis.setStateAsync(sv_prefix + "Actualy", { val: value, ack: true });
+			if (sv_prefix == "PV.") {
+			  if (gthis.config.setCCU == true){
+				gthis.setState(gthis.config.CCUSystemV,value);				  
+			  }
+			}
 			
 			value = Number(sv_data[6]);
 			gthis.setStateAsync(sv_prefix + "Daily", { val: value, ack: true });
