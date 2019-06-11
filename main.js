@@ -157,8 +157,10 @@ class Solarviewdatareader extends utils.Adapter {
 			var dend = new Date(dnow.getFullYear() + "-" + (dnow.getMonth()+1) + "-" + dnow.getDate() + " " + endtime);
 			//gthis.log.info(dend.toDateString());
 			if (gthis.config.d0converter == true){
-				sv_cmd = "22*";
-				client.start();
+				setTimeout(function() {
+					sv_cmd = "22*";
+					client.start();
+				}, 9000);
 			}
 			if (dnow >= dstart && dnow <= dend ){
 				setTimeout(function() {
@@ -182,6 +184,7 @@ class Solarviewdatareader extends utils.Adapter {
 		});
 
 	    client.on('data',function  (data) {       		//empfangene daten
+			gthis.log.info("client.on: data" );    
 			sv_data = data.toString();               	//daten in globale variable sv_data ablegen
 			gthis.log.info("client.on: " + sv_data);    
 			sv_data = sv_data.replace (/[{]+/,"");      // "{" entfernen
@@ -203,7 +206,7 @@ class Solarviewdatareader extends utils.Adapter {
 			gthis.setStateAsync(sv_prefix + "Actualy", { val: value, ack: true });
 			if (sv_prefix == "PV.") {
 			  if (gthis.config.setCCU == true){
-				gthis.setState(gthis.config.CCUSystemV,value);				  
+				gthis.setStateAsync(gthis.config.CCUSystemV,value);				  
 			  }
 			}
 			
