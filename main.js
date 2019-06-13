@@ -48,7 +48,7 @@ class Solarviewdatareader extends utils.Adapter {
 
 		// The adapters config (in the instance object everything under the attribute "native") is accessible via
 		// this.config:
-		this.log.info("ipadress: " + ip_address);
+		this.log.info("ipaddress: " + ip_address);
 		this.log.info("port: " + this.config.port);
 
 		/*
@@ -180,52 +180,56 @@ class Solarviewdatareader extends utils.Adapter {
 			gthis.log.info('connected');
 			sv_data = "";
 			gthis.log.info("send " + sv_cmd);
-			client.send(sv_cmd, false);                 		//SolarView command: Abruf der Daten der gesamten Anlage *00
+			client.send(sv_cmd);                 		//SolarView command: Abruf der Daten der gesamten Anlage *00
 		});
 
 	    client.on('data',function  (data) {       		//empfangene daten
 			gthis.log.info("client.on: data" );    
 			sv_data = data.toString();               	//daten in globale variable sv_data ablegen
-			gthis.log.info("client.on: " + sv_data);    
-			sv_data = sv_data.replace (/[{]+/,"");      // "{" entfernen
-            sv_data = sv_data.replace (/[}]+/,"");      // "}" entfernen
-            sv_data = sv_data.split(",");   			// split von sv_data in array
-			var sv_prefix = "";
-			switch(sv_data[0]){
-				case "00": sv_prefix = "PV.";
-				break;
-				case "21": sv_prefix = "D0supply.";
-				break;
-				case "22": sv_prefix = "D0consumption.";
-				break;
-			}
-			//sv_data 00: WR, Tag, Monat, Jahr, Stunde, Minute, KDY, KMT, KYR, KT0,PAC, UDC, IDC, UDCB, IDCB, UDCC, IDCC, UL1, IL1, TKK
-			//{21,17,04,2015,16,21,0030.1,00459,001182,00001182,03290,000,000.0,000,000.0,000,000.0,000,000.0,00},!
-			// Tagesertrag= 30.1, Monatsertrag=495, Jahresertrag=1182, Gesamtertrag=1182 kWh., Leistung=3290W
-			var value = Number(sv_data[10]);
-			gthis.setStateAsync(sv_prefix + "Actualy", { val: value, ack: true });
-			if (sv_prefix == "PV.") {
-			  if (gthis.config.setCCU == true){
-				gthis.setStateAsync(gthis.config.CCUSystemV,value);				  
-			  }
-			}
-			
-			value = Number(sv_data[6]);
-			gthis.setStateAsync(sv_prefix + "Daily", { val: value, ack: true });
-			
-			value = Number(sv_data[7]);
-			gthis.setStateAsync(sv_prefix + "Monthly", { val: value, ack: true });
-			
-			value = Number(sv_data[8]);
-			gthis.setStateAsync(sv_prefix + "Yearly", { val: value, ack: true });
-			
-			value = Number(sv_data[9]);
-			gthis.setStateAsync(sv_prefix + "Total", { val: value, ack: true });		
+			if (sv_data == null){
+				gthis.log.info("client.on: data cann't read from server!" );    
+			}else{
+				gthis.log.info("client.on: " + sv_data);    
+				sv_data = sv_data.replace (/[{]+/,"");      // "{" entfernen
+				sv_data = sv_data.replace (/[}]+/,"");      // "}" entfernen
+				sv_data = sv_data.split(",");   			// split von sv_data in array
+				var sv_prefix = "";
+				switch(sv_data[0]){
+					case "00": sv_prefix = "PV.";
+					break;
+					case "21": sv_prefix = "D0supply.";
+					break;
+					case "22": sv_prefix = "D0consumption.";
+					break;
+				}
+				//sv_data 00: WR, Tag, Monat, Jahr, Stunde, Minute, KDY, KMT, KYR, KT0,PAC, UDC, IDC, UDCB, IDCB, UDCC, IDCC, UL1, IL1, TKK
+				//{21,17,04,2015,16,21,0030.1,00459,001182,00001182,03290,000,000.0,000,000.0,000,000.0,000,000.0,00},!
+				// Tagesertrag= 30.1, Monatsertrag=495, Jahresertrag=1182, Gesamtertrag=1182 kWh., Leistung=3290W
+				var value = Number(sv_data[10]);
+				gthis.setStateAsync(sv_prefix + "Actualy", { val: value, ack: true });
+				if (sv_prefix == "PV.") {
+				  if (gthis.config.setCCU == true){
+					gthis.setStateAsync(gthis.config.CCUSystemV,value);				  
+				  }
+				}
+				
+				value = Number(sv_data[6]);
+				gthis.setStateAsync(sv_prefix + "Daily", { val: value, ack: true });
+				
+				value = Number(sv_data[7]);
+				gthis.setStateAsync(sv_prefix + "Monthly", { val: value, ack: true });
+				
+				value = Number(sv_data[8]);
+				gthis.setStateAsync(sv_prefix + "Yearly", { val: value, ack: true });
+				
+				value = Number(sv_data[9]);
+				gthis.setStateAsync(sv_prefix + "Total", { val: value, ack: true });		
 
-			var sDate = Number(sv_data[3]) + "-" + Number(sv_data[2]) + "-" + Number(sv_data[1]) + " " + Number(sv_data[4]) + ":" + Number(sv_data[5])
-			gthis.setStateAsync(sv_prefix + "LastUpdate", { val: sDate, ack: true });		
+				var sDate = Number(sv_data[3]) + "-" + Number(sv_data[2]) + "-" + Number(sv_data[1]) + " " + Number(sv_data[4]) + ":" + Number(sv_data[5])
+				gthis.setStateAsync(sv_prefix + "LastUpdate", { val: sDate, ack: true });		
 
-			client.send();
+				client.send();
+			}
 		});
 
 		client.on('error', function (err) {
