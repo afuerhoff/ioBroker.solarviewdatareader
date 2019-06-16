@@ -19,7 +19,8 @@
   },
   "dependencies": {
     "@iobroker/adapter-core": "^1.0.3",
-    "node-netcat": "^1.4.7"
+    "node-netcat": "^1.4.7",
+    "telnet-client": "^1.0.3"
   },
   "devDependencies": {
     "@iobroker/testing": "^1.2.5",

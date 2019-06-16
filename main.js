@@ -12,13 +12,13 @@ const utils = require("@iobroker/adapter-core");
 // const fs = require("fs");
 const schedule = require('node-schedule');
 const netcat = require('node-netcat');
-//const request = require('request');
+const telnet = require('telnet-client');
 
 var gthis; //Global verfügbar machen
 var sv_data;
 var sv_cmd = "00*";
 var sv_array = ['PV.', 'D0supply.', 'D0consumption.'];
-
+var conn;
 
 class Solarviewdatareader extends utils.Adapter {
 
@@ -143,7 +143,18 @@ class Solarviewdatareader extends utils.Adapter {
 		const starttime = this.config.intervalstart;
 		const endtime   = this.config.intervalend;
 
-		var client = netcat.client(port, ip_address);
+		var client;
+		//var client = netcat.client(port, ip_address);
+		conn = new telnet();
+ 
+		var params = {
+		  host: ip_address,
+		  port: port,
+		  debug: true,
+		  shellPrompt: '/ # ',
+		  timeout: 3000
+		};
+		
 		this.log.info(this.config.interval);
 		this.log.info(this.config.intervalstart);
 		this.log.info(this.config.intervalend);
@@ -153,28 +164,98 @@ class Solarviewdatareader extends utils.Adapter {
 		var j = schedule.scheduleJob(this.config.interval, function(){
 			const dnow = new Date();
 			var dstart = new Date(dnow.getFullYear() + "-" + (dnow.getMonth()+1) + "-" + dnow.getDate() + " " + starttime);
-			//gthis.log.info(dstart.toDateString());
 			var dend = new Date(dnow.getFullYear() + "-" + (dnow.getMonth()+1) + "-" + dnow.getDate() + " " + endtime);
-			//gthis.log.info(dend.toDateString());
 			if (gthis.config.d0converter == true){
 				setTimeout(function() {
 					sv_cmd = "22*";
-					client.start();
-				}, 9000);
+					conn.connect(params);
+					//client.start();
+				}, 12000);
 			}
 			if (dnow >= dstart && dnow <= dend ){
 				setTimeout(function() {
 					sv_cmd = "00*";
-					client.start();
-				}, 3000);
+					conn.connect(params);
+					//client.start();
+				}, 500);
 				if (gthis.config.d0converter == true){
 					setTimeout(function() {
 						sv_cmd = "21*";
-						client.start();
+						conn.connect(params);
+						//client.start();
 					}, 6000);
 				}
 			}
 		});
+		
+		/*conn.on('ready', function(prompt) {
+		  gthis.log.info("Connection open");
+		  conn.exec(sv_cmd, function(err, response) {
+			gthis.log.info(response);
+		  });
+		})*/
+
+		conn.on('connect', function() {
+		  gthis.log.info('socket connect! Cmd = ' + sv_cmd);
+		  conn.send(sv_cmd, function(err, response) {
+			sv_data = response.toString();               	//daten in globale variable sv_data ablegen
+			if (sv_data == null){
+				gthis.log.warn("connect: data cann't read from tcp-server!" );    
+			}else{
+				gthis.log.info("data: " + sv_data);    
+				sv_data = sv_data.replace (/[{]+/,"");      // "{" entfernen
+				sv_data = sv_data.replace (/[}]+/,"");      // "}" entfernen
+				sv_data = sv_data.split(",");   			// split von sv_data in array
+				var sv_prefix = "";
+				switch(sv_data[0]){
+					case "00": sv_prefix = "PV.";
+					break;
+					case "21": sv_prefix = "D0supply.";
+					break;
+					case "22": sv_prefix = "D0consumption.";
+					break;
+				}
+				//sv_data 00: WR, Tag, Monat, Jahr, Stunde, Minute, KDY, KMT, KYR, KT0,PAC, UDC, IDC, UDCB, IDCB, UDCC, IDCC, UL1, IL1, TKK
+				//{21,17,04,2015,16,21,0030.1,00459,001182,00001182,03290,000,000.0,000,000.0,000,000.0,000,000.0,00},!
+				// Tagesertrag= 30.1, Monatsertrag=495, Jahresertrag=1182, Gesamtertrag=1182 kWh., Leistung=3290W
+				var value = Number(sv_data[10]);
+				gthis.setStateAsync(sv_prefix + "Actualy", { val: value, ack: true });
+				if (sv_prefix == "PV.") {
+				  if (gthis.config.setCCU == true){
+					gthis.setStateAsync(gthis.config.CCUSystemV,value);				  
+				  }
+				}
+				
+				value = Number(sv_data[6]);
+				gthis.setStateAsync(sv_prefix + "Daily", { val: value, ack: true });
+				
+				value = Number(sv_data[7]);
+				gthis.setStateAsync(sv_prefix + "Monthly", { val: value, ack: true });
+				
+				value = Number(sv_data[8]);
+				gthis.setStateAsync(sv_prefix + "Yearly", { val: value, ack: true });
+				
+				value = Number(sv_data[9]);
+				gthis.setStateAsync(sv_prefix + "Total", { val: value, ack: true });		
+
+				var sDate = Number(sv_data[3]) + "-" + Number(sv_data[2]) + "-" + Number(sv_data[1]) + " " + Number(sv_data[4]) + ":" + Number(sv_data[5])
+				gthis.setStateAsync(sv_prefix + "LastUpdate", { val: sDate, ack: true });		
+
+				gthis.log.info("connect: end" );    
+				//client.send();
+			}
+		  });
+		})
+		
+		conn.on('timeout', function() {
+		  gthis.log.warn('socket timeout!');
+		  conn.end();
+		})
+		 
+		conn.on('close', function() {
+		  gthis.log.info('connection closed');
+		})
+		
 		
 		client.on('open', function (){
 			gthis.log.info('connected');
@@ -184,7 +265,7 @@ class Solarviewdatareader extends utils.Adapter {
 		});
 
 	    client.on('data',function  (data) {       		//empfangene daten
-			gthis.log.info("client.on: data" );    
+			gthis.log.info("client.on: start" );    
 			sv_data = data.toString();               	//daten in globale variable sv_data ablegen
 			if (sv_data == null){
 				gthis.log.info("client.on: data cann't read from server!" );    
@@ -228,6 +309,7 @@ class Solarviewdatareader extends utils.Adapter {
 				var sDate = Number(sv_data[3]) + "-" + Number(sv_data[2]) + "-" + Number(sv_data[1]) + " " + Number(sv_data[4]) + ":" + Number(sv_data[5])
 				gthis.setStateAsync(sv_prefix + "LastUpdate", { val: sDate, ack: true });		
 
+				gthis.log.info("client.on: end" );    
 				client.send();
 			}
 		});
