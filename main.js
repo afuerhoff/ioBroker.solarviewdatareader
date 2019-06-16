@@ -223,7 +223,7 @@ class Solarviewdatareader extends utils.Adapter {
 				if (sv_prefix == "PV.") {
 				  if (gthis.config.setCCU == true){
 					gthis.log.info("write CCU system variable: " + gthis.config.CCUSystemV);
-					gthis.setForeignState(gthis.config.CCUSystemV,{ val: value, ack: true});				  
+					gthis.setForeignState(gthis.config.CCUSystemV,{ val: value, ack: false});				  
 				  }
 				}
 				
