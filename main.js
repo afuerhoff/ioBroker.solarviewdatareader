@@ -57,7 +57,7 @@ class Solarviewdatareader extends utils.Adapter {
 		Because every adapter instance uses its own unique namespace variable names can't collide with other adapters variables
 		*/
 		sv_array.forEach(async function(element) {
-			gthis.log.info("Create object: " + element + "Actualy");
+			gthis.log.info("create object: " + element + "Actualy");
 			await gthis.setObjectAsync(element + "Actualy", {
 				type: "state",
 				common: {
@@ -70,7 +70,7 @@ class Solarviewdatareader extends utils.Adapter {
 				},
 				native: {},
 			});
-			gthis.log.info("Create object: " + element + "Daily");
+			gthis.log.info("create object: " + element + "Daily");
 			await gthis.setObjectAsync(element + "Daily", {
 				type: "state",
 				common: {
@@ -83,7 +83,7 @@ class Solarviewdatareader extends utils.Adapter {
 				},
 				native: {},
 			});
-			gthis.log.info("Create object: " + element + "Monthly");
+			gthis.log.info("create object: " + element + "Monthly");
 			await gthis.setObjectAsync(element + "Monthly", {
 				type: "state",
 				common: {
@@ -96,7 +96,7 @@ class Solarviewdatareader extends utils.Adapter {
 				},
 				native: {},
 			});
-			gthis.log.info("Create object: " + element + "Yearly");
+			gthis.log.info("create object: " + element + "Yearly");
 			await gthis.setObjectAsync(element + "Yearly", {
 				type: "state",
 				common: {
@@ -109,7 +109,7 @@ class Solarviewdatareader extends utils.Adapter {
 				},
 				native: {},
 			});
-			gthis.log.info("Create object: " + element + "Total");
+			gthis.log.info("create object: " + element + "Total");
 			await gthis.setObjectAsync(element + "Total", {
 				type: "state",
 				common: {
@@ -122,7 +122,7 @@ class Solarviewdatareader extends utils.Adapter {
 				},
 				native: {},
 			});
-			gthis.log.info("Create object: " + element + "LastUpdate");
+			gthis.log.info("create object: " + element + "LastUpdate");
 			await gthis.setObjectAsync(element + "LastUpdate", {
 				type: "state",
 				common: {
@@ -155,10 +155,10 @@ class Solarviewdatareader extends utils.Adapter {
 		  timeout: 3000
 		};
 		
-		this.log.info(this.config.interval);
-		this.log.info(this.config.intervalstart);
-		this.log.info(this.config.intervalend);
-		this.log.info(this.config.d0converter.toString());
+		this.log.info("CRON: " + this.config.interval);
+		this.log.info("interval start: " + this.config.intervalstart);
+		this.log.info("interval end: " + this.config.intervalend);
+		this.log.info("D0 converter: " + this.config.d0converter.toString());
 		//this.log.info(this.config.s0converter);
 
 		var j = schedule.scheduleJob(this.config.interval, function(){
@@ -222,7 +222,8 @@ class Solarviewdatareader extends utils.Adapter {
 				gthis.setStateAsync(sv_prefix + "Actualy", { val: value, ack: true });
 				if (sv_prefix == "PV.") {
 				  if (gthis.config.setCCU == true){
-					gthis.setStateAsync(gthis.config.CCUSystemV,{ val: value, ack: true});				  
+					gthis.log.info("write CCU system variable: " + gthis.config.CCUSystemV);
+					gthis.setForeignState(gthis.config.CCUSystemV,{ val: value, ack: true});				  
 				  }
 				}
 				
