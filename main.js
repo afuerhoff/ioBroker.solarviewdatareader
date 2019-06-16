@@ -222,7 +222,7 @@ class Solarviewdatareader extends utils.Adapter {
 				gthis.setStateAsync(sv_prefix + "Actualy", { val: value, ack: true });
 				if (sv_prefix == "PV.") {
 				  if (gthis.config.setCCU == true){
-					gthis.setStateAsync(gthis.config.CCUSystemV,value);				  
+					gthis.setStateAsync(gthis.config.CCUSystemV,{ val: value, ack: true});				  
 				  }
 				}
 				
