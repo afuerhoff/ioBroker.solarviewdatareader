@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "solarviewdatareader",
-        "version": "0.0.1",
+        "version": "0.0.2",
         "news": {
             "0.0.1": {
                 "en": "initial release",
@@ -15,6 +15,18 @@
                 "pl": "Pierwsze wydanie",
                 "zh-cn": "首次出版"
             }
+			"0.0.2": {
+				"en": "First test version",
+				"de": "Erste Testversion",
+				"ru": "Первая тестовая версия",
+				"pt": "Primeira versão de teste",
+				"nl": "Eerste testversie",
+				"fr": "Première version test",
+				"it": "Prima versione di prova",
+				"es": "Primera versión de prueba",
+				"pl": "Pierwsza wersja testowa",
+				"zh-cn": "第一个测试版"
+			}			
         },
         "title": "SolarViewDataReader",
         "titleLang": {
@@ -78,8 +90,8 @@
         "intervalend": "00:00:00",
         "d0converter": false,
         "s0converter": false,
-		"setCCU": false,
-		"CCUSystemV": ""
+        "setCCU": false,
+        "CCUSystemV": ""
     },
     "objects": [],
     "instanceObjects": []

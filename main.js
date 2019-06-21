@@ -11,8 +11,9 @@ const utils = require("@iobroker/adapter-core");
 // Load your modules here, e.g.:
 // const fs = require("fs");
 const schedule = require('node-schedule');
-const netcat = require('node-netcat');
+//const netcat = require('node-netcat');
 const telnet = require('telnet-client');
+var parser = require('cron-parser');
 
 var gthis; //Global verfügbar machen
 var sv_data;
@@ -46,15 +47,13 @@ class Solarviewdatareader extends utils.Adapter {
 		const ip_address = this.config.ipaddress;
 		const port = this.config.port;
 
-		// The adapters config (in the instance object everything under the attribute "native") is accessible via
-		// this.config:
 		this.log.info("ipaddress: " + ip_address);
 		this.log.info("port: " + this.config.port);
+		this.log.info("D0 converter: " + this.config.d0converter.toString());
+		//this.log.info(this.config.s0converter);
 
 		/*
 		For every state in the system there has to be also an object of type state
-		Here a simple template for a boolean variable named "testVariable"
-		Because every adapter instance uses its own unique namespace variable names can't collide with other adapters variables
 		*/
 		sv_array.forEach(async function(element) {
 			gthis.log.info("create object: " + element + "Actualy");
@@ -155,53 +154,48 @@ class Solarviewdatareader extends utils.Adapter {
 		  timeout: 3000
 		};
 		
-		this.log.info("CRON: " + this.config.interval);
-		this.log.info("interval start: " + this.config.intervalstart);
-		this.log.info("interval end: " + this.config.intervalend);
-		this.log.info("D0 converter: " + this.config.d0converter.toString());
-		//this.log.info(this.config.s0converter);
-
-		var j = schedule.scheduleJob(this.config.interval, function(){
-			const dnow = new Date();
-			var dstart = new Date(dnow.getFullYear() + "-" + (dnow.getMonth()+1) + "-" + dnow.getDate() + " " + starttime);
-			var dend = new Date(dnow.getFullYear() + "-" + (dnow.getMonth()+1) + "-" + dnow.getDate() + " " + endtime);
-			if (gthis.config.d0converter == true){
-				setTimeout(function() {
-					sv_cmd = "22*";
-					conn.connect(params);
-					//client.start();
-				}, 12000);
-			}
-			if (dnow >= dstart && dnow <= dend ){
-				setTimeout(function() {
+		try {
+			var interval = parser.parseExpression(this.config.interval);
+			this.log.info("CRON string: " + this.config.interval);
+			//this.log.info('Date: ', interval.next().toString());
+			this.log.info("interval start: " + this.config.intervalstart);
+			this.log.info("interval end: " + this.config.intervalend);
+			var j = schedule.scheduleJob(this.config.interval, function(){
+				const dnow = new Date();
+				var dstart = new Date(dnow.getFullYear() + "-" + (dnow.getMonth()+1) + "-" + dnow.getDate() + " " + starttime);
+				var dend = new Date(dnow.getFullYear() + "-" + (dnow.getMonth()+1) + "-" + dnow.getDate() + " " + endtime);
+				if (gthis.config.d0converter == true){
+					setTimeout(function() {
+						sv_cmd = "22*";
+						conn.connect(params);
+						//client.start();
+					}, 20000);
+				}
+				if (dnow >= dstart && dnow <= dend ){
 					sv_cmd = "00*";
 					conn.connect(params);
 					//client.start();
-				}, 500);
-				if (gthis.config.d0converter == true){
-					setTimeout(function() {
-						sv_cmd = "21*";
-						conn.connect(params);
-						//client.start();
-					}, 6000);
+					if (gthis.config.d0converter == true){
+						setTimeout(function() {
+							sv_cmd = "21*";
+							conn.connect(params);
+							//client.start();
+						}, 10000);
+					}
 				}
-			}
-		});
+			});
+		  
+		} catch (err) {
+			this.log.error('Error cron-parser: ' + err.message);
+		}			
 		
-		/*conn.on('ready', function(prompt) {
-		  gthis.log.info("Connection open");
-		  conn.exec(sv_cmd, function(err, response) {
-			gthis.log.info(response);
-		  });
-		})*/
-
 		conn.on('connect', function() {
 		  gthis.log.info('socket connect! Cmd = ' + sv_cmd);
 		  conn.send(sv_cmd, function(err, response) {
-			sv_data = response.toString();               	//daten in globale variable sv_data ablegen
-			if (sv_data == null){
-				gthis.log.warn("connect: data cann't read from tcp-server!" );    
+			if (response == null){
+				gthis.log.warn("connect: cann't read data from tcp-server!" );    
 			}else{
+				sv_data = response.toString();               	//daten in globale variable sv_data ablegen
 				gthis.log.info("data: " + sv_data);    
 				sv_data = sv_data.replace (/[{]+/,"");      // "{" entfernen
 				sv_data = sv_data.replace (/[}]+/,"");      // "}" entfernen
@@ -258,7 +252,7 @@ class Solarviewdatareader extends utils.Adapter {
 		})
 		
 		
-		client.on('open', function (){
+		/*client.on('open', function (){
 			gthis.log.info('connected');
 			sv_data = "";
 			gthis.log.info("send " + sv_cmd);
@@ -321,7 +315,7 @@ class Solarviewdatareader extends utils.Adapter {
 
 		client.on('close', function () {
 		  gthis.log.info('close');
-		});	
+		});*/	
 	}
 
 	/**
