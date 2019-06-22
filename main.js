@@ -142,7 +142,7 @@ class Solarviewdatareader extends utils.Adapter {
 		const starttime = this.config.intervalstart;
 		const endtime   = this.config.intervalend;
 
-		var client;
+		//var client;
 		//var client = netcat.client(port, ip_address);
 		conn = new telnet();
  
