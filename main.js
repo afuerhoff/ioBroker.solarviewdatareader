@@ -24,16 +24,10 @@ function calcChecksum(string) {
 	var buf = new Buffer(string);
 	// Calculate the modulo 256 checksum
 	var sum = 0;
-	for (var i = 0, l = buf.length; i < l; i++) {
+	for (var i = 0, l = buf.length-4; i < l; i++) {
 		sum = (sum + buf[i]) % 256;
 	}
- 
-	//gthis.log.info('checksum (binary): ' + sum.toString(2));
-	// Convert to a two byte uppercase hex value
-	//var chars = sum.toString(16).toUpperCase();
-	//if (chars.length == 1) chars = "0" + chars;
-	//return chars;
-	return sum.toString(2);
+	return sum;
 }
 
 class Solarviewdatareader extends utils.Adapter {
@@ -73,7 +67,7 @@ class Solarviewdatareader extends utils.Adapter {
 		
 		//Datenobjekte erzeugen
 		var arrTcp = [];
-		var arrTcpLen = arrTcp.push("pvg"); // PV Gesamtanlage
+		var arrTcpLen = arrTcp.push("pvig"); // PV Gesamtanlage
 		if (gthis.config.d0converter == true){ //d0converter hinzufügen
 			arrTcp.push("d0supply"); //Einspeisezähler
 			arrTcpLen = arrTcp.push("d0consumption"); //Verbrauchszähler
@@ -173,7 +167,7 @@ class Solarviewdatareader extends utils.Adapter {
 					}, 20000);
 				}
 				if (dnow >= dstart && dnow <= dend ){ //Einspeisung und Leistungsdaten werden nur im Interval eingelesen
-					sv_cmd = "00*"; //pvg
+					sv_cmd = "00*"; //pvig
 					conn.connect(params);
 					//client.start();
 					if (gthis.config.d0converter == true){
@@ -185,7 +179,7 @@ class Solarviewdatareader extends utils.Adapter {
 					}
 					if (gthis.config.pvi1 == true){
 						setTimeout(function() {
-							sv_cmd = "01*"; //Wechselrichter 1
+							sv_cmd = "01*"; //pvi1 Wechselrichter 1
 							conn.connect(params);
 						}, 29000);
 					}
@@ -225,93 +219,94 @@ class Solarviewdatareader extends utils.Adapter {
 				sv_data = sv_data.replace (/[{]+/,"");      // "{" entfernen
 				sv_data = sv_data.replace (/[}]+/,"");      // "}" entfernen
 				sv_data = sv_data.split(",");   			// split von sv_data in array
-				//Checksumme berechnen
 				var sv_prefix = "";
-				gthis.log.info("Len: " + sv_data.length);
-				//gthis.log.info("Checksumme: " + sv_data[sv_data.length-1]);
-				//var csum = calcChecksum(response.toString());
+				var csum = calcChecksum(response.toString()); //Checksumme berechnen
 				//gthis.log.info("Checksumme: " + csum);
-				switch(sv_data[0]){
-					case "00": sv_prefix = "pvg.";
-					break;
-					case "01": sv_prefix = "pvi1.";
-					break;
-					case "02": sv_prefix = "pvi2.";
-					break;
-					case "03": sv_prefix = "pvi3.";
-					break;
-					case "04": sv_prefix = "pvi4.";
-					break;
-					case "21": sv_prefix = "d0supply.";
-					break;
-					case "22": sv_prefix = "d0consumption.";
-					break;
-				}
-				//sv_data 00: WR, Tag, Monat, Jahr, Stunde, Minute, KDY, KMT, KYR, KT0,PAC, UDC, IDC, UDCB, IDCB, UDCC, IDCC, UL1, IL1, TKK
-				//{21,17,04,2015,16,21,0030.1,00459,001182,00001182,03290,000,000.0,000,000.0,000,000.0,000,000.0,00},!
-				// Tagesertrag= 30.1, Monatsertrag=495, Jahresertrag=1182, Gesamtertrag=1182 kWh., Leistung=3290W
-				
-				var value = Number(sv_data[10]);
-				gthis.setStateAsync(sv_prefix + "actualy", { val: value, ack: true });
-				if (sv_prefix == "pv.") {
-				  if (gthis.config.setCCU == true){
-					gthis.log.info("write CCU system variable: " + gthis.config.CCUSystemV);
-					gthis.setForeignState(gthis.config.CCUSystemV,{ val: value, ack: false});				  
-				  }
-				}
-				
-				value = Number(sv_data[6]);
-				gthis.setStateAsync(sv_prefix + "daily", { val: value, ack: true });
-				
-				value = Number(sv_data[7]);
-				gthis.setStateAsync(sv_prefix + "monthly", { val: value, ack: true });
-				
-				value = Number(sv_data[8]);
-				gthis.setStateAsync(sv_prefix + "yearly", { val: value, ack: true });
-				
-				value = Number(sv_data[9]);
-				gthis.setStateAsync(sv_prefix + "total", { val: value, ack: true });		
+				if (sv_data[sv_data.length-1].charCodeAt(0) == csum){
+					switch(sv_data[0]){
+						case "00": sv_prefix = "pvig.";
+						break;
+						case "01": sv_prefix = "pvi1.";
+						break;
+						case "02": sv_prefix = "pvi2.";
+						break;
+						case "03": sv_prefix = "pvi3.";
+						break;
+						case "04": sv_prefix = "pvi4.";
+						break;
+						case "21": sv_prefix = "d0supply.";
+						break;
+						case "22": sv_prefix = "d0consumption.";
+						break;
+					}
+					//sv_data 00: WR, Tag, Monat, Jahr, Stunde, Minute, KDY, KMT, KYR, KT0,PAC, UDC, IDC, UDCB, IDCB, UDCC, IDCC, UL1, IL1, TKK
+					//{21,17,04,2015,16,21,0030.1,00459,001182,00001182,03290,000,000.0,000,000.0,000,000.0,000,000.0,00},!
+					// Tagesertrag= 30.1, Monatsertrag=495, Jahresertrag=1182, Gesamtertrag=1182 kWh., Leistung=3290W
+					
+					var value = Number(sv_data[10]);
+					gthis.setStateAsync(sv_prefix + "actualy", { val: value, ack: true });
+					if (sv_prefix == "pvig.") {
+					  if (gthis.config.setCCU == true){
+						gthis.log.info("write CCU system variable: " + gthis.config.CCUSystemV);
+						gthis.setForeignState(gthis.config.CCUSystemV,{ val: value, ack: false});				  
+					  }
+					}
+					
+					value = Number(sv_data[6]);
+					gthis.setStateAsync(sv_prefix + "daily", { val: value, ack: true });
+					
+					value = Number(sv_data[7]);
+					gthis.setStateAsync(sv_prefix + "monthly", { val: value, ack: true });
+					
+					value = Number(sv_data[8]);
+					gthis.setStateAsync(sv_prefix + "yearly", { val: value, ack: true });
+					
+					value = Number(sv_data[9]);
+					gthis.setStateAsync(sv_prefix + "total", { val: value, ack: true });		
 
-				var sDate = Number(sv_data[3]) + "-" + Number(sv_data[2]) + "-" + Number(sv_data[1]) + " " + Number(sv_data[4]) + ":" + Number(sv_data[5])
-				gthis.setStateAsync(sv_prefix + "lastupdate", { val: sDate, ack: true });		
-				
-				if (sv_prefix == 'pvi1.' || sv_prefix == 'pvi2.' || sv_prefix == 'pvi3.' || sv_prefix == 'pvi4.'){
-					value = Number(sv_data[11]);
-					gthis.setStateAsync(sv_prefix + "udc", { val: value, ack: true });		
-					value = Number(sv_data[12]);
-					gthis.setStateAsync(sv_prefix + "idc", { val: value, ack: true });		
-					value = Number(sv_data[13]);
-					gthis.setStateAsync(sv_prefix + "udcb", { val: value, ack: true });		
-					value = Number(sv_data[14]);
-					gthis.setStateAsync(sv_prefix + "idcb", { val: value, ack: true });		
-					value = Number(sv_data[15]);
-					gthis.setStateAsync(sv_prefix + "udcc", { val: value, ack: true });		
-					value = Number(sv_data[16]);
-					gthis.setStateAsync(sv_prefix + "idcc", { val: value, ack: true });	
-					if (sv_data.length == 27) { //neue Version Solarview
-						value = Number(sv_data[19]);
-						gthis.setStateAsync(sv_prefix + "ul1", { val: value, ack: true });		
-						value = Number(sv_data[20]);
-						gthis.setStateAsync(sv_prefix + "il1", { val: value, ack: true });		
-						value = Number(sv_data[21]);
-						gthis.setStateAsync(sv_prefix + "ul2", { val: value, ack: true });		
-						value = Number(sv_data[22]);
-						gthis.setStateAsync(sv_prefix + "il2", { val: value, ack: true });		
-						value = Number(sv_data[23]);
-						gthis.setStateAsync(sv_prefix + "ul3", { val: value, ack: true });		
-						value = Number(sv_data[24]);
-						gthis.setStateAsync(sv_prefix + "il3", { val: value, ack: true });		
-						value = Number(sv_data[25]);
-						gthis.setStateAsync(sv_prefix + "tkk", { val: value, ack: true });		
+					var sDate = Number(sv_data[3]) + "-" + Number(sv_data[2]) + "-" + Number(sv_data[1]) + " " + Number(sv_data[4]) + ":" + Number(sv_data[5])
+					gthis.setStateAsync(sv_prefix + "lastupdate", { val: sDate, ack: true });		
+					
+					if (sv_prefix == 'pvi1.' || sv_prefix == 'pvi2.' || sv_prefix == 'pvi3.' || sv_prefix == 'pvi4.'){
+						value = Number(sv_data[11]);
+						gthis.setStateAsync(sv_prefix + "udc", { val: value, ack: true });		
+						value = Number(sv_data[12]);
+						gthis.setStateAsync(sv_prefix + "idc", { val: value, ack: true });		
+						value = Number(sv_data[13]);
+						gthis.setStateAsync(sv_prefix + "udcb", { val: value, ack: true });		
+						value = Number(sv_data[14]);
+						gthis.setStateAsync(sv_prefix + "idcb", { val: value, ack: true });		
+						value = Number(sv_data[15]);
+						gthis.setStateAsync(sv_prefix + "udcc", { val: value, ack: true });		
+						value = Number(sv_data[16]);
+						gthis.setStateAsync(sv_prefix + "idcc", { val: value, ack: true });	
+						if (sv_data.length == 27) { //neue Version Solarview
+							value = Number(sv_data[19]);
+							gthis.setStateAsync(sv_prefix + "ul1", { val: value, ack: true });		
+							value = Number(sv_data[20]);
+							gthis.setStateAsync(sv_prefix + "il1", { val: value, ack: true });		
+							value = Number(sv_data[21]);
+							gthis.setStateAsync(sv_prefix + "ul2", { val: value, ack: true });		
+							value = Number(sv_data[22]);
+							gthis.setStateAsync(sv_prefix + "il2", { val: value, ack: true });		
+							value = Number(sv_data[23]);
+							gthis.setStateAsync(sv_prefix + "ul3", { val: value, ack: true });		
+							value = Number(sv_data[24]);
+							gthis.setStateAsync(sv_prefix + "il3", { val: value, ack: true });		
+							value = Number(sv_data[25]);
+							gthis.setStateAsync(sv_prefix + "tkk", { val: value, ack: true });		
+						}
+						if (sv_data.length === 23) { //alte Version Solarview
+							value = Number(sv_data[19]);
+							gthis.setStateAsync(sv_prefix + "ul1", { val: value, ack: true });		
+							value = Number(sv_data[20]);
+							gthis.setStateAsync(sv_prefix + "il1", { val: value, ack: true });		
+							value = Number(sv_data[21]);
+							gthis.setStateAsync(sv_prefix + "tkk", { val: value, ack: true });							
+						}
 					}
-					if (sv_data.length === 23) { //alte Version Solarview
-						value = Number(sv_data[19]);
-						gthis.setStateAsync(sv_prefix + "ul1", { val: value, ack: true });		
-						value = Number(sv_data[20]);
-						gthis.setStateAsync(sv_prefix + "il1", { val: value, ack: true });		
-						value = Number(sv_data[21]);
-						gthis.setStateAsync(sv_prefix + "tkk", { val: value, ack: true });							
-					}
+				}else{
+					gthis.log.error("connect: checksum error")
 				}
 				gthis.log.info("connect: end" );    
 			}
@@ -325,73 +320,7 @@ class Solarviewdatareader extends utils.Adapter {
 		 
 		conn.on('close', function() {
 		  gthis.log.info('connection closed');
-		})
-		
-		
-		/*client.on('open', function (){
-			gthis.log.info('connected');
-			sv_data = "";
-			gthis.log.info("send " + sv_cmd);
-			client.send(sv_cmd);                 		//SolarView command: Abruf der Daten der gesamten Anlage *00
-		});
-
-	    client.on('data',function  (data) {       		//empfangene daten
-			gthis.log.info("client.on: start" );    
-			sv_data = data.toString();               	//daten in globale variable sv_data ablegen
-			if (sv_data == null){
-				gthis.log.info("client.on: data cann't read from server!" );    
-			}else{
-				gthis.log.info("client.on: " + sv_data);    
-				sv_data = sv_data.replace (/[{]+/,"");      // "{" entfernen
-				sv_data = sv_data.replace (/[}]+/,"");      // "}" entfernen
-				sv_data = sv_data.split(",");   			// split von sv_data in array
-				var sv_prefix = "";
-				switch(sv_data[0]){
-					case "00": sv_prefix = "PV.";
-					break;
-					case "21": sv_prefix = "D0supply.";
-					break;
-					case "22": sv_prefix = "D0consumption.";
-					break;
-				}
-				//sv_data 00: WR, Tag, Monat, Jahr, Stunde, Minute, KDY, KMT, KYR, KT0,PAC, UDC, IDC, UDCB, IDCB, UDCC, IDCC, UL1, IL1, TKK
-				//{21,17,04,2015,16,21,0030.1,00459,001182,00001182,03290,000,000.0,000,000.0,000,000.0,000,000.0,00},!
-				// Tagesertrag= 30.1, Monatsertrag=495, Jahresertrag=1182, Gesamtertrag=1182 kWh., Leistung=3290W
-				var value = Number(sv_data[10]);
-				gthis.setStateAsync(sv_prefix + "Actualy", { val: value, ack: true });
-				if (sv_prefix == "PV.") {
-				  if (gthis.config.setCCU == true){
-					gthis.setStateAsync(gthis.config.CCUSystemV,value);				  
-				  }
-				}
-				
-				value = Number(sv_data[6]);
-				gthis.setStateAsync(sv_prefix + "Daily", { val: value, ack: true });
-				
-				value = Number(sv_data[7]);
-				gthis.setStateAsync(sv_prefix + "Monthly", { val: value, ack: true });
-				
-				value = Number(sv_data[8]);
-				gthis.setStateAsync(sv_prefix + "Yearly", { val: value, ack: true });
-				
-				value = Number(sv_data[9]);
-				gthis.setStateAsync(sv_prefix + "Total", { val: value, ack: true });		
-
-				var sDate = Number(sv_data[3]) + "-" + Number(sv_data[2]) + "-" + Number(sv_data[1]) + " " + Number(sv_data[4]) + ":" + Number(sv_data[5])
-				gthis.setStateAsync(sv_prefix + "LastUpdate", { val: sDate, ack: true });		
-
-				gthis.log.info("client.on: end" );    
-				client.send();
-			}
-		});
-
-		client.on('error', function (err) {
-			gthis.log.error(err);
-		});
-
-		client.on('close', function () {
-		  gthis.log.info('close');
-		});*/	
+		})		
 	}
 
 	/**
