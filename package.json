@@ -1,7 +1,7 @@
 {
   "name": "iobroker.solarviewdatareader",
-  "version": "0.0.2",
-  "description": "Get Data from SolarView",
+  "version": "0.0.3",
+  "description": "Get data from SolarView",
   "author": {
     "name": "Achim Fürhoff",
     "email": "achim.fuerhoff@outlook.de"

@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "solarviewdatareader",
-        "version": "0.0.2",
+        "version": "0.0.3",
         "news": {
             "0.0.1": {
                 "en": "initial release",
@@ -26,7 +26,19 @@
                 "es": "Primera versión de prueba",
                 "pl": "Pierwsza wersja testowa",
                 "zh-cn": "第一个测试版"
-            }
+            },
+			"0.0.3": {
+				"en": "selection of the inverters added",
+				"de": "Auswahl der Wechselrichter ergänzt",
+				"ru": "добавлен выбор инверторов",
+				"pt": "seleção dos inversores adicionados",
+				"nl": "selectie van de omvormers toegevoegd",
+				"fr": "sélection des inverseurs ajoutés",
+				"it": "selezione degli inverter aggiunti",
+				"es": "Selección de los inversores añadidos.",
+				"pl": "wybór dodanych falowników",
+				"zh-cn": "选择添加的逆变器"
+			}
         },
         "title": "SolarViewDataReader",
         "titleLang": {
