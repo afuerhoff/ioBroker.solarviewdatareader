@@ -76,10 +76,8 @@ class Solarviewdatareader extends utils.Adapter {
 		const arrType1 = ['number', 'number', 'number', 'number', 'number', 'date']; //Datentypen
 		const arrUnit1 = ['W', 'kWh', 'kWh', 'kWh', 'kWh', '']; // Einheiten
 		var arrDpLen = arrDp1.length;
-		var i;
-		var dp;
-		for (i = 0; i < arrTcpLen; i++) { // normale Datenpunkte
-			for (dp = 0; dp < arrDpLen; dp++) {
+		for (var i = 0; i < arrTcpLen; i++) { // normale Datenpunkte
+			for (var dp = 0; dp < arrDpLen; dp++) {
 				gthis.log.info("create object: " + arrTcp[i] + "." + arrDp1[dp]); // Anlage Datenobjekte loggen
 				await gthis.setObjectAsync(arrTcp[i] + "." + arrDp1[dp], {
 					type: "state",
@@ -97,8 +95,7 @@ class Solarviewdatareader extends utils.Adapter {
 		}
 
 		var arrInv = [];
-		var inv;
-		for (inv = 1; inv < 5; inv++) { // zusätzliche Datenobjekte für Wechselrichter
+		for (var inv = 1; inv < 5; inv++) { // zusätzliche Datenobjekte für Wechselrichter
 			if (eval("gthis.config.pvi" + inv) == true){
 				arrInv.push("pvi" + inv);
 			}
@@ -114,8 +111,8 @@ class Solarviewdatareader extends utils.Adapter {
 		const arrUnit2 = ['V', 'A', 'V', 'A', 'V', 'A', 'V', 'A', 'V', 'A', 'V', 'A', '°C']; //Einheiten für zusätzliche Datenpunkte
 		const arrUnit = arrUnit1.concat(arrUnit2);
 		gthis.log.info("len: " + arrInvLen);
-		for (i = 0; i < arrInvLen; i++) { // Datenpunkte für Wechselrichter anlegen
-			for (dp = 0; dp < arrDpLen; dp++) {
+		for (var i = 0; i < arrInvLen; i++) { // Datenpunkte für Wechselrichter anlegen
+			for (var dp = 0; dp < arrDpLen; dp++) {
 				gthis.log.info("create object: " + arrInv[i] + "." + arrDp[dp]);
 				await gthis.setObjectAsync(arrInv[i] + "." + arrDp[dp], {
 					type: "state",
@@ -220,9 +217,11 @@ class Solarviewdatareader extends utils.Adapter {
 				sv_data = sv_data.replace (/[}]+/,"");      // "}" entfernen
 				sv_data = sv_data.split(",");   			// split von sv_data in array
 				var sv_prefix = "";
-				var csum = calcChecksum(response.toString()); //Checksumme berechnen
-				//gthis.log.info("Checksumme: " + csum);
-				if (sv_data[sv_data.length-1].charCodeAt(0) == csum){
+				var csum = calcChecksum(response); //Checksumme berechnen
+				gthis.log.info("checksum: " + sv_data[sv_data.length-1]);
+				gthis.log.info("checksum: " + sv_data[sv_data.length-1].charCodeAt(0));
+				gthis.log.info("calculated checksum: " + csum);
+				if (sv_data[sv_data.length-1].charCodeAt(0) == csum || sv_data[0] == "00"){
 					switch(sv_data[0]){
 						case "00": sv_prefix = "pvig.";
 						break;
