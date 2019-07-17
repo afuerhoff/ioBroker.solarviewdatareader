@@ -11,8 +11,8 @@ const utils = require("@iobroker/adapter-core");
 // Load your modules here, e.g.:
 // const fs = require("fs");
 const schedule = require('node-schedule');
-//const netcat = require('node-netcat');
-const telnet = require('telnet-client');
+const netcat = require('node-netcat');
+//const telnet = require('telnet-client');
 var parser = require('cron-parser');
 
 var gthis; 
@@ -20,14 +20,39 @@ var sv_data;
 var sv_cmd = "00*";
 var conn;
 
+// Nullen voranstellen - add Leading Zero
+function aLZ(n){
+  if(n <= 9){
+    return "0" + n;
+  }
+  return n
+}
+
 function calcChecksum(string) {
 	var buf = new Buffer(string);
 	// Calculate the modulo 256 checksum
 	var sum = 0;
 	for (var i = 0, l = buf.length-4; i < l; i++) {
-		sum = (sum + buf[i]) % 256;
+		sum = (sum + buf[i]) % 128;
 	}
 	return sum;
+}
+
+function d2h(d) {
+    return d.toString(16);
+}
+
+function stringToHex (tmp) {
+    var str = '',
+        i = 0,
+        tmp_len = tmp.length,
+        c;
+ 
+    for (; i < tmp_len; i += 1) {
+        c = tmp.charCodeAt(i);
+        str += d2h(c) + ' ';
+    }
+    return str;
 }
 
 class Solarviewdatareader extends utils.Adapter {
@@ -57,8 +82,8 @@ class Solarviewdatareader extends utils.Adapter {
 		const ip_address = this.config.ipaddress;
 		const port = this.config.port;
 
-		this.log.info("ipaddress: " + ip_address);
-		this.log.info("port: " + this.config.port);
+		this.log.info("ip-address: " + ip_address + ":" + this.config.port);
+		//this.log.info("port: " + this.config.port);
 		this.log.info("d0 converter: " + this.config.d0converter.toString());
 
 		/*
@@ -66,19 +91,32 @@ class Solarviewdatareader extends utils.Adapter {
 		*/
 		
 		//Datenobjekte erzeugen
+		await gthis.setObjectAsync("lastupdate", {
+			type: "state",
+			common: {
+				name: "last connect date",
+				type: "text",
+				role: "indicator",
+				unit: "",
+				read: true,
+				write: false,
+			},
+			native: {},
+		});
+
 		var arrTcp = [];
 		var arrTcpLen = arrTcp.push("pvig"); // PV Gesamtanlage
 		if (gthis.config.d0converter == true){ //d0converter hinzufügen
 			arrTcp.push("d0supply"); //Einspeisezähler
 			arrTcpLen = arrTcp.push("d0consumption"); //Verbrauchszähler
 		}
-		const arrDp1 = ['actualy', 'daily', 'monthly', 'yearly', 'total', 'lastupdate']; //Datenpunkte
-		const arrType1 = ['number', 'number', 'number', 'number', 'number', 'date']; //Datentypen
-		const arrUnit1 = ['W', 'kWh', 'kWh', 'kWh', 'kWh', '']; // Einheiten
+		const arrDp1 = ['current', 'daily', 'monthly', 'yearly', 'total']; //Datenpunkte
+		const arrType1 = ['number', 'number', 'number', 'number', 'number']; //Datentypen
+		const arrUnit1 = ['W', 'kWh', 'kWh', 'kWh', 'kWh']; // Einheiten
 		var arrDpLen = arrDp1.length;
 		for (var i = 0; i < arrTcpLen; i++) { // normale Datenpunkte
 			for (var dp = 0; dp < arrDpLen; dp++) {
-				gthis.log.info("create object: " + arrTcp[i] + "." + arrDp1[dp]); // Anlage Datenobjekte loggen
+				//gthis.log.info("create object: " + arrTcp[i] + "." + arrDp1[dp]); // Anlage Datenobjekte loggen
 				await gthis.setObjectAsync(arrTcp[i] + "." + arrDp1[dp], {
 					type: "state",
 					common: {
@@ -110,10 +148,10 @@ class Solarviewdatareader extends utils.Adapter {
 		const arrType = arrType1.concat(arrType2);
 		const arrUnit2 = ['V', 'A', 'V', 'A', 'V', 'A', 'V', 'A', 'V', 'A', 'V', 'A', '°C']; //Einheiten für zusätzliche Datenpunkte
 		const arrUnit = arrUnit1.concat(arrUnit2);
-		gthis.log.info("len: " + arrInvLen);
+		//gthis.log.info("len: " + arrInvLen);
 		for (var i = 0; i < arrInvLen; i++) { // Datenpunkte für Wechselrichter anlegen
 			for (var dp = 0; dp < arrDpLen; dp++) {
-				gthis.log.info("create object: " + arrInv[i] + "." + arrDp[dp]);
+				//gthis.log.info("create object: " + arrInv[i] + "." + arrDp[dp]);
 				await gthis.setObjectAsync(arrInv[i] + "." + arrDp[dp], {
 					type: "state",
 					common: {
@@ -135,23 +173,30 @@ class Solarviewdatareader extends utils.Adapter {
 		const starttime = this.config.intervalstart;
 		const endtime   = this.config.intervalend;
 
-		conn = new telnet();
- 
+		//conn = new telnet();
+
 		//telnet parameters
 		var params = {
 		  host: ip_address,
 		  port: port,
-		  debug: true,
-		  shellPrompt: '/ # ',
+		  debug: false,
+		  shellPrompt: ';-)', // '/ #',
 		  timeout: 3000
 		};
+
+		//netcat parameters
+		var params = {
+		  timeout: 3000,
+		  read_encoding: 'buffer'
+		};
+		conn = netcat.client(15000, ip_address, params);
 		
 		try {
 			var interval = parser.parseExpression(this.config.interval);
-			this.log.info("CRON string: " + this.config.interval);
+			//this.log.info("CRON string: " + this.config.interval);
 			//this.log.info('Date: ', interval.next().toString());
-			this.log.info("interval start: " + this.config.intervalstart);
-			this.log.info("interval end: " + this.config.intervalend);
+			this.log.info("CRON: " + this.config.interval + " (" + this.config.intervalstart + " to " + this.config.intervalend + ")");
+			//this.log.info("interval end: " + this.config.intervalend);
 			var j = schedule.scheduleJob(this.config.interval, function(){
 				const dnow = new Date();
 				var dstart = new Date(dnow.getFullYear() + "-" + (dnow.getMonth()+1) + "-" + dnow.getDate() + " " + starttime);
@@ -159,43 +204,47 @@ class Solarviewdatareader extends utils.Adapter {
 				if (gthis.config.d0converter == true){ //Verbrauch wird immer eingelesen
 					setTimeout(function() {
 						sv_cmd = "22*";
-						conn.connect(params);
-						//client.start();
+						//conn.connect(params);
+						conn.start();
 					}, 20000);
 				}
 				if (dnow >= dstart && dnow <= dend ){ //Einspeisung und Leistungsdaten werden nur im Interval eingelesen
 					sv_cmd = "00*"; //pvig
-					conn.connect(params);
-					//client.start();
+					//conn.connect(params);
+					conn.start();
 					if (gthis.config.d0converter == true){
 						setTimeout(function() {
 							sv_cmd = "21*";
-							conn.connect(params);
-							//client.start();
+							//conn.connect(params);
+							conn.start();
 						}, 10000);
 					}
 					if (gthis.config.pvi1 == true){
 						setTimeout(function() {
 							sv_cmd = "01*"; //pvi1 Wechselrichter 1
-							conn.connect(params);
+							//conn.connect(params);
+							conn.start();
 						}, 29000);
 					}
 					if (gthis.config.pvi2 == true){
 						setTimeout(function() {
 							sv_cmd = "02*";
-							conn.connect(params);
+							//conn.connect(params);
+							conn.start();
 						}, 38000);
 					}
 					if (gthis.config.pvi3 == true){
 						setTimeout(function() {
 							sv_cmd = "03*";
-							conn.connect(params);
+							//conn.connect(params);
+							conn.start();
 						}, 47000);
 					}
 					if (gthis.config.pvi4 == true){
 						setTimeout(function() {
 							sv_cmd = "04*";
-							conn.connect(params);
+							//conn.connect(params);
+							conn.start();
 						}, 56000);
 					}
 				}
@@ -205,23 +254,25 @@ class Solarviewdatareader extends utils.Adapter {
 			this.log.error('Error cron-parser: ' + err.message);
 		}			
 		
-		conn.on('connect', function() {
-		  gthis.log.info('socket connect! Cmd = ' + sv_cmd);
-		  conn.send(sv_cmd, function(err, response) {
+		conn.on('open', function(){
+		  conn.send(sv_cmd);
+		});
+		
+		//conn.on('connect', function() {
+		conn.on('data', function(response) {
+		  //gthis.log.info('socket connect! Cmd = ' + sv_cmd);
+		  //conn.send(sv_cmd, function(err, response) {
 			if (response == null){
 				gthis.log.warn("connect: cann't read data from tcp-server!" );    
 			}else{
-				sv_data = response.toString();               	//daten in globale variable sv_data ablegen
-				gthis.log.info("data: " + sv_data);    
+				sv_data = response.toString('ascii'); //Daten in globale variable sv_data ablegen
 				sv_data = sv_data.replace (/[{]+/,"");      // "{" entfernen
 				sv_data = sv_data.replace (/[}]+/,"");      // "}" entfernen
 				sv_data = sv_data.split(",");   			// split von sv_data in array
+				var csum = calcChecksum(response.toString('ascii')); //Checksumme berechnen
 				var sv_prefix = "";
-				var csum = calcChecksum(response); //Checksumme berechnen
-				gthis.log.info("checksum: " + sv_data[sv_data.length-1]);
-				gthis.log.info("checksum: " + sv_data[sv_data.length-1].charCodeAt(0));
-				gthis.log.info("calculated checksum: " + csum);
 				if (sv_data[sv_data.length-1].charCodeAt(0) == csum || sv_data[0] == "00"){
+					gthis.log.info(sv_cmd + ": " + response.toString('ascii') + " -> chksum ok" );    
 					switch(sv_data[0]){
 						case "00": sv_prefix = "pvig.";
 						break;
@@ -238,12 +289,22 @@ class Solarviewdatareader extends utils.Adapter {
 						case "22": sv_prefix = "d0consumption.";
 						break;
 					}
-					//sv_data 00: WR, Tag, Monat, Jahr, Stunde, Minute, KDY, KMT, KYR, KT0,PAC, UDC, IDC, UDCB, IDCB, UDCC, IDCC, UL1, IL1, TKK
-					//{21,17,04,2015,16,21,0030.1,00459,001182,00001182,03290,000,000.0,000,000.0,000,000.0,000,000.0,00},!
-					// Tagesertrag= 30.1, Monatsertrag=495, Jahresertrag=1182, Gesamtertrag=1182 kWh., Leistung=3290W
+					// Quelle S. 45: http://www.solarview.info/solarview-fb_Installieren.pdf
+					//WR, Tag, Monat, Jahr, Stunde, Minute, KDY, KMT, KYR, KT0,PAC, UDC, IDC, UDCB, IDCB, UDCC, IDCC, UL1, IL1, UL2, IL2, UL3, IL3, TKK
+					/*KDY= Tagesertrag (kWh)
+					KMT= Monatsertrag (kWh)
+					KYR= Jahresertrag (kWh)
+					KT0= Gesamtertrag (kWh)
+					PAC= Generatorleistung in W
+					UDC, UDCB, UDCC = Generator-Spannungen in Volt pro MPP-Tracker IDC,
+					IDCB, IDCC = Generator-Ströme in Ampere pro MPP-Tracker
+					UL1, IL1 = Netzspannung, Netzstrom Phase 1
+					UL2, IL2 = Netzspannung, Netzstrom Phase 2
+					UL3, IL3 = Netzspannung, Netzstrom Phase 3
+					TKK= Temperatur Wechselrichter */
 					
 					var value = Number(sv_data[10]);
-					gthis.setStateAsync(sv_prefix + "actualy", { val: value, ack: true });
+					gthis.setStateAsync(sv_prefix + "current", { val: value, ack: true });
 					if (sv_prefix == "pvig.") {
 					  if (gthis.config.setCCU == true){
 						gthis.log.info("write CCU system variable: " + gthis.config.CCUSystemV);
@@ -263,8 +324,8 @@ class Solarviewdatareader extends utils.Adapter {
 					value = Number(sv_data[9]);
 					gthis.setStateAsync(sv_prefix + "total", { val: value, ack: true });		
 
-					var sDate = Number(sv_data[3]) + "-" + Number(sv_data[2]) + "-" + Number(sv_data[1]) + " " + Number(sv_data[4]) + ":" + Number(sv_data[5])
-					gthis.setStateAsync(sv_prefix + "lastupdate", { val: sDate, ack: true });		
+					var sDate = Number(sv_data[3]) + "-" + aLZ(Number(sv_data[2])) + "-" + aLZ(Number(sv_data[1])) + " " + aLZ(Number(sv_data[4])) + ":" + aLZ(Number(sv_data[5]))
+					gthis.setStateAsync("lastupdate", { val: sDate, ack: true });		
 					
 					if (sv_prefix == 'pvi1.' || sv_prefix == 'pvi2.' || sv_prefix == 'pvi3.' || sv_prefix == 'pvi4.'){
 						value = Number(sv_data[11]);
@@ -307,15 +368,20 @@ class Solarviewdatareader extends utils.Adapter {
 				}else{
 					gthis.log.error("connect: checksum error")
 				}
-				gthis.log.info("connect: end" );    
+				conn.send();
+				//gthis.log.info("connect: end" );    
 			}
-		  });
+		  //});
 		})
 		
-		conn.on('timeout', function() {
+		/*conn.on('timeout', function() {
 		  gthis.log.warn('socket timeout!');
 		  conn.end();
-		})
+		})*/
+
+		conn.on('error', function(err) {
+		  gthis.log.info('error: ' + err);
+		})		
 		 
 		conn.on('close', function() {
 		  gthis.log.info('connection closed');
@@ -358,10 +424,10 @@ class Solarviewdatareader extends utils.Adapter {
 	onStateChange(id, state) {
 		if (state) {
 			// The state was changed
-			this.log.info(`state ${id} changed: ${state.val} (ack = ${state.ack})`);
+			//this.log.info(`state ${id} changed: ${state.val} (ack = ${state.ack})`);
 		} else {
 			// The state was deleted
-			this.log.info(`state ${id} deleted`);
+			//this.log.info(`state ${id} deleted`);
 		}
 	}
 
