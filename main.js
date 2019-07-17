@@ -271,7 +271,7 @@ class Solarviewdatareader extends utils.Adapter {
 				sv_data = sv_data.split(",");   			// split von sv_data in array
 				var csum = calcChecksum(response.toString('ascii')); //Checksumme berechnen
 				var sv_prefix = "";
-				if (sv_data[sv_data.length-1].charCodeAt(0) == csum || sv_data[0] == "00"){
+				if (sv_data[sv_data.length-1].charCodeAt(0) == csum ){
 					gthis.log.info(sv_cmd + ": " + response.toString('ascii') + " -> chksum ok" );    
 					switch(sv_data[0]){
 						case "00": sv_prefix = "pvig.";
