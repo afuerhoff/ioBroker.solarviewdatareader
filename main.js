@@ -82,7 +82,7 @@ class Solarviewdatareader extends utils.Adapter {
 		const ip_address = this.config.ipaddress;
 		const port = this.config.port;
 
-		this.log.info("ip-address: " + ip_address + ":" + this.config.port);
+		this.log.info("ip-address: " + ip_address + ":" + port);
 		//this.log.info("port: " + this.config.port);
 		this.log.info("d0 converter: " + this.config.d0converter.toString());
 
@@ -178,7 +178,6 @@ class Solarviewdatareader extends utils.Adapter {
 		//telnet parameters
 		var params = {
 		  host: ip_address,
-		  port: port,
 		  debug: false,
 		  shellPrompt: ';-)', // '/ #',
 		  timeout: 3000
@@ -189,7 +188,7 @@ class Solarviewdatareader extends utils.Adapter {
 		  timeout: 3000,
 		  read_encoding: 'buffer'
 		};
-		conn = netcat.client(15000, ip_address, params);
+		conn = netcat.client(port, ip_address, params);
 		
 		try {
 			var interval = parser.parseExpression(this.config.interval);
