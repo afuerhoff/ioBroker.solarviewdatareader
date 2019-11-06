@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "solarviewdatareader",
-        "version": "0.0.4",
+        "version": "0.0.5",
         "news": {
             "0.0.1": {
                 "en": "initial release",
@@ -27,30 +27,42 @@
                 "pl": "Pierwsza wersja testowa",
                 "zh-cn": "第一个测试版"
             },
-			"0.0.3": {
-				"en": "selection of the inverters added",
-				"de": "Auswahl der Wechselrichter ergänzt",
-				"ru": "добавлен выбор инверторов",
-				"pt": "seleção dos inversores adicionados",
-				"nl": "selectie van de omvormers toegevoegd",
-				"fr": "sélection des inverseurs ajoutés",
-				"it": "selezione degli inverter aggiunti",
-				"es": "Selección de los inversores añadidos.",
-				"pl": "wybór dodanych falowników",
-				"zh-cn": "选择添加的逆变器"
-			},
-			"0.0.4": {
-				"en": "Objects, checksum calculation and telnet client changed",
-				"de": "Objekte, Prüfsummenberechnung und Telnet-Client geändert",
-				"ru": "Объекты, расчет контрольной суммы и клиент Telnet изменены",
-				"pt": "Objetos, cálculo de soma de verificação e cliente de telnet foram alterados",
-				"nl": "Objecten, checksumberekening en telnet-client gewijzigd",
-				"fr": "Objets, calcul de la somme de contrôle et client Telnet modifiés",
-				"it": "Oggetti, calcolo del checksum e client telnet modificati",
-				"es": "Objetos, cálculo de suma de comprobación y cliente telnet modificados.",
-				"pl": "Zmieniono obiekty, obliczenia sum kontrolnych i klienta telnet",
-				"zh-cn": "对象，校验和计算和telnet客户端已更改"
-		    }
+            "0.0.3": {
+                "en": "selection of the inverters added",
+                "de": "Auswahl der Wechselrichter ergänzt",
+                "ru": "добавлен выбор инверторов",
+                "pt": "seleção dos inversores adicionados",
+                "nl": "selectie van de omvormers toegevoegd",
+                "fr": "sélection des inverseurs ajoutés",
+                "it": "selezione degli inverter aggiunti",
+                "es": "Selección de los inversores añadidos.",
+                "pl": "wybór dodanych falowników",
+                "zh-cn": "选择添加的逆变器"
+            },
+            "0.0.4": {
+                "en": "Objects, checksum calculation and telnet client changed",
+                "de": "Objekte, Prüfsummenberechnung und Telnet-Client geändert",
+                "ru": "Объекты, расчет контрольной суммы и клиент Telnet изменены",
+                "pt": "Objetos, cálculo de soma de verificação e cliente de telnet foram alterados",
+                "nl": "Objecten, checksumberekening en telnet-client gewijzigd",
+                "fr": "Objets, calcul de la somme de contrôle et client Telnet modifiés",
+                "it": "Oggetti, calcolo del checksum e client telnet modificati",
+                "es": "Objetos, cálculo de suma de comprobación y cliente telnet modificados.",
+                "pl": "Zmieniono obiekty, obliczenia sum kontrolnych i klienta telnet",
+                "zh-cn": "对象，校验和计算和telnet客户端已更改"
+            },
+            "0.0.5": {
+                "en": "Code optimized, unload optimized, documentation added",
+                "de": "Code optimiert, Entladen optimiert, Dokumentation hinzugefügt",
+                "ru": "Оптимизирован код, оптимизирована выгрузка, добавлена документация",
+                "pt": "Código otimizado, descarregado otimizado, documentação adicionada",
+                "nl": "Code geoptimaliseerd, lossen geoptimaliseerd, documentatie toegevoegd",
+                "fr": "Code optimisé, déchargement optimisé, documentation ajoutée",
+                "it": "Codice ottimizzato, scarico ottimizzato, documentazione aggiunta",
+                "es": "Código optimizado, descarga optimizada, documentación agregada",
+                "pl": "Zoptymalizowany kod, zoptymalizowany rozładunek, dodano dokumentację",
+                "zh-cn": "优化代码，优化卸载，添加文档"
+            }
         },
         "title": "SolarViewDataReader",
         "titleLang": {

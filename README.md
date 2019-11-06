@@ -12,66 +12,44 @@
 
 ## solarviewdatareader adapter for ioBroker
 
-Get Data from SolarView
+The adapter reads the data from the Solarview data logger.
+Here you can find additional infos about Solarview: https://www.solarview.info/solarlogger.aspx
 
-## Developer manual
-This section is intended for the developer. It can be deleted later
 
-### Getting started
+## Configuration
 
-You are almost done, only a few steps left:
-1. Create a new repository on GitHub with the name `ioBroker.solarviewdatareader`
+### IP address, Port
+To get the data from the datalogger you must enter the ip-address and the port. The standard port is 15000. Please refer to the Solarview documentation.
 
-1. Push all files to the GitHub repo. The creator has already set up the local repository for you:  
-	```bash
-	git push origin master
-	```
-1. Head over to [main.js](main.js) and start programming!
+### D0 converter
+If you have a D0 converter connected to the Solarview data logger you can enable this option.
 
-### Scripts in `package.json`
-Several npm scripts are predefined for your convenience. You can run them using `npm run <scriptname>`
-| Script name | Description                                              |
-|-------------|----------------------------------------------------------|
-| `test:js`   | Executes the tests you defined in `*.test.js` files.     |
-| `test:package`    | Ensures your `package.json` and `io-package.json` are valid. |
-| `test` | Performs a minimal test run on package files and your tests. |
-| `coverage` | Generates code coverage using your test files. |
+### Inverter 1 to 4
+Every inverter you can enable separately. 
 
-### Writing tests
-When done right, testing code is invaluable, because it gives you the 
-confidence to change your code while knowing exactly if and when 
-something breaks. A good read on the topic of test-driven development 
-is https://hackernoon.com/introduction-to-test-driven-development-tdd-61a13bc92d92. 
-Although writing tests before the code might seem strange at first, but it has very 
-clear upsides.
+### Interval, interval start, interval end
+Here you can configure the time range and the interval.
 
-The template provides you with basic tests for the adapter startup and package files.
-It is recommended that you add your own tests into the mix.
-
-### Publishing the adapter
-See the documentation of [ioBroker.repositories](https://github.com/ioBroker/ioBroker.repositories#requirements-for-adapter-to-get-added-to-the-latest-repository).
-
-### Test the adapter manually on a local ioBroker installation
-In order to install the adapter locally without publishing, the following steps are recommended:
-1. Create a tarball from your dev directory:  
-	```bash
-	npm pack
-	```
-1. Upload the resulting file to your ioBroker host
-1. Install it locally (The paths are different on Windows):
-	```bash
-	cd /opt/iobroker
-	npm i /path/to/tarball.tgz
-	```
-
-For later updates, the above procedure is not necessary. Just do the following:
-1. Overwrite the changed files in the adapter directory (`/opt/iobroker/node_modules/iobroker.solarviewdatareader`)
-1. Execute `iobroker upload solarviewdatareader` on the ioBroker host
+### Set system variable CCU, System variable
+This ist a special feature for the homematic CCU. You can define a system variable in the CCU.
+In this system variable the actual PAC value is saved.
 
 ## Changelog
 
 ### 0.0.1
 * (Achim Fürhoff) initial release
+
+### 0.0.2
+* (Achim Fürhoff) test version
+
+### 0.0.3
+* (Achim Fürhoff) inverter selection added
+
+### 0.0.4
+* (Achim Fürhoff) Objects, Telnet client and checksum calculation changed
+
+### 0.0.5
+* (Achim Fürhoff) Code optimized, unload optimized, documentation added 
 
 ## License
 MIT License

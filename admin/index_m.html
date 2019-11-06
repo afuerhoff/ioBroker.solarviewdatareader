@@ -1,7 +1,8 @@
+<!DOCTYPE html>
 <html>
 
 <head>
-
+	<title>Solarview Data Reader</title>
 	<!-- Load ioBroker scripts and styles-->
 	<link rel="stylesheet" type="text/css" href="../../css/adapter.css" />
 	<link rel="stylesheet" type="text/css" href="../../lib/css/materialize.css">
@@ -95,12 +96,12 @@
 				  <span class="card-title black-text">SolarView Data Reader</span>
 					<div class="row">
 					  <div class="col s3 input-field tooltip">	
-						<input type="text" class="value" maxLength="15" id="ipaddress"/>
+						<input type="text" class="value" maxlength="15" id="ipaddress"/>
 						<label for="ipaddress" class="translate">IP-Address</label>
 						<span class="tooltiptext translate">Please enter the IP-Address from your SolarView data logger</span>
 					  </div>
 					  <div class="col s2 input-field tooltip">	
-						<input type="text" class="value" maxLength="5" id="port"/>
+						<input type="text" class="value" maxlength="5" id="port"/>
 						<label for="port" class="translate">Port</label>
 						<span class="tooltiptext translate">Please enter the port</span>
 					  </div>
@@ -134,7 +135,7 @@
 					</div>
 					<div class="row">
 						<div class="col s2 input-field tooltip">	
-							<input type="text" class="value" maxLength="15" id="interval"/>
+							<input type="text" class="value" maxlength="15" id="interval"/>
 							<label for="interval" class="translate">Interval</label>
 							<span class="tooltiptext translate">Please enter the interval (cron format)</span>
 						</div>
@@ -152,7 +153,7 @@
 					<div class="row">
 						<div class="col s4 input-field tooltip">	
 							<input type="checkbox" class="value" id="setCCU"/>
-							<label for="setCCU" class="translate">System variable CCU setzen</label>
+							<label for="setCCU" class="translate">Set system variable CCU</label>
 							<span class="tooltiptext translate">Please check if you want to set a system variable in the CCU</span>
 						</div>
 						<div class="col s4 input-field tooltip">	
