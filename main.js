@@ -9,7 +9,7 @@
 const utils = require('@iobroker/adapter-core');
 
 // Load your modules here, e.g.:
-const schedule = require('node-schedule');
+//const schedule = require('node-schedule');
 const netcat = require('node-netcat');
 const util = require('util');
 
@@ -218,11 +218,13 @@ class Solarviewdatareader extends utils.Adapter {
         };
         conn = netcat.client(port, ip_address, params);
 		
+        const cron = this.config.interval * 60000;
         try {
             getData();
-            jobSchedule = schedule.scheduleJob(this.config.interval, function(){
+            //jobSchedule = schedule.scheduleJob(this.config.interval, function(){
+            jobSchedule = setInterval(async function(){
                 getData();
-            });		  
+            }, cron);		  
         } catch (err) {
             this.log.error('schedule: ' + err.message);
         }			
