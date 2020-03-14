@@ -176,8 +176,8 @@ class Solarviewdatareader extends utils.Adapter {
             name: 'solarviewdatareader',
         });
         this.on('ready', this.onReady.bind(this));
-        this.on('objectChange', this.onObjectChange.bind(this));
-        this.on('stateChange', this.onStateChange.bind(this));
+        //this.on('objectChange', this.onObjectChange.bind(this));
+        //this.on('stateChange', this.onStateChange.bind(this));
         // this.on("message", this.onMessage.bind(this));
         this.on('unload', this.onUnload.bind(this));
         gthis = this;
@@ -380,7 +380,7 @@ class Solarviewdatareader extends utils.Adapter {
 	 * @param {string} id
 	 * @param {ioBroker.Object | null | undefined} obj
 	 */
-    onObjectChange(id, obj) {
+    /*onObjectChange(id, obj) {
         if (obj) {
             // The object was changed
             this.log.debug(`object ${id} changed: ${JSON.stringify(obj)}`);
@@ -388,14 +388,14 @@ class Solarviewdatareader extends utils.Adapter {
             // The object was deleted
             this.log.debug(`object ${id} deleted`);
         }
-    }
+    }*/
 
     /**
 	 * Is called if a subscribed state changes
 	 * @param {string} id
 	 * @param {ioBroker.State | null | undefined} state
 	 */
-    onStateChange(id, state) {
+    /*onStateChange(id, state) {
         if (state) {
             // The state was changed
             //this.log.info(`state ${id} changed: ${state.val} (ack = ${state.ack})`);
@@ -403,7 +403,7 @@ class Solarviewdatareader extends utils.Adapter {
             // The state was deleted
             //this.log.info(`state ${id} deleted`);
         }
-    }
+    }*/
 
     // /**
     //  * Some message was sent to this instance over message box. Used by email, pushover, text2speech, ...
