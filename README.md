@@ -1,6 +1,8 @@
 ![Logo](admin/solarviewdatareader.png)
 # ioBroker.solarviewdatareader
 
+![Number of Installations](http://iobroker.live/badges/solarviewdatareader-installed.svg) 
+![Number of Installations](http://iobroker.live/badges/solarviewdatareader-stable.svg)
 [![NPM version](http://img.shields.io/npm/v/iobroker.solarviewdatareader.svg)](https://www.npmjs.com/package/iobroker.solarviewdatareader)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.solarviewdatareader.svg)](https://www.npmjs.com/package/iobroker.solarviewdatareader)
 [![Dependency Status](https://img.shields.io/david/afuerhoff/iobroker.solarviewdatareader.svg)](https://david-dm.org/afuerhoff/iobroker.solarviewdatareader)
