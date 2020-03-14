@@ -36,20 +36,18 @@ In this system variable the actual PAC value is saved.
 
 ## Changelog
 
-### 0.0.1
-* (Achim Fürhoff) initial release
-
-### 0.0.2
-* (Achim Fürhoff) test version
-
-### 0.0.3
-* (Achim Fürhoff) inverter selection added
-
-### 0.0.4
-* (Achim Fürhoff) Objects, Telnet client and checksum calculation changed
-
+### 0.1.0
+* (Achim Fürhoff) optimizations for adding to latest repository
 ### 0.0.5
 * (Achim Fürhoff) Code optimized, unload optimized, documentation added 
+### 0.0.4
+* (Achim Fürhoff) Objects, Telnet client and checksum calculation changed
+### 0.0.3
+* (Achim Fürhoff) inverter selection added
+### 0.0.2
+* (Achim Fürhoff) test version
+### 0.0.1
+* (Achim Fürhoff) initial release
 
 ## License
 MIT License

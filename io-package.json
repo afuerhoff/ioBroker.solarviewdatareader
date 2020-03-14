@@ -1,43 +1,31 @@
 {
     "common": {
         "name": "solarviewdatareader",
-        "version": "0.0.5",
+        "version": "0.1.0",
         "news": {
-            "0.0.1": {
-                "en": "initial release",
-                "de": "Erstveröffentlichung",
-                "ru": "Начальная версия",
-                "pt": "lançamento inicial",
-                "nl": "Eerste uitgave",
-                "fr": "Première version",
-                "it": "Versione iniziale",
-                "es": "Versión inicial",
-                "pl": "Pierwsze wydanie",
-                "zh-cn": "首次出版"
-            },
-            "0.0.2": {
-                "en": "First test version",
-                "de": "Erste Testversion",
-                "ru": "Первая тестовая версия",
-                "pt": "Primeira versão de teste",
-                "nl": "Eerste testversie",
-                "fr": "Première version test",
-                "it": "Prima versione di prova",
-                "es": "Primera versión de prueba",
-                "pl": "Pierwsza wersja testowa",
-                "zh-cn": "第一个测试版"
-            },
-            "0.0.3": {
-                "en": "selection of the inverters added",
-                "de": "Auswahl der Wechselrichter ergänzt",
-                "ru": "добавлен выбор инверторов",
-                "pt": "seleção dos inversores adicionados",
-                "nl": "selectie van de omvormers toegevoegd",
-                "fr": "sélection des inverseurs ajoutés",
-                "it": "selezione degli inverter aggiunti",
-                "es": "Selección de los inversores añadidos.",
-                "pl": "wybór dodanych falowników",
-                "zh-cn": "选择添加的逆变器"
+            "0.1.0": {
+                "en": "optimizations for adding to latest repository",
+                "de": "Optimierungen zum Hinzufügen zum neuesten Repository",
+                "ru": "оптимизации для добавления в последний репозиторий",
+                "pt": "otimizações para adicionar ao repositório mais recente",
+                "nl": "optimalisaties voor het toevoegen aan de nieuwste repository",
+                "fr": "optimisations pour l'ajout au dernier référentiel",
+                "it": "ottimizzazioni per l'aggiunta all'ultimo repository",
+                "es": "optimizaciones para agregar al último repositorio",
+                "pl": "optymalizacje w celu dodania do najnowszego repozytorium",
+                "zh-cn": "添加到最新存储库的优化"
+            },            
+            "0.0.5": {
+                "en": "Code optimized, unload optimized, documentation added",
+                "de": "Code optimiert, Entladen optimiert, Dokumentation hinzugefügt",
+                "ru": "Оптимизирован код, оптимизирована выгрузка, добавлена документация",
+                "pt": "Código otimizado, descarregado otimizado, documentação adicionada",
+                "nl": "Code geoptimaliseerd, lossen geoptimaliseerd, documentatie toegevoegd",
+                "fr": "Code optimisé, déchargement optimisé, documentation ajoutée",
+                "it": "Codice ottimizzato, scarico ottimizzato, documentazione aggiunta",
+                "es": "Código optimizado, descarga optimizada, documentación agregada",
+                "pl": "Zoptymalizowany kod, zoptymalizowany rozładunek, dodano dokumentację",
+                "zh-cn": "优化代码，优化卸载，添加文档"
             },
             "0.0.4": {
                 "en": "Objects, checksum calculation and telnet client changed",
@@ -51,17 +39,41 @@
                 "pl": "Zmieniono obiekty, obliczenia sum kontrolnych i klienta telnet",
                 "zh-cn": "对象，校验和计算和telnet客户端已更改"
             },
-            "0.0.5": {
-                "en": "Code optimized, unload optimized, documentation added",
-                "de": "Code optimiert, Entladen optimiert, Dokumentation hinzugefügt",
-                "ru": "Оптимизирован код, оптимизирована выгрузка, добавлена документация",
-                "pt": "Código otimizado, descarregado otimizado, documentação adicionada",
-                "nl": "Code geoptimaliseerd, lossen geoptimaliseerd, documentatie toegevoegd",
-                "fr": "Code optimisé, déchargement optimisé, documentation ajoutée",
-                "it": "Codice ottimizzato, scarico ottimizzato, documentazione aggiunta",
-                "es": "Código optimizado, descarga optimizada, documentación agregada",
-                "pl": "Zoptymalizowany kod, zoptymalizowany rozładunek, dodano dokumentację",
-                "zh-cn": "优化代码，优化卸载，添加文档"
+            "0.0.3": {
+                "en": "selection of the inverters added",
+                "de": "Auswahl der Wechselrichter ergänzt",
+                "ru": "добавлен выбор инверторов",
+                "pt": "seleção dos inversores adicionados",
+                "nl": "selectie van de omvormers toegevoegd",
+                "fr": "sélection des inverseurs ajoutés",
+                "it": "selezione degli inverter aggiunti",
+                "es": "Selección de los inversores añadidos.",
+                "pl": "wybór dodanych falowników",
+                "zh-cn": "选择添加的逆变器"
+            },
+            "0.0.2": {
+                "en": "First test version",
+                "de": "Erste Testversion",
+                "ru": "Первая тестовая версия",
+                "pt": "Primeira versão de teste",
+                "nl": "Eerste testversie",
+                "fr": "Première version test",
+                "it": "Prima versione di prova",
+                "es": "Primera versión de prueba",
+                "pl": "Pierwsza wersja testowa",
+                "zh-cn": "第一个测试版"
+            },
+            "0.0.1": {
+                "en": "initial release",
+                "de": "Erstveröffentlichung",
+                "ru": "Начальная версия",
+                "pt": "lançamento inicial",
+                "nl": "Eerste uitgave",
+                "fr": "Première version",
+                "it": "Versione iniziale",
+                "es": "Versión inicial",
+                "pl": "Pierwsze wydanie",
+                "zh-cn": "首次出版"
             }
         },
         "title": "SolarViewDataReader",
