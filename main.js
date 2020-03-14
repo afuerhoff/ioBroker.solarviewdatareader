@@ -9,7 +9,6 @@
 const utils = require('@iobroker/adapter-core');
 
 // Load your modules here, e.g.:
-//const schedule = require('node-schedule');
 const netcat = require('node-netcat');
 const util = require('util');
 
@@ -364,7 +363,7 @@ class Solarviewdatareader extends utils.Adapter {
         try {
             this.log.info('cleaned everything up...');
             gthis.setState('info.connection', { val: false, ack: true });
-            jobSchedule.cancel();
+            clearInterval(jobSchedule);
             clearTimeout(to1);
             clearTimeout(to2);
             clearTimeout(to3);
