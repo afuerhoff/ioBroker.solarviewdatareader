@@ -18,6 +18,8 @@ let sv_data;
 let sv_cmd = '00*';
 let conn;
 let jobSchedule;
+//Timeout
+let to1, to2, to3, to4, to5, to6;
 
 // Nullen voranstellen - add Leading Zero
 function aLZ(n){
@@ -122,7 +124,7 @@ function getData() {
     const dstart = new Date(dnow.getFullYear() + '-' + (dnow.getMonth()+1) + '-' + dnow.getDate() + ' ' + starttime);
     const dend = new Date(dnow.getFullYear() + '-' + (dnow.getMonth()+1) + '-' + dnow.getDate() + ' ' + endtime);
     if (gthis.config.d0converter == true){ //Verbrauch wird immer eingelesen
-        setTimeout(function() {
+        to1 = setTimeout(function() {
             sv_cmd = '22*';
             conn.start();
         }, 20000);
@@ -131,31 +133,31 @@ function getData() {
         sv_cmd = '00*'; //pvig
         conn.start();
         if (gthis.config.d0converter == true){
-            setTimeout(function() {
+            to2 = setTimeout(function() {
                 sv_cmd = '21*';
                 conn.start();
             }, 10000);
         }
         if (gthis.config.pvi1 == true){
-            setTimeout(function() {
+            to3 = setTimeout(function() {
                 sv_cmd = '01*'; //pvi1 Wechselrichter 1
                 conn.start();
             }, 29000);
         }
         if (gthis.config.pvi2 == true){
-            setTimeout(function() {
+            to4 = setTimeout(function() {
                 sv_cmd = '02*';
                 conn.start();
             }, 38000);
         }
         if (gthis.config.pvi3 == true){
-            setTimeout(function() {
+            to5 = setTimeout(function() {
                 sv_cmd = '03*';
                 conn.start();
             }, 47000);
         }
         if (gthis.config.pvi4 == true){
-            setTimeout(function() {
+            to6 = setTimeout(function() {
                 sv_cmd = '04*';
                 conn.start();
             }, 56000);
@@ -361,6 +363,12 @@ class Solarviewdatareader extends utils.Adapter {
             this.log.info('cleaned everything up...');
             gthis.setState('info.connection', { val: false, ack: true });
             jobSchedule.cancel();
+            clearTimeout(to1);
+            clearTimeout(to2);
+            clearTimeout(to3);
+            clearTimeout(to4);
+            clearTimeout(to5);
+            clearTimeout(to6);
             callback();
         } catch (e) {
             callback();
