@@ -192,7 +192,7 @@ class Solarviewdatareader extends utils.Adapter {
         const ip_address = this.config.ipaddress;
         const port = this.config.port;
 
-        this.log.info('start solarview ' + ip_address + ':' + port + ' - ' + this.config.interval + ' (' + this.config.intervalstart + ' to ' + this.config.intervalend + ')');
+        this.log.info('start solarview ' + ip_address + ':' + port + ' - polling interval: ' + this.config.intervalVal + ' Min. (' + this.config.intervalstart + ' to ' + this.config.intervalend + ')');
         this.log.debug('d0 converter: ' + this.config.d0converter.toString());
 
         //Datenobjekte erzeugen
@@ -218,7 +218,7 @@ class Solarviewdatareader extends utils.Adapter {
         };
         conn = netcat.client(port, ip_address, params);
 		
-        const cron = this.config.interval * 60000;
+        const cron = this.config.intervalVal * 60000;
         try {
             getData();
             //jobSchedule = schedule.scheduleJob(this.config.interval, function(){

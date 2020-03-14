@@ -123,7 +123,7 @@
     "native": {
         "ipaddress": "",
         "port": "15000",
-        "interval": "* * * * *",
+        "intervalVal": 1,
         "intervalstart": "00:00:00",
         "intervalend": "00:00:00",
         "d0converter": false,
