@@ -1,8 +1,20 @@
 {
     "common": {
         "name": "solarviewdatareader",
-        "version": "0.1.0",
+        "version": "0.2.0",
         "news": {
+            "0.2.0": {
+                "en": "Error handling optimized, self consumption meter implemented",
+                "de": "Fehlerbehandlung optimiert, Eigenverbrauchsmesser implementiert",
+                "ru": "Оптимизирована обработка ошибок, реализован счетчик собственного потребления",
+                "pt": "Tratamento de erros otimizado, medidor de autoconsumo implementado",
+                "nl": "Foutafhandeling geoptimaliseerd, eigen verbruiksmeter geïmplementeerd",
+                "fr": "Gestion des erreurs optimisée, compteur d'autoconsommation mis en œuvre",
+                "it": "Gestione degli errori ottimizzata, misuratore di autoconsumo implementato",
+                "es": "Manejo de errores optimizado, medidor de autoconsumo implementado",
+                "pl": "Zoptymalizowana obsługa błędów, zaimplementowano miernik zużycia własnego",
+                "zh-cn": "优化错误处理，实施自耗电表"
+            },
             "0.1.0": {
                 "en": "optimizations for adding to latest repository",
                 "de": "Optimierungen zum Hinzufügen zum neuesten Repository",
@@ -14,7 +26,7 @@
                 "es": "optimizaciones para agregar al último repositorio",
                 "pl": "optymalizacje w celu dodania do najnowszego repozytorium",
                 "zh-cn": "添加到最新存储库的优化"
-            },            
+            },
             "0.0.5": {
                 "en": "Code optimized, unload optimized, documentation added",
                 "de": "Code optimiert, Entladen optimiert, Dokumentation hinzugefügt",
@@ -139,11 +151,15 @@
         "intervalstart": "00:00:00",
         "intervalend": "00:00:00",
         "d0converter": false,
-        "s0converter": false,
         "pvi1": false,
         "pvi2": false,
         "pvi3": false,
         "pvi4": false,
+        "scm1": false,
+        "scm2": false,
+        "scm3": false,
+        "scm4": false,
+        "scm5": false,
         "setCCU": false,
         "CCUSystemV": ""
     },

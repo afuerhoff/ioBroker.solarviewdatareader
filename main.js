@@ -18,7 +18,7 @@ let sv_cmd = '00*';
 let conn;
 let jobSchedule;
 //Timeout
-let to1, to2, to3, to4, to5, to6;
+let to1, to2, to3, to4, to5, to6, to7, to8, to9, to10, to11;
 
 // Nullen voranstellen - add Leading Zero
 function aLZ(n){
@@ -122,44 +122,88 @@ function getData() {
     const dnow = new Date();
     const dstart = new Date(dnow.getFullYear() + '-' + (dnow.getMonth()+1) + '-' + dnow.getDate() + ' ' + starttime);
     const dend = new Date(dnow.getFullYear() + '-' + (dnow.getMonth()+1) + '-' + dnow.getDate() + ' ' + endtime);
+    let timeoutCnt = 0;
     if (gthis.config.d0converter == true){ //Verbrauch wird immer eingelesen
+        timeoutCnt += 3000;
         to1 = setTimeout(function() {
             sv_cmd = '22*';
             conn.start();
-        }, 20000);
+        }, timeoutCnt);
     }
+
+    if (gthis.config.scm1 == true){
+        timeoutCnt += 3000;
+        to7 = setTimeout(function() {
+            sv_cmd = '10*'; //pvi1 Wechselrichter 1
+            conn.start();
+        }, timeoutCnt);
+    }
+    if (gthis.config.scm2 == true){
+        timeoutCnt += 3000;
+        to8 = setTimeout(function() {
+            sv_cmd = '11*';
+            conn.start();
+        }, timeoutCnt);
+    }
+    if (gthis.config.scm3 == true){
+        timeoutCnt += 3000;
+        to9 = setTimeout(function() {
+            sv_cmd = '12*';
+            conn.start();
+        }, timeoutCnt);
+    }
+    if (gthis.config.scm4 == true){
+        timeoutCnt += 3000;
+        to10 = setTimeout(function() {
+            sv_cmd = '13*';
+            conn.start();
+        }, timeoutCnt);
+    }
+    if (gthis.config.scm5 == true){
+        timeoutCnt += 3000;
+        to11 = setTimeout(function() {
+            sv_cmd = '14*';
+            conn.start();
+        }, timeoutCnt);
+    }
+
     if (dnow >= dstart && dnow <= dend ){ //Einspeisung und Leistungsdaten werden nur im Interval eingelesen
         sv_cmd = '00*'; //pvig
         conn.start();
         if (gthis.config.d0converter == true){
+            timeoutCnt += 3000;
             to2 = setTimeout(function() {
                 sv_cmd = '21*';
                 conn.start();
-            }, 10000);
+            }, timeoutCnt);
         }
         if (gthis.config.pvi1 == true){
+            timeoutCnt += 3000;
             to3 = setTimeout(function() {
                 sv_cmd = '01*'; //pvi1 Wechselrichter 1
                 conn.start();
-            }, 29000);
+            }, timeoutCnt);
         }
         if (gthis.config.pvi2 == true){
+            timeoutCnt += 3000;
             to4 = setTimeout(function() {
                 sv_cmd = '02*';
                 conn.start();
-            }, 38000);
+            }, timeoutCnt);
         }
         if (gthis.config.pvi3 == true){
+            timeoutCnt += 3000;
             to5 = setTimeout(function() {
                 sv_cmd = '03*';
                 conn.start();
-            }, 47000);
+            }, timeoutCnt);
         }
         if (gthis.config.pvi4 == true){
+            timeoutCnt += 3000;
             to6 = setTimeout(function() {
                 sv_cmd = '04*';
                 conn.start();
-            }, 56000);
+            }, timeoutCnt);
         }
     }
 }
@@ -190,6 +234,7 @@ class Solarviewdatareader extends utils.Adapter {
         // Konfiguration lesen und als Info ausgeben
         const ip_address = this.config.ipaddress;
         const port = this.config.port;
+        let chkCnt = 0;
 
         this.log.info('start solarview ' + ip_address + ':' + port + ' - polling interval: ' + this.config.intervalVal + ' Min. (' + this.config.intervalstart + ' to ' + this.config.intervalend + ')');
         this.log.debug('d0 converter: ' + this.config.d0converter.toString());
@@ -203,12 +248,20 @@ class Solarviewdatareader extends utils.Adapter {
         }
         for (let inv = 1; inv < 5; inv++) { // zusätzliche Datenobjekte für Wechselrichter
             if (eval('gthis.config.pvi' + inv) == true){
+                this.log.debug('photovoltaic inverter ' + inv + ' enabled');
                 await createSolarviewObjects(gthis, 'pvi' + inv, true);
+            }
+        }
+        //Self consumption meter 1-4
+        for (let inv = 1; inv < 5; inv++) { // zusätzliche Datenobjekte für Wechselrichter
+            if (eval('gthis.config.scm' + inv) == true){
+                this.log.debug('self consumption meter ' + inv + ' enabled');
+                await createSolarviewObjects(gthis, 'scm' + inv, false);
             }
         }
 
         // in this template all states changes inside the adapters namespace are subscribed
-        this.subscribeStates('*');
+        //this.subscribeStates('*');
 
         //netcat parameters
         const params = {
@@ -244,8 +297,10 @@ class Solarviewdatareader extends utils.Adapter {
                 sv_data = sv_data.split(',');   			// split von sv_data in array
                 const csum = calcChecksum(response.toString('ascii')); //Checksumme berechnen
                 let sv_prefix = '';
-                if (sv_data[sv_data.length-1].charCodeAt(0) == csum ){
-                    gthis.log.debug(sv_cmd + ': ' + response.toString('ascii') + ' -> chksum ok' );    
+                const buf = new Buffer(response.toString('ascii'));
+                if (buf[buf.length-3] == csum ){
+                    chkCnt = 0;
+                    gthis.log.debug(sv_cmd + ': ' + response.toString('ascii'));
                     switch(sv_data[0]){
                         case '00': sv_prefix = 'pvig.';
                             break;
@@ -256,6 +311,16 @@ class Solarviewdatareader extends utils.Adapter {
                         case '03': sv_prefix = 'pvi3.';
                             break;
                         case '04': sv_prefix = 'pvi4.';
+                            break;
+                        case '10': sv_prefix = 'scm1.';
+                            break;
+                        case '11': sv_prefix = 'scm2.';
+                            break;
+                        case '12': sv_prefix = 'scm3.';
+                            break;
+                        case '13': sv_prefix = 'scm4.';
+                            break;
+                        case '14': sv_prefix = 'scm5.';
                             break;
                         case '21': sv_prefix = 'd0supply.';
                             break;
@@ -339,7 +404,8 @@ class Solarviewdatareader extends utils.Adapter {
                         }
                     }
                 }else{
-                    gthis.log.warn('connect: checksum error');
+                    chkCnt += 1;
+                    if(chkCnt > 0) gthis.log.warn('connect: checksum not correct');
                 }
                 conn.send();
             }
@@ -370,6 +436,11 @@ class Solarviewdatareader extends utils.Adapter {
             clearTimeout(to4);
             clearTimeout(to5);
             clearTimeout(to6);
+            clearTimeout(to7);
+            clearTimeout(to8);
+            clearTimeout(to9);
+            clearTimeout(to10);
+            clearTimeout(to11);
             callback();
         } catch (e) {
             callback();
