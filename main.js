@@ -32,10 +32,20 @@ function calcChecksum(string) {
     const buf = new Buffer(string);
     // Calculate the modulo 256 checksum
     let sum = 0;
-    for (let i = 0, l = buf.length-4; i < l; i++) {
+    let ind = 0;
+    for (let i = 0, l = buf.length; i < l; i++) {
         sum = (sum + buf[i]) % 128;
+        if (buf[i] == 125) {
+            ind = i + 2;
+            break;
+        }
     }
-    return sum;
+    if (buf[ind] == sum){
+        return true;
+    }else{
+        return false;    
+    }
+    //return sum;
 }
 
 async function createGlobalObjects(that) {
@@ -297,8 +307,9 @@ class Solarviewdatareader extends utils.Adapter {
                 sv_data = sv_data.split(',');   			// split von sv_data in array
                 const csum = calcChecksum(response.toString('ascii')); //Checksumme berechnen
                 let sv_prefix = '';
-                const buf = new Buffer(response.toString('ascii'));
-                if (buf[buf.length-3] == csum ){
+                //const buf = new Buffer(response.toString('ascii'));
+                //if (buf[buf.length-3] == csum ){
+                if (csum == true){
                     chkCnt = 0;
                     gthis.log.debug(sv_cmd + ': ' + response.toString('ascii'));
                     switch(sv_data[0]){
@@ -405,7 +416,9 @@ class Solarviewdatareader extends utils.Adapter {
                     }
                 }else{
                     chkCnt += 1;
-                    if(chkCnt > 0) gthis.log.warn('connect: checksum not correct');
+                    if(chkCnt > 0) gthis.log.warn('connect: checksum not correct! <' + buf[buf.length-4]+buf[buf.length-3]+buf[buf.length-2]+buf[buf.length-1] + ' ' + csum + '>');
+                    gthis.log.warn(sv_cmd + ': ' + response.toString('ascii'));
+
                 }
                 conn.send();
             }
