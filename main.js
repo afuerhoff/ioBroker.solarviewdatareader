@@ -419,7 +419,7 @@ class Solarviewdatareader extends utils.Adapter {
                     }
                 }else{
                     chkCnt += 1;
-                    if(chkCnt > 0){
+                    if(chkCnt > 0 && csum.chksum != 0){
                         //const buf = csum.data;
                         const buf = new Buffer(response.toString('ascii'));
                         gthis.log.warn('checksum not correct! <' + buf[csum.ind-1] + ' ' + buf[csum.ind] + ' ' + buf[csum.ind+1] + ' ' + buf[csum.ind+2] + '   ' + csum.chksum + '>');
