@@ -29,23 +29,27 @@ function aLZ(n){
 }
 
 function calcChecksum(string) {
+    // Calculate the modulo checksum
     const buf = new Buffer(string);
-    // Calculate the modulo 256 checksum
     let sum = 0;
     let ind = 0;
+    const obj = {'result': false, 'chksum': 0, 'ind': 0, 'data': buf};
+
     for (let i = 0, l = buf.length; i < l; i++) {
         sum = (sum + buf[i]) % 128;
         if (buf[i] == 125) {
             ind = i + 2;
+            obj.ind = ind;
+            obj.chksum = sum;
             break;
         }
     }
     if (buf[ind] == sum){
-        return true;
+        obj.result = true;
     }else{
-        return false;    
+        obj.result = false;
     }
-    //return sum;
+    return obj;
 }
 
 async function createGlobalObjects(that) {
@@ -307,9 +311,8 @@ class Solarviewdatareader extends utils.Adapter {
                 sv_data = sv_data.split(',');   			// split von sv_data in array
                 const csum = calcChecksum(response.toString('ascii')); //Checksumme berechnen
                 let sv_prefix = '';
-                //const buf = new Buffer(response.toString('ascii'));
-                //if (buf[buf.length-3] == csum ){
-                if (csum == true){
+                const log = true;
+                if (csum.result == true && log == true){
                     chkCnt = 0;
                     gthis.log.debug(sv_cmd + ': ' + response.toString('ascii'));
                     switch(sv_data[0]){
@@ -416,9 +419,12 @@ class Solarviewdatareader extends utils.Adapter {
                     }
                 }else{
                     chkCnt += 1;
-                    if(chkCnt > 0) gthis.log.warn('connect: checksum not correct! <' + buf[buf.length-4]+buf[buf.length-3]+buf[buf.length-2]+buf[buf.length-1] + ' ' + csum + '>');
-                    gthis.log.warn(sv_cmd + ': ' + response.toString('ascii'));
-
+                    if(chkCnt > 0){
+                        //const buf = csum.data;
+                        const buf = new Buffer(response.toString('ascii'));
+                        gthis.log.warn('checksum not correct! <' + buf[csum.ind-1] + ' ' + buf[csum.ind] + ' ' + buf[csum.ind+1] + ' ' + buf[csum.ind+2] + '   ' + csum.chksum + '>');
+                        gthis.log.warn(sv_cmd + ': ' + csum.data);
+                    }
                 }
                 conn.send();
             }
