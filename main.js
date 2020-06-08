@@ -145,35 +145,35 @@ function getData() {
         }, timeoutCnt);
     }
 
-    if (gthis.config.scm1 == true){
+    if (gthis.config.scm0 == true){
         timeoutCnt += 3000;
         to7 = setTimeout(function() {
             sv_cmd = '10*'; //pvi1 Wechselrichter 1
             conn.start();
         }, timeoutCnt);
     }
-    if (gthis.config.scm2 == true){
+    if (gthis.config.scm1 == true){
         timeoutCnt += 3000;
         to8 = setTimeout(function() {
             sv_cmd = '11*';
             conn.start();
         }, timeoutCnt);
     }
-    if (gthis.config.scm3 == true){
+    if (gthis.config.scm2 == true){
         timeoutCnt += 3000;
         to9 = setTimeout(function() {
             sv_cmd = '12*';
             conn.start();
         }, timeoutCnt);
     }
-    if (gthis.config.scm4 == true){
+    if (gthis.config.scm3 == true){
         timeoutCnt += 3000;
         to10 = setTimeout(function() {
             sv_cmd = '13*';
             conn.start();
         }, timeoutCnt);
     }
-    if (gthis.config.scm5 == true){
+    if (gthis.config.scm4 == true){
         timeoutCnt += 3000;
         to11 = setTimeout(function() {
             sv_cmd = '14*';
@@ -266,8 +266,8 @@ class Solarviewdatareader extends utils.Adapter {
                 await createSolarviewObjects(gthis, 'pvi' + inv, true);
             }
         }
-        //Self consumption meter 1-4
-        for (let inv = 1; inv < 5; inv++) { // zusätzliche Datenobjekte für Wechselrichter
+        //Self consumption meter 0, 1-4
+        for (let inv = 0; inv < 5; inv++) { // zusätzliche Datenobjekte für Wechselrichter
             if (eval('gthis.config.scm' + inv) == true){
                 this.log.debug('self consumption meter ' + inv + ' enabled');
                 await createSolarviewObjects(gthis, 'scm' + inv, false);
@@ -326,15 +326,15 @@ class Solarviewdatareader extends utils.Adapter {
                             break;
                         case '04': sv_prefix = 'pvi4.';
                             break;
-                        case '10': sv_prefix = 'scm1.';
+                        case '10': sv_prefix = 'scm0.';
                             break;
-                        case '11': sv_prefix = 'scm2.';
+                        case '11': sv_prefix = 'scm1.';
                             break;
-                        case '12': sv_prefix = 'scm3.';
+                        case '12': sv_prefix = 'scm2.';
                             break;
-                        case '13': sv_prefix = 'scm4.';
+                        case '13': sv_prefix = 'scm3.';
                             break;
-                        case '14': sv_prefix = 'scm5.';
+                        case '14': sv_prefix = 'scm4.';
                             break;
                         case '21': sv_prefix = 'd0supply.';
                             break;

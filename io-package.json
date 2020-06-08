@@ -1,8 +1,20 @@
 {
     "common": {
         "name": "solarviewdatareader",
-        "version": "0.2.0",
+        "version": "0.2.1",
         "news": {
+            "0.2.1":{
+                "en": "self consumption meter optimized",
+                "de": "Selbstverbrauchsmesser optimiert",
+                "ru": "счетчик собственного потребления оптимизирован",
+                "pt": "medidor de autoconsumo otimizado",
+                "nl": "eigen verbruiksmeter geoptimaliseerd",
+                "fr": "compteur d'autoconsommation optimisé",
+                "it": "misuratore di autoconsumo ottimizzato",
+                "es": "medidor de autoconsumo optimizado",
+                "pl": "miernik zużycia własnego zoptymalizowany",
+                "zh-cn": "自耗表优化"
+            },
             "0.2.0": {
                 "en": "Error handling optimized, self consumption meter implemented",
                 "de": "Fehlerbehandlung optimiert, Eigenverbrauchsmesser implementiert",
