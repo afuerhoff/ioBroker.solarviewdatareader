@@ -68,6 +68,7 @@ In this system variable the actual PAC value is saved.
 ## License
 MIT License
 
+Copyright (c) 2021 Achim Fürhoff <achim.fuerhoff@outlook.de>
 Copyright (c) 2020 Achim Fürhoff <achim.fuerhoff@outlook.de>
 Copyright (c) 2019 Achim Fürhoff
 
