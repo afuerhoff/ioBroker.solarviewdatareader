@@ -41,23 +41,29 @@ This ist a special feature for the homematic CCU. You can define a system variab
 In this system variable the actual PAC value is saved.
 
 ## Changelog
+<!--
+	Placeholder for the next version (at the beginning of the line):
+	### __WORK IN PROGRESS__
+-->
+### __WORK IN PROGRESS__
+* (afuerhoff) dependencies updated
 
 ### 0.2.1
-* (Achim Fürhoff) self consumption meter optimized
+* (afuerhoff) self consumption meter optimized
 ### 0.2.0
-* (Achim Fürhoff) Error handling optimized, self consumption meter implemented
+* (afuerhoff) Error handling optimized, self consumption meter implemented
 ### 0.1.0
-* (Achim Fürhoff) optimizations for adding to latest repository
+* (afuerhoff) optimizations for adding to latest repository
 ### 0.0.5
-* (Achim Fürhoff) Code optimized, unload optimized, documentation added 
+* (afuerhoff) Code optimized, unload optimized, documentation added 
 ### 0.0.4
-* (Achim Fürhoff) Objects, Telnet client and checksum calculation changed
+* (afuerhoff) Objects, Telnet client and checksum calculation changed
 ### 0.0.3
-* (Achim Fürhoff) inverter selection added
+* (afuerhoff) inverter selection added
 ### 0.0.2
-* (Achim Fürhoff) test version
+* (afuerhoff) test version
 ### 0.0.1
-* (Achim Fürhoff) initial release
+* (afuerhoff) initial release
 
 ## License
 MIT License
