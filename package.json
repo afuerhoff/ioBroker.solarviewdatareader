@@ -18,29 +18,29 @@
     "url": "https://github.com/afuerhoff/ioBroker.solarviewdatareader"
   },
   "dependencies": {
-    "@iobroker/adapter-core": "^2.2.1",
+    "@iobroker/adapter-core": "^2.4.0",
     "node-netcat": "1.4.8",
-    "util": "^0.12.2"
+    "util": "^0.12.3"
   },
   "devDependencies": {
-    "@iobroker/testing": "^2.1.0",
-    "@types/chai": "^4.2.11",
-    "@types/chai-as-promised": "^7.1.2",
-    "@types/gulp": "^4.0.6",
-    "@types/mocha": "^7.0.2",
-    "@types/node": "^13.9.1",
+    "@iobroker/testing": "^2.4.4",
+    "@types/chai": "^4.2.16",
+    "@types/chai-as-promised": "^7.1.3",
+    "@types/gulp": "^4.0.8",
+    "@types/mocha": "^8.2.2",
+    "@types/node": "^14.14.41",
     "@types/proxyquire": "^1.3.28",
-    "@types/sinon": "^7.5.2",
-    "@types/sinon-chai": "^3.2.3",
-    "axios": "^0.19.2",
-    "chai": "^4.2.0",
+    "@types/sinon": "^10.0.0",
+    "@types/sinon-chai": "^3.2.5",
+    "axios": "^0.21.1",
+    "chai": "^4.3.4",
     "chai-as-promised": "^7.1.1",
-    "eslint": "^6.8.0",
+    "eslint": "^7.25.0",
     "gulp": "^4.0.2",
-    "mocha": "^7.1.0",
+    "mocha": "^8.3.2",
     "proxyquire": "^2.1.3",
-    "sinon": "^9.0.1",
-    "sinon-chai": "^3.5.0"
+    "sinon": "^10.0.0",
+    "sinon-chai": "^3.6.0"
   },
   "main": "main.js",
   "scripts": {
