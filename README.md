@@ -21,24 +21,44 @@ Here you can find additional infos about Solarview: https://www.solarview.info/s
 ## Configuration
 
 ### IP address, Port
-To get the data from the datalogger you must enter the ip-address and the port. The standard port is 15000. Please refer to the Solarview documentation.
+To get the data from the datalogger you must enter the ip-address and the port from your solarview TCP server. 
+The standard port is 15000. Please refer to the Solarview documentation https://www.solarview.info/solarlogger.aspx.
 
 ### D0 converter
 If you have a D0 converter connected to the Solarview data logger you can enable this option.
+For questions please refer to the Solarview documentation.
 
 ### Self consumption meter sum and 1 to 4
 If you have a S0 meter, you can enable this option. 
 You can have up to 4 self consumption meters and the sum from all meters.
+For questions please refer to the Solarview documentation.
 
 ### Inverter 1 to 4
-Every inverter you can enable separately. 
+Every inverter you can enable separately.
+For questions please refer to the Solarview documentation.
 
 ### Interval, interval start, interval end
-Here you can configure the time range and the interval.
+Here you can configure the time range and the interval. The time range for 24h is 00:00 to 23:59.
+Not 00:00 to 00:00.
 
 ### Set system variable CCU, System variable
 This ist a special feature for the homematic CCU. You can define a system variable in the CCU.
 In this system variable the actual PAC value is saved.
+You have to fill in the ioBroker state for that system variable -> **e.g. "hm-rega.0.12345"**
+
+### Created states
+#### pvig, pvi1..4, d0supply, d0consumption
+daily = daily yield (kWh)
+montly = monthly yield (kWh)
+yearly = yearly yield (kWh)
+total = total yield (kWh)
+current = generator power in W
+UDC, UDCB, UDCC, UDCD = generator voltages in volt per MPP-Tracker
+IDC, IDCB, IDCC, IDCD = generator current in ampere per MPP-Tracker
+UL1, IL1 = mains voltage, mains power phase 1
+UL2, IL2 = mains voltage, mains power phase 2
+UL3, IL3 = mains voltage, mains power phase 3
+TKK= Temperature inverter
 
 ## Changelog
 <!--
@@ -47,6 +67,7 @@ In this system variable the actual PAC value is saved.
 -->
 ### __WORK IN PROGRESS__
 * (afuerhoff) dependencies updated
+* (afuerhoff) documentation changed
 
 ### 0.2.1
 * (afuerhoff) self consumption meter optimized
