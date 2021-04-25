@@ -134,7 +134,8 @@ async function createSolarviewObjects(that, device, additional) {
 
 function getData() {
     const starttime = gthis.config.intervalstart;
-    const endtime   = gthis.config.intervalend;
+    let endtime   = gthis.config.intervalend;
+    if (endtime == '00:00') endtime = '23:59';
     const dnow = new Date();
     const dstart = new Date(dnow.getFullYear() + '-' + (dnow.getMonth()+1) + '-' + dnow.getDate() + ' ' + starttime);
     const dend = new Date(dnow.getFullYear() + '-' + (dnow.getMonth()+1) + '-' + dnow.getDate() + ' ' + endtime);

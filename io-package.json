@@ -3,7 +3,7 @@
         "name": "solarviewdatareader",
         "version": "0.2.1",
         "news": {
-            "0.2.1":{
+            "0.2.1": {
                 "en": "self consumption meter optimized",
                 "de": "Selbstverbrauchsmesser optimiert",
                 "ru": "счетчик собственного потребления оптимизирован",
@@ -160,8 +160,8 @@
         "ipaddress": "",
         "port": "15000",
         "intervalVal": 1,
-        "intervalstart": "00:00:00",
-        "intervalend": "00:00:00",
+        "intervalstart": "00:00",
+        "intervalend": "23:59",
         "d0converter": false,
         "pvi1": false,
         "pvi2": false,
@@ -173,7 +173,7 @@
         "scm4": false,
         "scm5": false,
         "setCCU": false,
-        "CCUSystemV": ""
+        "CCUSystemV": "hm-rega.0.xxxxx"
     },
     "objects": [],
     "instanceObjects": []
