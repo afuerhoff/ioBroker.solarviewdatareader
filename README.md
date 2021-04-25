@@ -68,6 +68,8 @@ TKK= Temperature inverter
 ### __WORK IN PROGRESS__
 * (afuerhoff) dependencies updated
 * (afuerhoff) documentation changed
+* (afuerhoff) minor changes
+* (afuerhoff) due to stable state version set to 1.0.0
 
 ### 0.2.1
 * (afuerhoff) self consumption meter optimized
