@@ -59,7 +59,7 @@ async function createGlobalObjects(that) {
         //id, type, name, type, role, def, rd, wr, desc 
         //common.type (optional - (default is mixed==any type) (possible values: number, string, boolean, array, object, mixed, file)
         ['info.connection', 'state', 'connection', 'boolean', 'indicator', false, true, false, 'Solarview connection state'],
-        ['info.lastUpdate', 'state', 'lastUpdate', 'string', 'date', new Date('1900-01-01T00:00:00'), true, false, 'Last connection date/time'],
+        ['info.lastUpdate', 'state', 'lastUpdate', 'string', 'date', (new Date('1900-01-01T00:00:00')).toString(), true, false, 'Last connection date/time'],
     ];
 
     for(let i=0; i < opt.length; i++) { 
