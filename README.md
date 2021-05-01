@@ -65,6 +65,9 @@ TKK= Temperature inverter
 	Placeholder for the next version (at the beginning of the line):
 	### __WORK IN PROGRESS__
 -->
+### __WORK IN PROGRESS__
+* (afuerhoff) changes due to js-controller 3.3.x
+
 ### 1.0.0 (2021-04-25)
 * (afuerhoff) dependencies updated
 * (afuerhoff) documentation changed
