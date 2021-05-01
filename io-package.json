@@ -1,8 +1,20 @@
 {
     "common": {
         "name": "solarviewdatareader",
-        "version": "1.0.0",
+        "version": "1.0.1",
         "news": {
+            "1.0.1": {
+                "en": "changes due to js-controller 3.3.x",
+                "de": "Änderungen aufgrund von js-controller 3.3.x.",
+                "ru": "изменения из-за js-controller 3.3.x",
+                "pt": "mudanças devido ao js-controller 3.3.x",
+                "nl": "veranderingen als gevolg van js-controller 3.3.x",
+                "fr": "changements dus à js-controller 3.3.x",
+                "it": "modifiche dovute a js-controller 3.3.x",
+                "es": "cambios debido a js-controller 3.3.x",
+                "pl": "zmiany spowodowane przez js-controller 3.3.x",
+                "zh-cn": "由于js-controller 3.3.x而发生的更改"
+            },
             "1.0.0": {
                 "en": "dependencies updated\ndocumentation changed\nminor changes\ndue to stable state version set to 1.0.0",
                 "de": "Abhängigkeiten aktualisiert\nDokumentation geändert\nkleinere Änderungen\naufgrund der stabilen Statusversion auf 1.0.0 eingestellt",
