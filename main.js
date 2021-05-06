@@ -9,8 +9,7 @@
 const utils = require('@iobroker/adapter-core');
 
 // Load your modules here, e.g.:
-const netcat = require('node-netcat');
-const util = require('util');
+const net = require('net');
 
 let gthis; 
 let sv_data;
@@ -53,12 +52,10 @@ function calcChecksum(string) {
 }
 
 async function createGlobalObjects(that) {
-    const getStateP = util.promisify(that.getState);
-
     const opt = [
         //id, type, name, type, role, def, rd, wr, desc 
         //common.type (optional - (default is mixed==any type) (possible values: number, string, boolean, array, object, mixed, file)
-        ['info.connection', 'state', 'connection', 'boolean', 'indicator', false, true, false, 'Solarview connection state'],
+        ['info.connection', 'state', 'connection', 'boolean', 'indicator.connected', false, true, false, 'Solarview connection state'],
         ['info.lastUpdate', 'state', 'lastUpdate', 'string', 'date', (new Date('1900-01-01T00:00:00')).toString(), true, false, 'Last connection date/time'],
     ];
 
@@ -76,13 +73,11 @@ async function createGlobalObjects(that) {
             },
             native: {},
         });
-        if (await getStateP(opt[i][0]) == null) that.setState(opt[i][0], opt[i][5], true); //set default
+        if (await that.getStateAsync(opt[i][0]) == null) that.setState(opt[i][0], opt[i][5], true); //set default
     }
 }
 
 async function createSolarviewObjects(that, device, additional) {
-    const getStateP = util.promisify(that.getState);
-
     let opt = [
         //id, type, name, type, role, def, rd, wr, desc 
         //common.type (optional - (default is mixed==any type) (possible values: number, string, boolean, array, object, mixed, file)
@@ -128,11 +123,11 @@ async function createSolarviewObjects(that, device, additional) {
             },
             native: {},
         });
-        if (await getStateP(opt[i][0]) == null) that.setState(opt[i][0], opt[i][5], true); //set default
+        if (await that.getStateAsync(opt[i][0]) == null) that.setState(opt[i][0], opt[i][5], true); //set default
     }
 }
 
-function getData() {
+async function getData(port, ip_address) {
     const starttime = gthis.config.intervalstart;
     let endtime   = gthis.config.intervalend;
     if (endtime == '00:00') endtime = '23:59';
@@ -144,7 +139,10 @@ function getData() {
         timeoutCnt += 3000;
         to1 = setTimeout(function() {
             sv_cmd = '22*';
-            conn.start();
+            conn.connect(port, ip_address, function() {
+                conn.write('22*');
+                conn.end();
+            });
         }, timeoutCnt);
     }
 
@@ -152,74 +150,107 @@ function getData() {
         timeoutCnt += 3000;
         to7 = setTimeout(function() {
             sv_cmd = '10*'; //pvi1 Wechselrichter 1
-            conn.start();
+            conn.connect(port, ip_address, function() {
+                conn.write(sv_cmd);
+                conn.end();
+            });
         }, timeoutCnt);
     }
     if (gthis.config.scm1 == true){
         timeoutCnt += 3000;
         to8 = setTimeout(function() {
             sv_cmd = '11*';
-            conn.start();
+            conn.connect(port, ip_address, function() {
+                conn.write(sv_cmd);
+                conn.end();
+            });
         }, timeoutCnt);
     }
     if (gthis.config.scm2 == true){
         timeoutCnt += 3000;
         to9 = setTimeout(function() {
             sv_cmd = '12*';
-            conn.start();
+            conn.connect(port, ip_address, function() {
+                conn.write(sv_cmd);
+                conn.end();
+            });
         }, timeoutCnt);
     }
     if (gthis.config.scm3 == true){
         timeoutCnt += 3000;
         to10 = setTimeout(function() {
             sv_cmd = '13*';
-            conn.start();
+            conn.connect(port, ip_address, function() {
+                conn.write(sv_cmd);
+                conn.end();
+            });
         }, timeoutCnt);
     }
     if (gthis.config.scm4 == true){
         timeoutCnt += 3000;
         to11 = setTimeout(function() {
             sv_cmd = '14*';
-            conn.start();
+            conn.connect(port, ip_address, function() {
+                conn.write(sv_cmd);
+                conn.end();
+            });
         }, timeoutCnt);
     }
 
     if (dnow >= dstart && dnow <= dend ){ //Einspeisung und Leistungsdaten werden nur im Interval eingelesen
         sv_cmd = '00*'; //pvig
-        conn.start();
+        conn.connect(port, ip_address, function() {
+            conn.write(sv_cmd);
+            conn.end();
+        });
         if (gthis.config.d0converter == true){
             timeoutCnt += 3000;
             to2 = setTimeout(function() {
                 sv_cmd = '21*';
-                conn.start();
+                conn.connect(port, ip_address, function() {
+                    conn.write(sv_cmd);
+                    conn.end();
+                });
             }, timeoutCnt);
         }
         if (gthis.config.pvi1 == true){
             timeoutCnt += 3000;
             to3 = setTimeout(function() {
                 sv_cmd = '01*'; //pvi1 Wechselrichter 1
-                conn.start();
+                conn.connect(port, ip_address, function() {
+                    conn.write(sv_cmd);
+                    conn.end();
+                });
             }, timeoutCnt);
         }
         if (gthis.config.pvi2 == true){
             timeoutCnt += 3000;
             to4 = setTimeout(function() {
                 sv_cmd = '02*';
-                conn.start();
+                conn.connect(port, ip_address, function() {
+                    conn.write(sv_cmd);
+                    conn.end();
+                });
             }, timeoutCnt);
         }
         if (gthis.config.pvi3 == true){
             timeoutCnt += 3000;
             to5 = setTimeout(function() {
                 sv_cmd = '03*';
-                conn.start();
+                conn.connect(port, ip_address, function() {
+                    conn.write(sv_cmd);
+                    conn.end();
+                });
             }, timeoutCnt);
         }
         if (gthis.config.pvi4 == true){
             timeoutCnt += 3000;
             to6 = setTimeout(function() {
                 sv_cmd = '04*';
-                conn.start();
+                conn.connect(port, ip_address, function() {
+                    conn.write(sv_cmd);
+                    conn.end();
+                });
             }, timeoutCnt);
         }
     }
@@ -280,27 +311,17 @@ class Solarviewdatareader extends utils.Adapter {
         // in this template all states changes inside the adapters namespace are subscribed
         //this.subscribeStates('*');
 
-        //netcat parameters
-        const params = {
-            timeout: 3000,
-            read_encoding: 'buffer'
-        };
-        conn = netcat.client(port, ip_address, params);
+        conn = new net.Socket();
 		
         const cron = this.config.intervalVal * 60000;
         try {
-            getData();
-            //jobSchedule = schedule.scheduleJob(this.config.interval, function(){
+            getData(port, ip_address);
             jobSchedule = setInterval(async function(){
-                getData();
+                getData(port, ip_address);
             }, cron);		  
         } catch (err) {
             this.log.error('schedule: ' + err.message);
         }			
-		
-        conn.on('open', function(){
-            conn.send(sv_cmd);
-        });
 		
         conn.on('data', async function(response) {
             try {
@@ -439,7 +460,7 @@ class Solarviewdatareader extends utils.Adapter {
                             gthis.log.warn(sv_cmd + ': ' + csum.data);
                         }
                     }
-                    conn.send();
+                    //conn.send();
                 }   
             } catch (error) {
                 gthis.log.error('on data: ' + error.message);
@@ -476,6 +497,7 @@ class Solarviewdatareader extends utils.Adapter {
             clearTimeout(to9);
             clearTimeout(to10);
             clearTimeout(to11);
+            conn.destroy();
             callback();
         } catch (e) {
             callback();
