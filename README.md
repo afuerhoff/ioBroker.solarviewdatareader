@@ -65,7 +65,7 @@ TKK= Temperature inverter
 	Placeholder for the next version (at the beginning of the line):
 	### __WORK IN PROGRESS__
 -->
-### __WORK IN PROGRESS__
+### 1.0.2 (2021-05-07)
 * (afuerhoff) node.js 14 and 16 compatibilty
 * (afuerhoff) dependencies updated
 
@@ -82,8 +82,6 @@ TKK= Temperature inverter
 * (afuerhoff) self consumption meter optimized
 ### 0.2.0
 * (afuerhoff) Error handling optimized, self consumption meter implemented
-### 0.1.0
-* (afuerhoff) optimizations for adding to latest repository
 ## License
 MIT License
 

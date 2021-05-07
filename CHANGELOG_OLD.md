@@ -1,4 +1,6 @@
 # Older changes
+## 0.1.0
+* (afuerhoff) optimizations for adding to latest repository
 ## 0.0.5
 * (afuerhoff) Code optimized, unload optimized, documentation added 
 ## 0.0.4

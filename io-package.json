@@ -1,8 +1,20 @@
 {
     "common": {
         "name": "solarviewdatareader",
-        "version": "1.0.1",
+        "version": "1.0.2",
         "news": {
+            "1.0.2": {
+                "en": "node.js 14 and 16 compatibilty\ndependencies updated",
+                "de": "node.js 14 und 16 kompatibel\nAbhängigkeiten aktualisiert",
+                "ru": "Совместимость node.js 14 и 16\nзависимости обновлены",
+                "pt": "compatibilidade node.js 14 e 16\ndependências atualizadas",
+                "nl": "node.js 14 en 16 compatibiliteit\nafhankelijkheden bijgewerkt",
+                "fr": "compatibilité node.js 14 et 16\ndépendances mises à jour",
+                "it": "Node.js 14 e 16 compatibilità\ndipendenze aggiornate",
+                "es": "Compatibilidad de node.js 14 y 16\ndependencias actualizadas",
+                "pl": "node.js 14 i 16 kompatybilność\nzaktualizowane zależności",
+                "zh-cn": "node.js 14和16的兼容性\n依赖关系已更新"
+            },
             "1.0.1": {
                 "en": "changes due to js-controller 3.3.x",
                 "de": "Änderungen aufgrund von js-controller 3.3.x.",
