@@ -16,6 +16,4 @@ admin/i18n/*/translations.json
 scripts
 
 iob_npm.done
-package-lock.json
-package-lock.json*
 .vscode
