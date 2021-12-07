@@ -65,6 +65,9 @@ TKK= Temperature inverter
 	Placeholder for the next version (at the beginning of the line):
 	### __WORK IN PROGRESS__
 -->
+### __WORK IN PROGRESS__
+* (afuerhoff) dependencies updated
+
 ### 1.0.2 (2021-05-07)
 * (afuerhoff) node.js 14 and 16 compatibilty
 * (afuerhoff) dependencies updated
