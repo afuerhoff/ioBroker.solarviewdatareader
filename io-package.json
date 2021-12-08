@@ -1,216 +1,168 @@
 {
-    "common": {
-        "name": "solarviewdatareader",
-        "version": "1.0.2",
-        "news": {
-            "1.0.2": {
-                "en": "node.js 14 and 16 compatibilty\ndependencies updated",
-                "de": "node.js 14 und 16 kompatibel\nAbhängigkeiten aktualisiert",
-                "ru": "Совместимость node.js 14 и 16\nзависимости обновлены",
-                "pt": "compatibilidade node.js 14 e 16\ndependências atualizadas",
-                "nl": "node.js 14 en 16 compatibiliteit\nafhankelijkheden bijgewerkt",
-                "fr": "compatibilité node.js 14 et 16\ndépendances mises à jour",
-                "it": "Node.js 14 e 16 compatibilità\ndipendenze aggiornate",
-                "es": "Compatibilidad de node.js 14 y 16\ndependencias actualizadas",
-                "pl": "node.js 14 i 16 kompatybilność\nzaktualizowane zależności",
-                "zh-cn": "node.js 14和16的兼容性\n依赖关系已更新"
-            },
-            "1.0.1": {
-                "en": "changes due to js-controller 3.3.x",
-                "de": "Änderungen aufgrund von js-controller 3.3.x.",
-                "ru": "изменения из-за js-controller 3.3.x",
-                "pt": "mudanças devido ao js-controller 3.3.x",
-                "nl": "veranderingen als gevolg van js-controller 3.3.x",
-                "fr": "changements dus à js-controller 3.3.x",
-                "it": "modifiche dovute a js-controller 3.3.x",
-                "es": "cambios debido a js-controller 3.3.x",
-                "pl": "zmiany spowodowane przez js-controller 3.3.x",
-                "zh-cn": "由于js-controller 3.3.x而发生的更改"
-            },
-            "1.0.0": {
-                "en": "dependencies updated\ndocumentation changed\nminor changes\ndue to stable state version set to 1.0.0",
-                "de": "Abhängigkeiten aktualisiert\nDokumentation geändert\nkleinere Änderungen\naufgrund der stabilen Statusversion auf 1.0.0 eingestellt",
-                "ru": "зависимости обновлены\nдокументация изменена\nнебольшие изменения\nиз-за стабильной версии 1.0.0",
-                "pt": "dependências atualizadas\ndocumentação alterada\npequenas mudanças\ndevido à versão de estado estável definida como 1.0.0",
-                "nl": "afhankelijkheden bijgewerkt\ndocumentatie gewijzigd\nkleine veranderingen\nvanwege stabiele statusversie ingesteld op 1.0.0",
-                "fr": "dépendances mises à jour\ndocumentation modifiée\ndes changements mineurs\nen raison de la version de l'état stable définie sur 1.0.0",
-                "it": "dipendenze aggiornate\nla documentazione è cambiata\nmodifiche minori\na causa della versione dello stato stabile impostata su 1.0.0",
-                "es": "dependencias actualizadas\ndocumentación cambiada\ncambios menores\ndebido a la versión de estado estable establecida en 1.0.0",
-                "pl": "zaktualizowane zależności\ndokumentacja uległa zmianie\ndrobne zmiany\nze względu na stabilną wersję stanu ustawioną na 1.0.0",
-                "zh-cn": "依赖关系已更新\n文档已更改\n细微的变化\n由于稳定状态版本设置为1.0.0"
-            },
-            "0.2.1": {
-                "en": "self consumption meter optimized",
-                "de": "Selbstverbrauchsmesser optimiert",
-                "ru": "счетчик собственного потребления оптимизирован",
-                "pt": "medidor de autoconsumo otimizado",
-                "nl": "eigen verbruiksmeter geoptimaliseerd",
-                "fr": "compteur d'autoconsommation optimisé",
-                "it": "misuratore di autoconsumo ottimizzato",
-                "es": "medidor de autoconsumo optimizado",
-                "pl": "miernik zużycia własnego zoptymalizowany",
-                "zh-cn": "自耗表优化"
-            },
-            "0.2.0": {
-                "en": "Error handling optimized, self consumption meter implemented",
-                "de": "Fehlerbehandlung optimiert, Eigenverbrauchsmesser implementiert",
-                "ru": "Оптимизирована обработка ошибок, реализован счетчик собственного потребления",
-                "pt": "Tratamento de erros otimizado, medidor de autoconsumo implementado",
-                "nl": "Foutafhandeling geoptimaliseerd, eigen verbruiksmeter geïmplementeerd",
-                "fr": "Gestion des erreurs optimisée, compteur d'autoconsommation mis en œuvre",
-                "it": "Gestione degli errori ottimizzata, misuratore di autoconsumo implementato",
-                "es": "Manejo de errores optimizado, medidor de autoconsumo implementado",
-                "pl": "Zoptymalizowana obsługa błędów, zaimplementowano miernik zużycia własnego",
-                "zh-cn": "优化错误处理，实施自耗电表"
-            },
-            "0.1.0": {
-                "en": "optimizations for adding to latest repository",
-                "de": "Optimierungen zum Hinzufügen zum neuesten Repository",
-                "ru": "оптимизации для добавления в последний репозиторий",
-                "pt": "otimizações para adicionar ao repositório mais recente",
-                "nl": "optimalisaties voor het toevoegen aan de nieuwste repository",
-                "fr": "optimisations pour l'ajout au dernier référentiel",
-                "it": "ottimizzazioni per l'aggiunta all'ultimo repository",
-                "es": "optimizaciones para agregar al último repositorio",
-                "pl": "optymalizacje w celu dodania do najnowszego repozytorium",
-                "zh-cn": "添加到最新存储库的优化"
-            },
-            "0.0.5": {
-                "en": "Code optimized, unload optimized, documentation added",
-                "de": "Code optimiert, Entladen optimiert, Dokumentation hinzugefügt",
-                "ru": "Оптимизирован код, оптимизирована выгрузка, добавлена документация",
-                "pt": "Código otimizado, descarregado otimizado, documentação adicionada",
-                "nl": "Code geoptimaliseerd, lossen geoptimaliseerd, documentatie toegevoegd",
-                "fr": "Code optimisé, déchargement optimisé, documentation ajoutée",
-                "it": "Codice ottimizzato, scarico ottimizzato, documentazione aggiunta",
-                "es": "Código optimizado, descarga optimizada, documentación agregada",
-                "pl": "Zoptymalizowany kod, zoptymalizowany rozładunek, dodano dokumentację",
-                "zh-cn": "优化代码，优化卸载，添加文档"
-            },
-            "0.0.4": {
-                "en": "Objects, checksum calculation and telnet client changed",
-                "de": "Objekte, Prüfsummenberechnung und Telnet-Client geändert",
-                "ru": "Объекты, расчет контрольной суммы и клиент Telnet изменены",
-                "pt": "Objetos, cálculo de soma de verificação e cliente de telnet foram alterados",
-                "nl": "Objecten, checksumberekening en telnet-client gewijzigd",
-                "fr": "Objets, calcul de la somme de contrôle et client Telnet modifiés",
-                "it": "Oggetti, calcolo del checksum e client telnet modificati",
-                "es": "Objetos, cálculo de suma de comprobación y cliente telnet modificados.",
-                "pl": "Zmieniono obiekty, obliczenia sum kontrolnych i klienta telnet",
-                "zh-cn": "对象，校验和计算和telnet客户端已更改"
-            },
-            "0.0.3": {
-                "en": "selection of the inverters added",
-                "de": "Auswahl der Wechselrichter ergänzt",
-                "ru": "добавлен выбор инверторов",
-                "pt": "seleção dos inversores adicionados",
-                "nl": "selectie van de omvormers toegevoegd",
-                "fr": "sélection des inverseurs ajoutés",
-                "it": "selezione degli inverter aggiunti",
-                "es": "Selección de los inversores añadidos.",
-                "pl": "wybór dodanych falowników",
-                "zh-cn": "选择添加的逆变器"
-            },
-            "0.0.2": {
-                "en": "First test version",
-                "de": "Erste Testversion",
-                "ru": "Первая тестовая версия",
-                "pt": "Primeira versão de teste",
-                "nl": "Eerste testversie",
-                "fr": "Première version test",
-                "it": "Prima versione di prova",
-                "es": "Primera versión de prueba",
-                "pl": "Pierwsza wersja testowa",
-                "zh-cn": "第一个测试版"
-            },
-            "0.0.1": {
-                "en": "initial release",
-                "de": "Erstveröffentlichung",
-                "ru": "Начальная версия",
-                "pt": "lançamento inicial",
-                "nl": "Eerste uitgave",
-                "fr": "Première version",
-                "it": "Versione iniziale",
-                "es": "Versión inicial",
-                "pl": "Pierwsze wydanie",
-                "zh-cn": "首次出版"
-            }
-        },
-        "title": "SolarViewDataReader",
-        "titleLang": {
-            "en": "SolarViewDataReader",
-            "de": "SolarViewDataReader",
-            "ru": "SolarViewDataReader",
-            "pt": "SolarViewDataReader",
-            "nl": "SolarViewDataReader",
-            "fr": "SolarViewDataReader",
-            "it": "SolarViewDataReader",
-            "es": "SolarViewDataReader",
-            "pl": "SolarViewDataReader",
-            "zh-cn": "SolarViewDataReader"
-        },
-        "desc": {
-            "en": "Get Data from SolarView",
-            "de": "Daten von SolarView abrufen",
-            "ru": "Получить данные из SolarView",
-            "pt": "Obter dados do SolarView",
-            "nl": "Verkrijg gegevens van SolarView",
-            "fr": "Obtenir des données de SolarView",
-            "it": "Ottieni dati da SolarView",
-            "es": "Obtener datos de SolarView",
-            "pl": "Uzyskaj dane z SolarView",
-            "zh-cn": "从SolarView获取数据"
-        },
-        "authors": [
-            "Achim Fürhoff <achim.fuerhoff@outlook.de>"
-        ],
-        "keywords": [
-            "SolarView",
-            "Data Logger",
-            "Photovoltaik"
-        ],
-        "license": "MIT",
-        "platform": "Javascript/Node.js",
-        "main": "main.js",
-        "icon": "solarviewdatareader.png",
-        "enabled": true,
-        "extIcon": "https://raw.githubusercontent.com/afuerhoff/ioBroker.solarviewdatareader/master/admin/solarviewdatareader.png",
-        "readme": "https://github.com/afuerhoff/ioBroker.solarviewdatareader/blob/master/README.md",
-        "loglevel": "info",
-        "mode": "daemon",
-        "type": "energy",
-        "connectionType": "local",
-        "dataSource": "poll",
-        "compact": true,
-        "materialize": true,
-        "dependencies": [
-            {
-                "admin": ">=3.0.0"
-            },
-            {
-                "js-controller": ">=1.4.2"
-            }
-        ]
+  "common": {
+    "name": "solarviewdatareader",
+    "version": "1.0.3",
+    "news": {
+      "1.0.3": {
+        "en": "dependencies updated",
+        "de": "Abhängigkeiten aktualisiert",
+        "ru": "зависимости обновлены",
+        "pt": "dependências atualizadas",
+        "nl": "afhankelijkheden bijgewerkt",
+        "fr": "dépendances mises à jour",
+        "it": "dipendenze aggiornate",
+        "es": "dependencias actualizadas",
+        "pl": "zaktualizowano zależności",
+        "zh-cn": "依赖项已更新"
+      },
+      "1.0.2": {
+        "en": "node.js 14 and 16 compatibilty\ndependencies updated",
+        "de": "node.js 14 und 16 kompatibel\nAbhängigkeiten aktualisiert",
+        "ru": "Совместимость node.js 14 и 16\nзависимости обновлены",
+        "pt": "compatibilidade node.js 14 e 16\ndependências atualizadas",
+        "nl": "node.js 14 en 16 compatibiliteit\nafhankelijkheden bijgewerkt",
+        "fr": "compatibilité node.js 14 et 16\ndépendances mises à jour",
+        "it": "Node.js 14 e 16 compatibilità\ndipendenze aggiornate",
+        "es": "Compatibilidad de node.js 14 y 16\ndependencias actualizadas",
+        "pl": "node.js 14 i 16 kompatybilność\nzaktualizowane zależności",
+        "zh-cn": "node.js 14和16的兼容性\n依赖关系已更新"
+      },
+      "1.0.1": {
+        "en": "changes due to js-controller 3.3.x",
+        "de": "Änderungen aufgrund von js-controller 3.3.x.",
+        "ru": "изменения из-за js-controller 3.3.x",
+        "pt": "mudanças devido ao js-controller 3.3.x",
+        "nl": "veranderingen als gevolg van js-controller 3.3.x",
+        "fr": "changements dus à js-controller 3.3.x",
+        "it": "modifiche dovute a js-controller 3.3.x",
+        "es": "cambios debido a js-controller 3.3.x",
+        "pl": "zmiany spowodowane przez js-controller 3.3.x",
+        "zh-cn": "由于js-controller 3.3.x而发生的更改"
+      },
+      "1.0.0": {
+        "en": "dependencies updated\ndocumentation changed\nminor changes\ndue to stable state version set to 1.0.0",
+        "de": "Abhängigkeiten aktualisiert\nDokumentation geändert\nkleinere Änderungen\naufgrund der stabilen Statusversion auf 1.0.0 eingestellt",
+        "ru": "зависимости обновлены\nдокументация изменена\nнебольшие изменения\nиз-за стабильной версии 1.0.0",
+        "pt": "dependências atualizadas\ndocumentação alterada\npequenas mudanças\ndevido à versão de estado estável definida como 1.0.0",
+        "nl": "afhankelijkheden bijgewerkt\ndocumentatie gewijzigd\nkleine veranderingen\nvanwege stabiele statusversie ingesteld op 1.0.0",
+        "fr": "dépendances mises à jour\ndocumentation modifiée\ndes changements mineurs\nen raison de la version de l'état stable définie sur 1.0.0",
+        "it": "dipendenze aggiornate\nla documentazione è cambiata\nmodifiche minori\na causa della versione dello stato stabile impostata su 1.0.0",
+        "es": "dependencias actualizadas\ndocumentación cambiada\ncambios menores\ndebido a la versión de estado estable establecida en 1.0.0",
+        "pl": "zaktualizowane zależności\ndokumentacja uległa zmianie\ndrobne zmiany\nze względu na stabilną wersję stanu ustawioną na 1.0.0",
+        "zh-cn": "依赖关系已更新\n文档已更改\n细微的变化\n由于稳定状态版本设置为1.0.0"
+      },
+      "0.2.1": {
+        "en": "self consumption meter optimized",
+        "de": "Selbstverbrauchsmesser optimiert",
+        "ru": "счетчик собственного потребления оптимизирован",
+        "pt": "medidor de autoconsumo otimizado",
+        "nl": "eigen verbruiksmeter geoptimaliseerd",
+        "fr": "compteur d'autoconsommation optimisé",
+        "it": "misuratore di autoconsumo ottimizzato",
+        "es": "medidor de autoconsumo optimizado",
+        "pl": "miernik zużycia własnego zoptymalizowany",
+        "zh-cn": "自耗表优化"
+      },
+      "0.2.0": {
+        "en": "Error handling optimized, self consumption meter implemented",
+        "de": "Fehlerbehandlung optimiert, Eigenverbrauchsmesser implementiert",
+        "ru": "Оптимизирована обработка ошибок, реализован счетчик собственного потребления",
+        "pt": "Tratamento de erros otimizado, medidor de autoconsumo implementado",
+        "nl": "Foutafhandeling geoptimaliseerd, eigen verbruiksmeter geïmplementeerd",
+        "fr": "Gestion des erreurs optimisée, compteur d'autoconsommation mis en œuvre",
+        "it": "Gestione degli errori ottimizzata, misuratore di autoconsumo implementato",
+        "es": "Manejo de errores optimizado, medidor de autoconsumo implementado",
+        "pl": "Zoptymalizowana obsługa błędów, zaimplementowano miernik zużycia własnego",
+        "zh-cn": "优化错误处理，实施自耗电表"
+      },
+      "0.1.0": {
+        "en": "optimizations for adding to latest repository",
+        "de": "Optimierungen zum Hinzufügen zum neuesten Repository",
+        "ru": "оптимизации для добавления в последний репозиторий",
+        "pt": "otimizações para adicionar ao repositório mais recente",
+        "nl": "optimalisaties voor het toevoegen aan de nieuwste repository",
+        "fr": "optimisations pour l'ajout au dernier référentiel",
+        "it": "ottimizzazioni per l'aggiunta all'ultimo repository",
+        "es": "optimizaciones para agregar al último repositorio",
+        "pl": "optymalizacje w celu dodania do najnowszego repozytorium",
+        "zh-cn": "添加到最新存储库的优化"
+      }
     },
-    "native": {
-        "ipaddress": "",
-        "port": "15000",
-        "intervalVal": 1,
-        "intervalstart": "00:00",
-        "intervalend": "23:59",
-        "d0converter": false,
-        "pvi1": false,
-        "pvi2": false,
-        "pvi3": false,
-        "pvi4": false,
-        "scm1": false,
-        "scm2": false,
-        "scm3": false,
-        "scm4": false,
-        "scm5": false,
-        "setCCU": false,
-        "CCUSystemV": "hm-rega.0.xxxxx"
+    "title": "SolarViewDataReader",
+    "titleLang": {
+      "en": "SolarViewDataReader",
+      "de": "SolarViewDataReader",
+      "ru": "SolarViewDataReader",
+      "pt": "SolarViewDataReader",
+      "nl": "SolarViewDataReader",
+      "fr": "SolarViewDataReader",
+      "it": "SolarViewDataReader",
+      "es": "SolarViewDataReader",
+      "pl": "SolarViewDataReader",
+      "zh-cn": "SolarViewDataReader"
     },
-    "objects": [],
-    "instanceObjects": []
+    "desc": {
+      "en": "Get Data from SolarView",
+      "de": "Daten von SolarView abrufen",
+      "ru": "Получить данные из SolarView",
+      "pt": "Obter dados do SolarView",
+      "nl": "Verkrijg gegevens van SolarView",
+      "fr": "Obtenir des données de SolarView",
+      "it": "Ottieni dati da SolarView",
+      "es": "Obtener datos de SolarView",
+      "pl": "Uzyskaj dane z SolarView",
+      "zh-cn": "从SolarView获取数据"
+    },
+    "authors": [
+      "Achim Fürhoff <achim.fuerhoff@outlook.de>"
+    ],
+    "keywords": [
+      "SolarView",
+      "Data Logger",
+      "Photovoltaik"
+    ],
+    "license": "MIT",
+    "platform": "Javascript/Node.js",
+    "main": "main.js",
+    "icon": "solarviewdatareader.png",
+    "enabled": true,
+    "extIcon": "https://raw.githubusercontent.com/afuerhoff/ioBroker.solarviewdatareader/master/admin/solarviewdatareader.png",
+    "readme": "https://github.com/afuerhoff/ioBroker.solarviewdatareader/blob/master/README.md",
+    "loglevel": "info",
+    "mode": "daemon",
+    "type": "energy",
+    "connectionType": "local",
+    "dataSource": "poll",
+    "compact": true,
+    "materialize": true,
+    "dependencies": [
+      {
+        "admin": ">=3.0.0"
+      },
+      {
+        "js-controller": ">=1.4.2"
+      }
+    ]
+  },
+  "native": {
+    "ipaddress": "",
+    "port": "15000",
+    "intervalVal": 1,
+    "intervalstart": "00:00",
+    "intervalend": "23:59",
+    "d0converter": false,
+    "pvi1": false,
+    "pvi2": false,
+    "pvi3": false,
+    "pvi4": false,
+    "scm1": false,
+    "scm2": false,
+    "scm3": false,
+    "scm4": false,
+    "scm5": false,
+    "setCCU": false,
+    "CCUSystemV": "hm-rega.0.xxxxx"
+  },
+  "objects": [],
+  "instanceObjects": []
 }
