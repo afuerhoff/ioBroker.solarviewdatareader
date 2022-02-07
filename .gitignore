@@ -13,7 +13,9 @@ admin/i18n/flat.txt
 admin/i18n/*/flat.txt
 admin/i18n/*/translations.json
 
-scripts
+scripts/*.sh
 
 iob_npm.done
 .vscode
+scripts/gulp.sh
+scripts/upload.sh
