@@ -64,6 +64,11 @@ TKK= Temperature inverter
 	Placeholder for the next version (at the beginning of the line):
 	### __WORK IN PROGRESS__
 -->
+
+### __WORK IN PROGRESS__
+* (afuerhoff) dependencies updated
+* (afuerhoff) issue #20 fixed
+
 ### 1.0.3 (2021-12-08)
 * (afuerhoff) dependencies updated
 
@@ -86,7 +91,7 @@ TKK= Temperature inverter
 ## License
 MIT License
 
-Copyright (c) 2019-2021 Achim Fürhoff <achim.fuerhoff@outlook.de>
+Copyright (c) 2019-2022 Achim Fürhoff <achim.fuerhoff@outlook.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
