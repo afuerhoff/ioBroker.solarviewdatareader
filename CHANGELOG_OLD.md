@@ -1,4 +1,7 @@
 # Older changes
+## 0.2.1
+* (afuerhoff) self consumption meter optimized
+
 ## 0.2.0
 * (afuerhoff) Error handling optimized, self consumption meter implemented
 

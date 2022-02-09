@@ -64,8 +64,7 @@ TKK= Temperature inverter
 	Placeholder for the next version (at the beginning of the line):
 	### __WORK IN PROGRESS__
 -->
-
-### __WORK IN PROGRESS__
+### 1.0.4 (2022-02-09)
 * (afuerhoff) dependencies updated
 * (afuerhoff) issue #20 fixed
 
@@ -84,9 +83,6 @@ TKK= Temperature inverter
 * (afuerhoff) documentation changed
 * (afuerhoff) minor changes
 * (afuerhoff) due to stable state version set to 1.0.0
-
-### 0.2.1
-* (afuerhoff) self consumption meter optimized
 
 ## License
 MIT License
