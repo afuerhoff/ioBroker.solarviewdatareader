@@ -554,7 +554,7 @@ class Solarviewdatareader extends utils.Adapter {
 }
 
 // @ts-ignore parent is a valid property on module
-if (module.parent) {
+if (require.main !== module) {
     // Export the constructor in compact mode
     /**
 	 * @param {Partial<ioBroker.AdapterOptions>} [options={}]

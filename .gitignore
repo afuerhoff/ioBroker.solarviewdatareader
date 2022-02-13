@@ -1,3 +1,8 @@
+# No dot-directories except github/vscode
+.*/
+!.vscode/
+!.github/
+
 .git
 .idea
 node_modules
@@ -16,6 +21,5 @@ admin/i18n/*/translations.json
 scripts/*.sh
 
 iob_npm.done
-.vscode
 scripts/gulp.sh
 scripts/upload.sh
