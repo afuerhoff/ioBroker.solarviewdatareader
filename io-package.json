@@ -1,8 +1,20 @@
 {
   "common": {
     "name": "solarviewdatareader",
-    "version": "1.0.4",
+    "version": "1.0.5",
     "news": {
+      "1.0.5": {
+        "en": "dependencies updated\ntest and release updated\nsmaller changes",
+        "de": "Abhängigkeiten aktualisiert\nTest und Release aktualisiert\nkleinere Änderungen",
+        "ru": "зависимости обновлены\nтест и выпуск обновлены\nнебольшие изменения",
+        "pt": "dependências atualizadas\nteste e lançamento atualizado\nmudanças menores",
+        "nl": "afhankelijkheden bijgewerkt\ntest en release bijgewerkt\nkleinere veranderingen",
+        "fr": "dépendances mises à jour\ntest et version mis à jour\npetits changements",
+        "it": "dipendenze aggiornate\ntest e rilascio aggiornati\npiccoli cambiamenti",
+        "es": "dependencias actualizadas\nprueba y versión actualizada\npequeños cambios",
+        "pl": "zaktualizowano zależności\nzaktualizowano test i wydanie\nmniejsze zmiany",
+        "zh-cn": "已更新依赖项\n测试和发布更新\n较小的变化"
+      },
       "1.0.4": {
         "en": "dependencies updated\nissue #20 fixed",
         "de": "Abhängigkeiten aktualisiert\nProblem Nr. 20 behoben",
@@ -74,18 +86,6 @@
         "es": "medidor de autoconsumo optimizado",
         "pl": "miernik zużycia własnego zoptymalizowany",
         "zh-cn": "自耗表优化"
-      },
-      "0.2.0": {
-        "en": "Error handling optimized, self consumption meter implemented",
-        "de": "Fehlerbehandlung optimiert, Eigenverbrauchsmesser implementiert",
-        "ru": "Оптимизирована обработка ошибок, реализован счетчик собственного потребления",
-        "pt": "Tratamento de erros otimizado, medidor de autoconsumo implementado",
-        "nl": "Foutafhandeling geoptimaliseerd, eigen verbruiksmeter geïmplementeerd",
-        "fr": "Gestion des erreurs optimisée, compteur d'autoconsommation mis en œuvre",
-        "it": "Gestione degli errori ottimizzata, misuratore di autoconsumo implementato",
-        "es": "Manejo de errores optimizado, medidor de autoconsumo implementado",
-        "pl": "Zoptymalizowana obsługa błędów, zaimplementowano miernik zużycia własnego",
-        "zh-cn": "优化错误处理，实施自耗电表"
       }
     },
     "title": "SolarViewDataReader",

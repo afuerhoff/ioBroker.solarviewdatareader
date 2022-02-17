@@ -1,4 +1,10 @@
 # Older changes
+## 1.0.0 (2021-04-25)
+* (afuerhoff) dependencies updated
+* (afuerhoff) documentation changed
+* (afuerhoff) minor changes
+* (afuerhoff) due to stable state version set to 1.0.0
+
 ## 0.2.1
 * (afuerhoff) self consumption meter optimized
 
