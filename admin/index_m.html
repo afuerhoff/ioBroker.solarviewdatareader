@@ -163,9 +163,9 @@
 					</div>
 					<div class="row">
 						<div class="col s2 input-field tooltip">
-							<input type="number" class="value" min="1" max="59" id="intervalVal" />
-							<label for="intervalVal" class="translate">polling interval in minutes</label>
-							<span class="tooltiptext translate">Here you can define the polling interval [between 1 to 59 minutes]</span>
+							<input type="number" class="value validate" min="10" max="3600" id="intervalVal" />
+							<label for="intervalVal" class="translate">polling interval in seconds</label>
+							<span class="tooltiptext translate">Here you can define the polling interval [between 10 to 3600 seconds]</span>
 						</div>						
 						<div class="col s2 input-field tooltip">	
 							<input type="text" class="timepicker value" id="intervalstart"/>

@@ -41,7 +41,7 @@ Here you can configure the time range and the interval. The time range for 24h i
 Not 00:00 to 00:00.
 
 ### Set system variable CCU, System variable
-This ist a special feature for the homematic CCU. You can define a system variable in the CCU.
+This is a special feature for the homematic CCU. You can define a system variable in the CCU.
 In this system variable the actual PAC value is saved.
 You have to fill in the ioBroker state for that system variable -> **e.g. "hm-rega.0.12345"**
 
@@ -64,6 +64,11 @@ TKK= Temperature inverter
 	Placeholder for the next version (at the beginning of the line):
 	### __WORK IN PROGRESS__
 -->
+### **WORK IN PROGRESS**
+* (afuerhoff) dependencies updated
+* (afuerhoff) Interval settings changed from minutes to seconds
+* (afuerhoff) States only writen after changes
+
 ### 1.0.5 (2022-02-17)
 * (afuerhoff) dependencies updated
 * (afuerhoff) test and release updated

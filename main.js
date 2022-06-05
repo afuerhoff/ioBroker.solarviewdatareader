@@ -136,7 +136,7 @@ async function getData(port, ip_address) {
     const dend = new Date(dnow.getFullYear() + '-' + (dnow.getMonth()+1) + '-' + dnow.getDate() + ' ' + endtime);
     let timeoutCnt = 0;
     if (gthis.config.d0converter == true){ //Verbrauch wird immer eingelesen
-        timeoutCnt += 3000;
+        timeoutCnt += 500;
         to1 = setTimeout(function() {
             sv_cmd = '22*';
             conn.connect(port, ip_address, function() {
@@ -147,7 +147,7 @@ async function getData(port, ip_address) {
     }
 
     if (gthis.config.scm0 == true){
-        timeoutCnt += 3000;
+        timeoutCnt += 500;
         to7 = setTimeout(function() {
             sv_cmd = '10*'; //pvi1 Wechselrichter 1
             conn.connect(port, ip_address, function() {
@@ -157,7 +157,7 @@ async function getData(port, ip_address) {
         }, timeoutCnt);
     }
     if (gthis.config.scm1 == true){
-        timeoutCnt += 3000;
+        timeoutCnt += 500;
         to8 = setTimeout(function() {
             sv_cmd = '11*';
             conn.connect(port, ip_address, function() {
@@ -167,7 +167,7 @@ async function getData(port, ip_address) {
         }, timeoutCnt);
     }
     if (gthis.config.scm2 == true){
-        timeoutCnt += 3000;
+        timeoutCnt += 500;
         to9 = setTimeout(function() {
             sv_cmd = '12*';
             conn.connect(port, ip_address, function() {
@@ -177,7 +177,7 @@ async function getData(port, ip_address) {
         }, timeoutCnt);
     }
     if (gthis.config.scm3 == true){
-        timeoutCnt += 3000;
+        timeoutCnt += 500;
         to10 = setTimeout(function() {
             sv_cmd = '13*';
             conn.connect(port, ip_address, function() {
@@ -187,7 +187,7 @@ async function getData(port, ip_address) {
         }, timeoutCnt);
     }
     if (gthis.config.scm4 == true){
-        timeoutCnt += 3000;
+        timeoutCnt += 500;
         to11 = setTimeout(function() {
             sv_cmd = '14*';
             conn.connect(port, ip_address, function() {
@@ -204,7 +204,7 @@ async function getData(port, ip_address) {
             conn.end();
         });
         if (gthis.config.d0converter == true){
-            timeoutCnt += 3000;
+            timeoutCnt += 500;
             to2 = setTimeout(function() {
                 sv_cmd = '21*';
                 conn.connect(port, ip_address, function() {
@@ -214,7 +214,7 @@ async function getData(port, ip_address) {
             }, timeoutCnt);
         }
         if (gthis.config.pvi1 == true){
-            timeoutCnt += 3000;
+            timeoutCnt += 500;
             to3 = setTimeout(function() {
                 sv_cmd = '01*'; //pvi1 Wechselrichter 1
                 conn.connect(port, ip_address, function() {
@@ -224,7 +224,7 @@ async function getData(port, ip_address) {
             }, timeoutCnt);
         }
         if (gthis.config.pvi2 == true){
-            timeoutCnt += 3000;
+            timeoutCnt += 500;
             to4 = setTimeout(function() {
                 sv_cmd = '02*';
                 conn.connect(port, ip_address, function() {
@@ -234,7 +234,7 @@ async function getData(port, ip_address) {
             }, timeoutCnt);
         }
         if (gthis.config.pvi3 == true){
-            timeoutCnt += 3000;
+            timeoutCnt += 500;
             to5 = setTimeout(function() {
                 sv_cmd = '03*';
                 conn.connect(port, ip_address, function() {
@@ -244,7 +244,7 @@ async function getData(port, ip_address) {
             }, timeoutCnt);
         }
         if (gthis.config.pvi4 == true){
-            timeoutCnt += 3000;
+            timeoutCnt += 500;
             to6 = setTimeout(function() {
                 sv_cmd = '04*';
                 conn.connect(port, ip_address, function() {
@@ -284,8 +284,26 @@ class Solarviewdatareader extends utils.Adapter {
         const port = this.config.port;
         let chkCnt = 0;
 
-        this.log.info('start solarview ' + ip_address + ':' + port + ' - polling interval: ' + this.config.intervalVal + ' Min. (' + this.config.intervalstart + ' to ' + this.config.intervalend + ')');
+        this.log.info('start solarview ' + ip_address + ':' + port + ' - polling interval: ' + this.config.intervalVal + ' s (' + this.config.intervalstart + ' to ' + this.config.intervalend + ')');
         this.log.info('d0 converter: ' + this.config.d0converter.toString());
+
+        //Workaround for interval change to seconds
+        let adapterObj = (await this.getForeignObjectAsync(`system.adapter.${this.namespace}`));
+        let adapterObjChanged = false; //for changes
+        
+        if (this.config.interval_seconds === false) { //Workaround: Switch interval to seconds
+            this.log.warn('Interval changed to seconds!');
+            adapterObj.native.interval_seconds = true;
+            adapterObj.native.intervalVal = adapterObj.native.intervalVal * 60;
+            adapterObjChanged = true;
+        }
+
+        if (adapterObjChanged === true){ //Save changes
+            this.log.info('Interval attribute changed! Please check the configuration');
+            this.log.info('Adapter restarts');
+            await this.setForeignObjectAsync(`system.adapter.${this.namespace}`, adapterObj);
+        }
+
 
         //Datenobjekte erzeugen
         await createGlobalObjects(gthis);
@@ -313,7 +331,7 @@ class Solarviewdatareader extends utils.Adapter {
 
         conn = new net.Socket();
 		
-        const cron = this.config.intervalVal * 60000;
+        const cron = this.config.intervalVal * 1000;
         try {
             getData(port, ip_address);
             jobSchedule = setInterval(async function(){
@@ -327,9 +345,9 @@ class Solarviewdatareader extends utils.Adapter {
             try {
                 if (response == null){
                     gthis.log.error("connect: cann't read data from tcp-server!" );
-                    gthis.setState('info.connection', { val: false, ack: true });  
+                    gthis.setStateChanged('info.connection', { val: false, ack: true });  
                 }else{
-                    gthis.setState('info.connection', { val: true, ack: true });
+                    gthis.setStateChanged('info.connection', { val: true, ack: true });
                     sv_data = response.toString('ascii'); //Daten in globale variable sv_data ablegen
                     sv_data = sv_data.replace (/[{]+/,'');      // "{" entfernen
                     sv_data = sv_data.replace (/[}]+/,'');      // "}" entfernen
@@ -381,7 +399,7 @@ class Solarviewdatareader extends utils.Adapter {
                         TKK= Temperatur Wechselrichter */
                         
                         let value = Number(sv_data[10]);
-                        gthis.setStateAsync(sv_prefix + 'current', { val: value, ack: true });
+                        gthis.setStateChanged(sv_prefix + 'current', { val: value, ack: true });
                         if (sv_prefix == 'pvig.') {
                             if (gthis.config.setCCU == true){
                                 const obj = await gthis.findForeignObjectAsync(gthis.config.CCUSystemV);
@@ -395,60 +413,60 @@ class Solarviewdatareader extends utils.Adapter {
                         }
                         
                         value = Number(sv_data[6]);
-                        gthis.setStateAsync(sv_prefix + 'daily', { val: value, ack: true });
+                        gthis.setStateChanged(sv_prefix + 'daily', { val: value, ack: true });
                         
                         value = Number(sv_data[7]);
-                        gthis.setStateAsync(sv_prefix + 'monthly', { val: value, ack: true });
+                        gthis.setStateChanged(sv_prefix + 'monthly', { val: value, ack: true });
                         
                         value = Number(sv_data[8]);
-                        gthis.setStateAsync(sv_prefix + 'yearly', { val: value, ack: true });
+                        gthis.setStateChanged(sv_prefix + 'yearly', { val: value, ack: true });
                         
                         value = Number(sv_data[9]);
-                        gthis.setStateAsync(sv_prefix + 'total', { val: value, ack: true });		
+                        gthis.setStateChanged(sv_prefix + 'total', { val: value, ack: true });		
 
                         const sDate = Number(sv_data[3]) + '-' + aLZ(Number(sv_data[2])) + '-' + aLZ(Number(sv_data[1])) + ' ' + aLZ(Number(sv_data[4])) + ':' + aLZ(Number(sv_data[5]));
-                        gthis.setStateAsync('info.lastUpdate', { val: sDate, ack: true });		
+                        gthis.setStateChanged('info.lastUpdate', { val: sDate, ack: true });		
                         
                         if (sv_prefix == 'pvi1.' || sv_prefix == 'pvi2.' || sv_prefix == 'pvi3.' || sv_prefix == 'pvi4.'){
                             value = Number(sv_data[11]);
-                            gthis.setStateAsync(sv_prefix + 'udc', { val: value, ack: true });		
+                            gthis.setStateChanged(sv_prefix + 'udc', { val: value, ack: true });		
                             value = Number(sv_data[12]);
-                            gthis.setStateAsync(sv_prefix + 'idc', { val: value, ack: true });		
+                            gthis.setStateChanged(sv_prefix + 'idc', { val: value, ack: true });		
                             value = Number(sv_data[13]);
-                            gthis.setStateAsync(sv_prefix + 'udcb', { val: value, ack: true });		
+                            gthis.setStateChanged(sv_prefix + 'udcb', { val: value, ack: true });		
                             value = Number(sv_data[14]);
-                            gthis.setStateAsync(sv_prefix + 'idcb', { val: value, ack: true });		
+                            gthis.setStateChanged(sv_prefix + 'idcb', { val: value, ack: true });		
                             value = Number(sv_data[15]);
-                            gthis.setStateAsync(sv_prefix + 'udcc', { val: value, ack: true });		
+                            gthis.setStateChanged(sv_prefix + 'udcc', { val: value, ack: true });		
                             value = Number(sv_data[16]);
-                            gthis.setStateAsync(sv_prefix + 'idcc', { val: value, ack: true });	
+                            gthis.setStateChanged(sv_prefix + 'idcc', { val: value, ack: true });	
                             value = Number(sv_data[17]);
-                            gthis.setStateAsync(sv_prefix + 'udcd', { val: value, ack: true });	
+                            gthis.setStateChanged(sv_prefix + 'udcd', { val: value, ack: true });	
                             value = Number(sv_data[18]);
-                            gthis.setStateAsync(sv_prefix + 'idcd', { val: value, ack: true });	
+                            gthis.setStateChanged(sv_prefix + 'idcd', { val: value, ack: true });	
                             if (sv_data.length == 27) { //neue Version Solarview
                                 value = Number(sv_data[19]);
-                                gthis.setStateAsync(sv_prefix + 'ul1', { val: value, ack: true });		
+                                gthis.setStateChanged(sv_prefix + 'ul1', { val: value, ack: true });		
                                 value = Number(sv_data[20]);
-                                gthis.setStateAsync(sv_prefix + 'il1', { val: value, ack: true });		
+                                gthis.setStateChanged(sv_prefix + 'il1', { val: value, ack: true });		
                                 value = Number(sv_data[21]);
-                                gthis.setStateAsync(sv_prefix + 'ul2', { val: value, ack: true });		
+                                gthis.setStateChanged(sv_prefix + 'ul2', { val: value, ack: true });		
                                 value = Number(sv_data[22]);
-                                gthis.setStateAsync(sv_prefix + 'il2', { val: value, ack: true });		
+                                gthis.setStateChanged(sv_prefix + 'il2', { val: value, ack: true });		
                                 value = Number(sv_data[23]);
-                                gthis.setStateAsync(sv_prefix + 'ul3', { val: value, ack: true });		
+                                gthis.setStateChanged(sv_prefix + 'ul3', { val: value, ack: true });		
                                 value = Number(sv_data[24]);
-                                gthis.setStateAsync(sv_prefix + 'il3', { val: value, ack: true });		
+                                gthis.setStateChanged(sv_prefix + 'il3', { val: value, ack: true });		
                                 value = Number(sv_data[25]);
-                                gthis.setStateAsync(sv_prefix + 'tkk', { val: value, ack: true });		
+                                gthis.setStateChanged(sv_prefix + 'tkk', { val: value, ack: true });		
                             }
                             if (sv_data.length === 23) { //alte Version Solarview
                                 value = Number(sv_data[19]);
-                                gthis.setStateAsync(sv_prefix + 'ul1', { val: value, ack: true });		
+                                gthis.setStateChanged(sv_prefix + 'ul1', { val: value, ack: true });		
                                 value = Number(sv_data[20]);
-                                gthis.setStateAsync(sv_prefix + 'il1', { val: value, ack: true });		
+                                gthis.setStateChanged(sv_prefix + 'il1', { val: value, ack: true });		
                                 value = Number(sv_data[21]);
-                                gthis.setStateAsync(sv_prefix + 'tkk', { val: value, ack: true });							
+                                gthis.setStateChanged(sv_prefix + 'tkk', { val: value, ack: true });							
                             }
                         }
                     }else{
@@ -469,7 +487,7 @@ class Solarviewdatareader extends utils.Adapter {
 		
         conn.on('error', function(err) {
             gthis.log.error('error: ' + err.message);
-            gthis.setState('info.connection', { val: false, ack: true });
+            gthis.setStateChanged('info.connection', { val: false, ack: true });
         });		
 
         conn.on('close', function() {
@@ -484,7 +502,7 @@ class Solarviewdatareader extends utils.Adapter {
     onUnload(callback) {
         try {
             this.log.info('cleaned everything up...');
-            gthis.setState('info.connection', { val: false, ack: true });
+            gthis.setStateChanged('info.connection', { val: false, ack: true });
             clearInterval(jobSchedule);
             clearTimeout(to1);
             clearTimeout(to2);
