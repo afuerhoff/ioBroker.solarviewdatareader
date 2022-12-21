@@ -64,6 +64,9 @@ TKK= Temperature inverter
 	Placeholder for the next version (at the beginning of the line):
 	### __WORK IN PROGRESS__
 -->
+### **WORK IN PROGRESS**
+* (afuerhoff) dependencies updated
+
 ### 1.0.6 (2022-07-04)
 * (afuerhoff) dependencies updated
 * (afuerhoff) Interval settings changed from minutes to seconds

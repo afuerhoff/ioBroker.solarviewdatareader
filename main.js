@@ -288,7 +288,7 @@ class Solarviewdatareader extends utils.Adapter {
         this.log.info('d0 converter: ' + this.config.d0converter.toString());
 
         //Workaround for interval change to seconds
-        let adapterObj = (await this.getForeignObjectAsync(`system.adapter.${this.namespace}`));
+        const adapterObj = (await this.getForeignObjectAsync(`system.adapter.${this.namespace}`));
         let adapterObjChanged = false; //for changes
         
         if (this.config.interval_seconds === false) { //Workaround: Switch interval to seconds
