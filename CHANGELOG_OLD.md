@@ -1,4 +1,8 @@
 # Older changes
+## 1.0.2 (2021-05-07)
+* (afuerhoff) node.js 14 and 16 compatibilty
+* (afuerhoff) dependencies updated
+
 ## 1.0.1 (2021-05-01)
 * (afuerhoff) changes due to js-controller 3.3.x
 
