@@ -6,7 +6,17 @@ updates:
     interval: monthly
     time: "04:00"
     timezone: Europe/Berlin
-  open-pull-requests-limit: 20
-  assignees:
-  - afuerhoff
+  open-pull-requests-limit: 5
+    assignees:
+      - afuerhoff
   versioning-strategy: increase
+
+- package-ecosystem: github-actions
+  directory: "/"
+  schedule:
+    interval: monthly
+    time: "04:00"
+    timezone: Europe/Berlin
+  open-pull-requests-limit: 5
+    assignees:
+      - afuerhoff
