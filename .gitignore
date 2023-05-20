@@ -23,3 +23,6 @@ scripts/*.sh
 iob_npm.done
 scripts/gulp.sh
 scripts/upload.sh
+
+# ioBroker dev-server
+.dev-server/
