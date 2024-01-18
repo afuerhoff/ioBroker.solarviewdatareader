@@ -65,6 +65,8 @@ TKK= Temperature inverter
 	### __WORK IN PROGRESS__
 -->
 ### **WORK IN PROGRESS**
+* (afuerhoff) dependencies updated
+* (afuerhoff) translations updated
 
 ### 1.0.7 (2022-12-21)
 * (afuerhoff) dependencies updated
