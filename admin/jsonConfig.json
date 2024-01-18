@@ -1,0 +1,167 @@
+{
+    "type": "tabs",
+    "i18n": true,
+    "items": {
+      "tab-main": {
+        "type": "panel",
+        "label": "Main settings",
+        "items": {
+          "ipaddress": {
+            "type": "text",
+            "label": "IP-Address",
+            "tooltip": "Please enter the IP-Address from your SolarView data logger",
+            "sm": 8,
+            "md": 6,
+            "lg": 3
+          },
+          "port": {
+            "type": "port",
+            "min": 1,
+            "max": 65565,
+            "label": "Port",
+            "tooltip": "Please enter the port",
+            "sm": 4,
+            "md": 3,
+            "lg": 2
+          },
+          "d0converter": {
+            "newLine": true,
+            "type": "checkbox",
+            "label": "d0-converter",
+            "tooltip": "Please enter if you have a d0-converter",
+            "sm": 6,
+            "md": 4,
+            "lg": 2
+          },
+          "scm0": {
+            "type": "checkbox",
+            "label": "Self consumption meter sum",
+            "tooltip": "Please check if you use the self consumption meter sum",
+            "sm": 12,
+            "md": 6,
+            "lg": 2
+          },
+          "scm1": {
+            "newLine": true,
+            "type": "checkbox",
+            "label": "Self consumption meter 1",
+            "tooltip": "Please check if self consumption meter 1 is available",
+            "sm": 12,
+            "md": 6,
+            "lg": 2
+          },
+          "scm2": {
+            "type": "checkbox",
+            "label": "Self consumption meter 2",
+            "tooltip": "Please check if self consumption meter 2 is available",
+            "sm": 12,
+            "md": 6,
+            "lg": 2
+          },
+          "scm3": {
+            "newLine": true,
+            "type": "checkbox",
+            "label": "Self consumption meter 3",
+            "tooltip": "Please check if self consumption meter 3 is available",
+            "sm": 12,
+            "md": 6,
+            "lg": 2
+          },
+          "scm4": {
+            "type": "checkbox",
+            "label": "Self consumption meter 4",
+            "tooltip": "Please check if self consumption meter 4 is available",
+            "sm": 12,
+            "md": 6,
+            "lg": 2
+          },
+          "pvi1": {
+            "newLine": true,
+            "type": "checkbox",
+            "label": "Inverter 1",
+            "tooltip": "Please check if inverter 1 available",
+            "sm": 12,
+            "md": 6,
+            "lg": 2
+          },
+          "pvi2": {
+            "type": "checkbox",
+            "label": "Inverter 2",
+            "tooltip": "Please check if inverter 2 available",
+            "sm": 12,
+            "md": 6,
+            "lg": 2
+          },
+          "pvi3": {
+            "newLine": true,
+            "type": "checkbox",
+            "label": "Inverter 3",
+            "tooltip": "Please check if inverter 3 available",
+            "sm": 12,
+            "md": 6,
+            "lg": 2
+          },
+          "pvi4": {
+            "type": "checkbox",
+            "label": "Inverter 4",
+            "tooltip": "Please check if inverter 4 available",
+            "sm": 12,
+            "md": 6,
+            "lg": 2
+          },
+          "intervalVal": {
+            "newLine": true,
+            "type": "number",
+            "label": "polling interval in seconds",
+            "help": "sec",
+            "tooltip": "Here you can define the polling interval [between 10 to 3600 seconds]",
+            "sm": 12,
+            "md": 6,
+            "lg": 2
+          },
+          "intervalstart": {
+            "type": "timePicker",
+            "label": "Interval start",
+            "tooltip": "Please enter the interval start (e.g. 00:00)",
+            "format": "HH:mm",
+            "sm": 12,
+            "md": 6,
+            "lg": 2
+          },
+          "intervalend": {
+            "type": "timePicker",
+            "label": "Interval end",
+            "tooltip": "Please enter the interval end (e.g. 23:59)",
+            "sm": 12,
+            "md": 6,
+            "lg": 2
+          },
+          "timePicker1val": {
+            "type": "pattern",
+            "pattern": "stored value is ${data.intervalstart}",
+            "sm":4,
+            "md":4,
+            "lg":4,
+            "xs":4
+          },
+          "setCCU": {
+            "newLine": true,
+            "type": "checkbox",
+            "label": "Set system variable CCU",
+            "tooltip": "Please check if you want to set a system variable in the CCU",
+            "sm": 6,
+            "md": 4,
+            "lg": 2
+          },
+          "CCUSystemV": {
+            "type": "text",
+            "label": "System variable",
+            "tooltip": "System variable e.g. hm-rega.0.12345",
+            "sm": 6,
+            "md": 4,
+            "lg": 2
+          }		
+        }
+      }
+    }
+  }
