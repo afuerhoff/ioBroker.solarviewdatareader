@@ -1,166 +1,174 @@
 {
-  "common": {
-    "name": "solarviewdatareader",
-    "version": "1.0.7",
-    "news": {
-      "1.0.7": {
-        "en": "dependencies updated",
-        "de": "aktualisierte abhängigkeiten",
-        "ru": "зависимости обновлены",
-        "pt": "dependências atualizadas",
-        "nl": "afhankelijkheid geüpdateerd",
-        "fr": "dépendances mises à jour",
-        "it": "dipendenze aggiornate",
-        "es": "dependencias actualizadas",
-        "pl": "aktualizacja",
-        "uk": "оновлені залежності",
-        "zh-cn": "b. 更新的依赖"
-      },
-      "1.0.6": {
-        "en": "dependencies updated\nInterval settings changed from minutes to seconds\nStates only writen after changes",
-        "de": "aktualisierte abhängigkeiten\nIntervalleinstellungen von Minuten bis Sekunden geändert\nNur nach Änderungen geschriebene Staaten",
-        "ru": "зависимости обновлены\nИнтервалные настройки изменены с минут до секунд\nГосударства только пишут после изменений",
-        "pt": "dependências atualizadas\nAs configurações de intervalo mudaram de minutos para segundos\nEstados apenas escrevem após mudanças",
-        "nl": "afhankelijkheid geüpdateerd\nVerandering van minuten tot seconden\nAmerika schreef alleen na veranderingen",
-        "fr": "dépendances mises à jour\nLes réglages d'intervalle ont changé de minutes en secondes\nÉtats seulement énumérés après changement",
-        "it": "dipendenze aggiornate\nLe impostazioni di intervallazione sono cambiate da minuti a secondi\nStati solo dopo i cambiamenti",
-        "es": "dependencias actualizadas\nLos ajustes de intervalor cambiaron de minutos a segundos\nEstados sólo escriben después de los cambios",
-        "pl": "aktualizacja\nPrzeszłość zmieniała się z minut na sekundę\nPaństwa pisane są tylko po zmianach",
-        "zh-cn": "b. 更新的依赖\n汇率环境从分钟改为第二秒\n国家在修改后只写信"
-      },
-      "1.0.5": {
-        "en": "dependencies updated\ntest and release updated\nsmaller changes",
-        "de": "Abhängigkeiten aktualisiert\nTest und Release aktualisiert\nkleinere Änderungen",
-        "ru": "зависимости обновлены\nтест и выпуск обновлены\nнебольшие изменения",
-        "pt": "dependências atualizadas\nteste e lançamento atualizado\nmudanças menores",
-        "nl": "afhankelijkheden bijgewerkt\ntest en release bijgewerkt\nkleinere veranderingen",
-        "fr": "dépendances mises à jour\ntest et version mis à jour\npetits changements",
-        "it": "dipendenze aggiornate\ntest e rilascio aggiornati\npiccoli cambiamenti",
-        "es": "dependencias actualizadas\nprueba y versión actualizada\npequeños cambios",
-        "pl": "zaktualizowano zależności\nzaktualizowano test i wydanie\nmniejsze zmiany",
-        "zh-cn": "已更新依赖项\n测试和发布更新\n较小的变化"
-      },
-      "1.0.4": {
-        "en": "dependencies updated\nissue #20 fixed",
-        "de": "Abhängigkeiten aktualisiert\nProblem Nr. 20 behoben",
-        "ru": "зависимости обновлены\nпроблема №20 исправлена",
-        "pt": "dependências atualizadas\nproblema nº 20 corrigido",
-        "nl": "afhankelijkheden bijgewerkt\nprobleem #20 opgelost",
-        "fr": "dépendances mises à jour\nproblème #20 corrigé",
-        "it": "dipendenze aggiornate\nproblema n. 20 risolto",
-        "es": "dependencias actualizadas\nproblema #20 solucionado",
-        "pl": "zaktualizowano zależności\nproblem nr 20 naprawiony",
-        "zh-cn": "已更新依赖项\n问题 #20 已修复"
-      },
-      "1.0.3": {
-        "en": "dependencies updated",
-        "de": "Abhängigkeiten aktualisiert",
-        "ru": "зависимости обновлены",
-        "pt": "dependências atualizadas",
-        "nl": "afhankelijkheden bijgewerkt",
-        "fr": "dépendances mises à jour",
-        "it": "dipendenze aggiornate",
-        "es": "dependencias actualizadas",
-        "pl": "zaktualizowano zależności",
-        "zh-cn": "依赖项已更新"
-      },
-      "1.0.2": {
-        "en": "node.js 14 and 16 compatibilty\ndependencies updated",
-        "de": "node.js 14 und 16 kompatibel\nAbhängigkeiten aktualisiert",
-        "ru": "Совместимость node.js 14 и 16\nзависимости обновлены",
-        "pt": "compatibilidade node.js 14 e 16\ndependências atualizadas",
-        "nl": "node.js 14 en 16 compatibiliteit\nafhankelijkheden bijgewerkt",
-        "fr": "compatibilité node.js 14 et 16\ndépendances mises à jour",
-        "it": "Node.js 14 e 16 compatibilità\ndipendenze aggiornate",
-        "es": "Compatibilidad de node.js 14 y 16\ndependencias actualizadas",
-        "pl": "node.js 14 i 16 kompatybilność\nzaktualizowane zależności",
-        "zh-cn": "node.js 14和16的兼容性\n依赖关系已更新"
-      },
-      "1.0.1": {
-        "en": "changes due to js-controller 3.3.x",
-        "de": "Änderungen aufgrund von js-controller 3.3.x.",
-        "ru": "изменения из-за js-controller 3.3.x",
-        "pt": "mudanças devido ao js-controller 3.3.x",
-        "nl": "veranderingen als gevolg van js-controller 3.3.x",
-        "fr": "changements dus à js-controller 3.3.x",
-        "it": "modifiche dovute a js-controller 3.3.x",
-        "es": "cambios debido a js-controller 3.3.x",
-        "pl": "zmiany spowodowane przez js-controller 3.3.x",
-        "zh-cn": "由于js-controller 3.3.x而发生的更改"
-      }
+    "common": {
+        "name": "solarviewdatareader",
+        "version": "1.0.7",
+        "news": {
+            "1.0.7": {
+                "en": "dependencies updated",
+                "de": "aktualisierte abhängigkeiten",
+                "ru": "зависимости обновлены",
+                "pt": "dependências atualizadas",
+                "nl": "afhankelijkheid geüpdateerd",
+                "fr": "dépendances mises à jour",
+                "it": "dipendenze aggiornate",
+                "es": "dependencias actualizadas",
+                "pl": "aktualizacja",
+                "uk": "оновлені залежності",
+                "zh-cn": "b. 更新的依赖"
+            },
+            "1.0.6": {
+                "en": "dependencies updated\nInterval settings changed from minutes to seconds\nStates only writen after changes",
+                "de": "aktualisierte abhängigkeiten\nIntervalleinstellungen von Minuten bis Sekunden geändert\nNur nach Änderungen geschriebene Staaten",
+                "ru": "зависимости обновлены\nИнтервалные настройки изменены с минут до секунд\nГосударства только пишут после изменений",
+                "pt": "dependências atualizadas\nAs configurações de intervalo mudaram de minutos para segundos\nEstados apenas escrevem após mudanças",
+                "nl": "afhankelijkheid geüpdateerd\nVerandering van minuten tot seconden\nAmerika schreef alleen na veranderingen",
+                "fr": "dépendances mises à jour\nLes réglages d'intervalle ont changé de minutes en secondes\nÉtats seulement énumérés après changement",
+                "it": "dipendenze aggiornate\nLe impostazioni di intervallazione sono cambiate da minuti a secondi\nStati solo dopo i cambiamenti",
+                "es": "dependencias actualizadas\nLos ajustes de intervalor cambiaron de minutos a segundos\nEstados sólo escriben después de los cambios",
+                "pl": "aktualizacja\nPrzeszłość zmieniała się z minut na sekundę\nPaństwa pisane są tylko po zmianach",
+                "zh-cn": "b. 更新的依赖\n汇率环境从分钟改为第二秒\n国家在修改后只写信",
+                "uk": "залежності оновлено\nПараметри інтервалу змінено з хвилин на секунди\nСтани написані лише після змін"
+            },
+            "1.0.5": {
+                "en": "dependencies updated\ntest and release updated\nsmaller changes",
+                "de": "Abhängigkeiten aktualisiert\nTest und Release aktualisiert\nkleinere Änderungen",
+                "ru": "зависимости обновлены\nтест и выпуск обновлены\nнебольшие изменения",
+                "pt": "dependências atualizadas\nteste e lançamento atualizado\nmudanças menores",
+                "nl": "afhankelijkheden bijgewerkt\ntest en release bijgewerkt\nkleinere veranderingen",
+                "fr": "dépendances mises à jour\ntest et version mis à jour\npetits changements",
+                "it": "dipendenze aggiornate\ntest e rilascio aggiornati\npiccoli cambiamenti",
+                "es": "dependencias actualizadas\nprueba y versión actualizada\npequeños cambios",
+                "pl": "zaktualizowano zależności\nzaktualizowano test i wydanie\nmniejsze zmiany",
+                "zh-cn": "已更新依赖项\n测试和发布更新\n较小的变化",
+                "uk": "залежності оновлено\nтестування та випуск оновлено\nменші зміни"
+            },
+            "1.0.4": {
+                "en": "dependencies updated\nissue #20 fixed",
+                "de": "Abhängigkeiten aktualisiert\nProblem Nr. 20 behoben",
+                "ru": "зависимости обновлены\nпроблема №20 исправлена",
+                "pt": "dependências atualizadas\nproblema nº 20 corrigido",
+                "nl": "afhankelijkheden bijgewerkt\nprobleem #20 opgelost",
+                "fr": "dépendances mises à jour\nproblème #20 corrigé",
+                "it": "dipendenze aggiornate\nproblema n. 20 risolto",
+                "es": "dependencias actualizadas\nproblema #20 solucionado",
+                "pl": "zaktualizowano zależności\nproblem nr 20 naprawiony",
+                "zh-cn": "已更新依赖项\n问题 #20 已修复",
+                "uk": "залежності оновлено\nпроблема №20 виправлена"
+            },
+            "1.0.3": {
+                "en": "dependencies updated",
+                "de": "Abhängigkeiten aktualisiert",
+                "ru": "зависимости обновлены",
+                "pt": "dependências atualizadas",
+                "nl": "afhankelijkheden bijgewerkt",
+                "fr": "dépendances mises à jour",
+                "it": "dipendenze aggiornate",
+                "es": "dependencias actualizadas",
+                "pl": "zaktualizowano zależności",
+                "zh-cn": "依赖项已更新",
+                "uk": "залежності оновлено"
+            },
+            "1.0.2": {
+                "en": "node.js 14 and 16 compatibilty\ndependencies updated",
+                "de": "node.js 14 und 16 kompatibel\nAbhängigkeiten aktualisiert",
+                "ru": "Совместимость node.js 14 и 16\nзависимости обновлены",
+                "pt": "compatibilidade node.js 14 e 16\ndependências atualizadas",
+                "nl": "node.js 14 en 16 compatibiliteit\nafhankelijkheden bijgewerkt",
+                "fr": "compatibilité node.js 14 et 16\ndépendances mises à jour",
+                "it": "Node.js 14 e 16 compatibilità\ndipendenze aggiornate",
+                "es": "Compatibilidad de node.js 14 y 16\ndependencias actualizadas",
+                "pl": "node.js 14 i 16 kompatybilność\nzaktualizowane zależności",
+                "zh-cn": "node.js 14和16的兼容性\n依赖关系已更新",
+                "uk": "сумісність node.js 14 і 16\nзалежності оновлено"
+            },
+            "1.0.1": {
+                "en": "changes due to js-controller 3.3.x",
+                "de": "Änderungen aufgrund von js-controller 3.3.x.",
+                "ru": "изменения из-за js-controller 3.3.x",
+                "pt": "mudanças devido ao js-controller 3.3.x",
+                "nl": "veranderingen als gevolg van js-controller 3.3.x",
+                "fr": "changements dus à js-controller 3.3.x",
+                "it": "modifiche dovute a js-controller 3.3.x",
+                "es": "cambios debido a js-controller 3.3.x",
+                "pl": "zmiany spowodowane przez js-controller 3.3.x",
+                "zh-cn": "由于js-controller 3.3.x而发生的更改",
+                "uk": "зміни через js-контролер 3.3.x"
+            }
+        },
+        "titleLang": {
+            "en": "SolarViewDataReader",
+            "de": "SolarViewDataReader",
+            "ru": "SolarViewDataReader",
+            "pt": "SolarViewDataReader",
+            "nl": "SolarViewDataReader",
+            "fr": "SolarViewDataReader",
+            "it": "SolarViewDataReader",
+            "es": "SolarViewDataReader",
+            "pl": "SolarViewDataReader",
+            "zh-cn": "SolarViewDataReader",
+            "uk": "SolarViewDataReader"
+        },
+        "desc": {
+            "en": "Get Data from SolarView",
+            "de": "Daten von SolarView abrufen",
+            "ru": "Получить данные из SolarView",
+            "pt": "Obter dados do SolarView",
+            "nl": "Verkrijg gegevens van SolarView",
+            "fr": "Obtenir des données de SolarView",
+            "it": "Ottieni dati da SolarView",
+            "es": "Obtener datos de SolarView",
+            "pl": "Uzyskaj dane z SolarView",
+            "zh-cn": "从SolarView获取数据",
+            "uk": "Отримайте дані від SolarView"
+        },
+        "authors": [
+            "Achim Fürhoff <achim.fuerhoff@outlook.de>"
+        ],
+        "keywords": [
+            "SolarView",
+            "Data Logger",
+            "Photovoltaik"
+        ],
+        "license": "MIT",
+        "platform": "Javascript/Node.js",
+        "main": "main.js",
+        "icon": "solarviewdatareader.png",
+        "enabled": true,
+        "extIcon": "https://raw.githubusercontent.com/afuerhoff/ioBroker.solarviewdatareader/master/admin/solarviewdatareader.png",
+        "readme": "https://github.com/afuerhoff/ioBroker.solarviewdatareader/blob/master/README.md",
+        "loglevel": "info",
+        "mode": "daemon",
+        "type": "energy",
+        "connectionType": "local",
+        "dataSource": "poll",
+        "compact": true,
+        "materialize": true,
+        "dependencies": [
+            {
+                "js-controller": ">=3.3.22"
+            }
+        ]
     },
-    "titleLang": {
-      "en": "SolarViewDataReader",
-      "de": "SolarViewDataReader",
-      "ru": "SolarViewDataReader",
-      "pt": "SolarViewDataReader",
-      "nl": "SolarViewDataReader",
-      "fr": "SolarViewDataReader",
-      "it": "SolarViewDataReader",
-      "es": "SolarViewDataReader",
-      "pl": "SolarViewDataReader",
-      "zh-cn": "SolarViewDataReader"
+    "native": {
+        "ipaddress": "",
+        "port": "15000",
+        "intervalVal": 10,
+        "interval_seconds": false,
+        "intervalstart": "00:00",
+        "intervalend": "23:59",
+        "d0converter": false,
+        "pvi1": false,
+        "pvi2": false,
+        "pvi3": false,
+        "pvi4": false,
+        "scm1": false,
+        "scm2": false,
+        "scm3": false,
+        "scm4": false,
+        "scm5": false,
+        "setCCU": false,
+        "CCUSystemV": "hm-rega.0.xxxxx"
     },
-    "desc": {
-      "en": "Get Data from SolarView",
-      "de": "Daten von SolarView abrufen",
-      "ru": "Получить данные из SolarView",
-      "pt": "Obter dados do SolarView",
-      "nl": "Verkrijg gegevens van SolarView",
-      "fr": "Obtenir des données de SolarView",
-      "it": "Ottieni dati da SolarView",
-      "es": "Obtener datos de SolarView",
-      "pl": "Uzyskaj dane z SolarView",
-      "zh-cn": "从SolarView获取数据"
-    },
-    "authors": [
-      "Achim Fürhoff <achim.fuerhoff@outlook.de>"
-    ],
-    "keywords": [
-      "SolarView",
-      "Data Logger",
-      "Photovoltaik"
-    ],
-    "license": "MIT",
-    "platform": "Javascript/Node.js",
-    "main": "main.js",
-    "icon": "solarviewdatareader.png",
-    "enabled": true,
-    "extIcon": "https://raw.githubusercontent.com/afuerhoff/ioBroker.solarviewdatareader/master/admin/solarviewdatareader.png",
-    "readme": "https://github.com/afuerhoff/ioBroker.solarviewdatareader/blob/master/README.md",
-    "loglevel": "info",
-    "mode": "daemon",
-    "type": "energy",
-    "connectionType": "local",
-    "dataSource": "poll",
-    "compact": true,
-    "materialize": true,
-    "dependencies": [
-      {
-        "js-controller": ">=3.3.22"
-      }
-    ]
-  },
-  "native": {
-    "ipaddress": "",
-    "port": "15000",
-    "intervalVal": 10,
-    "interval_seconds": false,
-    "intervalstart": "00:00",
-    "intervalend": "23:59",
-    "d0converter": false,
-    "pvi1": false,
-    "pvi2": false,
-    "pvi3": false,
-    "pvi4": false,
-    "scm1": false,
-    "scm2": false,
-    "scm3": false,
-    "scm4": false,
-    "scm5": false,
-    "setCCU": false,
-    "CCUSystemV": "hm-rega.0.xxxxx"
-  },
-  "objects": [],
-  "instanceObjects": []
+    "objects": [],
+    "instanceObjects": []
 }
