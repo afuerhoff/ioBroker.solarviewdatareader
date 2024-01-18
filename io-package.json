@@ -89,7 +89,6 @@
         "zh-cn": "由于js-controller 3.3.x而发生的更改"
       }
     },
-    "title": "SolarViewDataReader",
     "titleLang": {
       "en": "SolarViewDataReader",
       "de": "SolarViewDataReader",
@@ -138,10 +137,7 @@
     "materialize": true,
     "dependencies": [
       {
-        "admin": ">=3.0.0"
-      },
-      {
-        "js-controller": ">=3.0.0"
+        "js-controller": ">=3.3.22"
       }
     ]
   },
