@@ -91,99 +91,99 @@
 		</div>
 		<!-- Put your content here -->
 		<div class="row">
-			<div class="col s12 m8">
+			<div class="col s12">
 			  <div class="card">
 					<div class="card-content">
 						<div class="row">
-						<div class="col s3 input-field tooltip">	
+						<div class="col s6 m4 l2 input-field tooltip">	
 							<input type="text" class="value" maxlength="15" id="ipaddress"/>
 							<label for="ipaddress" class="translate">IP-Address</label>
 							<span class="tooltiptext translate">Please enter the IP-Address from your SolarView data logger</span>
 						</div>
-						<div class="col s2 input-field tooltip">	
+						<div class="col s3 m2 l1 input-field tooltip">	
 							<input type="text" class="value" maxlength="5" id="port"/>
 							<label for="port" class="translate">Port</label>
 							<span class="tooltiptext translate">Please enter the port</span>
 						</div>
-						<div class="col s3 input-field tooltip">	
+						<div class="col s6 m3 l2 input-field tooltip">	
 							<input type="checkbox" class="value" id="d0converter"/>
 							<label for="d0converter" class="translate">d0-converter</label>
 							<span class="tooltiptext translate">Please enter if you have a d0-converter</span>
 						</div>
 						</div>
 						<div class="row">
-							<div class="col s4 input-field tooltip">	
+							<div class="col s12 m6 l3 input-field tooltip">	
 							<input type="checkbox" class="value" id="scm0"/>
 							<label for="scm0" class="translate">Self consumption meter sum</label>
 							<span class="tooltiptext translate">Please check if you use the self consumption meter sum</span>
 							</div>
-							<div class="col s4 input-field tooltip">	
+							<div class="col s12 m6 l3 input-field tooltip">	
 							<input type="checkbox" class="value" id="scm1"/>
 							<label for="scm1" class="translate">Self consumption meter 1</label>
 							<span class="tooltiptext translate">Please check if self consumption meter 1 is available</span>
 							</div>
-							<div class="col s4 input-field tooltip">	
+							<div class="col s12 m6 l3 input-field tooltip">	
 							<input type="checkbox" class="value" id="scm2"/>
 							<label for="scm2" class="translate">Self consumption meter 2</label>
 							<span class="tooltiptext translate">Please check if self consumption meter 2 is available</span>
 							</div>
-							<div class="col s4 input-field tooltip">	
+							<div class="col s12 m6 l3 input-field tooltip">	
 							<input type="checkbox" class="value" id="scm3"/>
 							<label for="scm3" class="translate">Self consumption meter 3</label>
 							<span class="tooltiptext translate">Please check if self consumption meter 3 is available</span>
 							</div>
-							<div class="col s4 input-field tooltip">	
+							<div class="col s12 m6 l3 input-field tooltip">	
 								<input type="checkbox" class="value" id="scm4"/>
 								<label for="scm4" class="translate">Self consumption meter 4</label>
 								<span class="tooltiptext translate">Please check if self consumption meter 4 is available</span>
 							</div>
 							</div>
 						<div class="row">
-						<div class="col s3 input-field tooltip">	
+						<div class="col s6 m4 l2 input-field tooltip">	
 							<input type="checkbox" class="value" id="pvi1"/>
 							<label for="pvi1" class="translate">Inverter 1</label>
 							<span class="tooltiptext translate">Please check if inverter 1 available</span>
 						</div>
-						<div class="col s3 input-field tooltip">	
+						<div class="col s6 m4 l2 input-field tooltip">	
 							<input type="checkbox" class="value" id="pvi2"/>
 							<label for="pvi2" class="translate">Inverter 2</label>
 							<span class="tooltiptext translate">Please check if inverter 2 available</span>
 						</div>
-						<div class="col s3 input-field tooltip">	
+						<div class="col s6 m4 l2 input-field tooltip">	
 							<input type="checkbox" class="value" id="pvi3"/>
 							<label for="pvi3" class="translate">Inverter 3</label>
 							<span class="tooltiptext translate">Please check if inverter 3 available</span>
 						</div>
-						<div class="col s3 input-field tooltip">	
+						<div class="col s6 m4 l2 input-field tooltip">	
 							<input type="checkbox" class="value" id="pvi4"/>
 							<label for="pvi4" class="translate">Inverter 4</label>
 							<span class="tooltiptext translate">Please check if inverter 4 available</span>
 						</div>
 						</div>
 						<div class="row">
-							<div class="col s2 input-field tooltip">
+							<div class="col s6 m4 l2 input-field tooltip">
 								<input type="number" class="value validate" min="10" max="3600" id="intervalVal" />
 								<label for="intervalVal" class="translate">polling interval in seconds</label>
 								<span class="tooltiptext translate">Here you can define the polling interval [between 10 to 3600 seconds]</span>
 							</div>						
-							<div class="col s2 input-field tooltip">	
+							<div class="col s6 m4 l2 input-field tooltip">	
 								<input type="text" class="timepicker value" id="intervalstart"/>
 								<label for="intervalstart" class="translate">Interval start</label>
 								<span class="tooltiptext translate">Please enter the interval start (e.g. 00:00)</span>
 							</div>
-							<div class="col s2 input-field tooltip">	
+							<div class="col s6 m4 l2 input-field tooltip">	
 								<input type="text" class="timepicker value" id="intervalend"/>
 								<label for="intervalend" class="translate">Interval end</label>
 								<span class="tooltiptext translate">Please enter the interval end (e.g. 23:59)</span>
 							</div>
 						</div>					
 						<div class="row">
-							<div class="col s4 input-field tooltip">	
+							<div class="col s12 m6 l3 input-field tooltip">	
 								<input type="checkbox" class="value" id="setCCU"/>
 								<label for="setCCU" class="translate">Set system variable CCU</label>
 								<span class="tooltiptext translate">Please check if you want to set a system variable in the CCU</span>
 							</div>
-							<div class="col s4 input-field tooltip">	
+							<div class="col s8 m6 l3 input-field tooltip">	
 								<input type="text" class="value" id="CCUSystemV"/>
 								<label for="CCUSystemV" class="translate">System variable</label>
 								<span class="tooltiptext translate">System variable e.g. hm-rega.0.12345</span>
@@ -193,7 +193,6 @@
 			  	</div>
 			</div>
 		</div>
-	
 	  </div>
 	</div>
 
