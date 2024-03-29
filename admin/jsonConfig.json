@@ -124,6 +124,9 @@
             "label": "Interval start",
             "tooltip": "Please enter the interval start (e.g. 00:00)",
             "format": "HH:mm",
+            "returnFormat": "HH:mm:ss",
+            "views": ["hours", "minutes"],
+            "timeSteps": {"hours": 1, "minutes": 1},
             "sm": 12,
             "md": 6,
             "lg": 2
@@ -132,17 +135,13 @@
             "type": "timePicker",
             "label": "Interval end",
             "tooltip": "Please enter the interval end (e.g. 23:59)",
+            "format": "HH:mm",
+            "returnFormat": "HH:mm:ss",
+            "views": ["hours", "minutes"],
+            "timeSteps": {"hours": 1, "minutes": 1},
             "sm": 12,
             "md": 6,
             "lg": 2
-          },
-          "timePicker1val": {
-            "type": "pattern",
-            "pattern": "stored value is ${data.intervalstart}",
-            "sm":4,
-            "md":4,
-            "lg":4,
-            "xs":4
           },
           "setCCU": {
             "newLine": true,

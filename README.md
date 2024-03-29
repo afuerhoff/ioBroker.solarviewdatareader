@@ -64,6 +64,10 @@ TKK= Temperature inverter
 	Placeholder for the next version (at the beginning of the line):
 	### __WORK IN PROGRESS__
 -->
+### **WORK IN PROGRESS**
+* (afuerhoff) code optimization
+* (afuerhoff) preparation jsonConfig (not yet productive)
+
 ### 1.0.8 (2024-01-18)
 * (afuerhoff) dependencies updated
 * (afuerhoff) translations updated
