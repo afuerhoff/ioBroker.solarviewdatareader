@@ -134,6 +134,7 @@
       "type": "free",
       "link": "https://github.com/afuerhoff/ioBroker.solarviewdatareader/blob/master/LICENSE"
     },
+    "tier": 3,
     "platform": "Javascript/Node.js",
     "main": "main.js",
     "icon": "solarviewdatareader.png",
@@ -146,7 +147,6 @@
     "connectionType": "local",
     "dataSource": "poll",
     "compact": true,
-    "materialize": true,
     "adminUI": {"config": "json"},
     "dependencies": [
       {
