@@ -129,7 +129,11 @@
       "Data Logger",
       "Photovoltaik"
     ],
-    "license": "MIT",
+    "licenseInformation": {
+      "license": "MIT",
+      "type": "free",
+      "link": "https://github.com/afuerhoff/ioBroker.solarviewdatareader/blob/master/LICENSE"
+    },
     "platform": "Javascript/Node.js",
     "main": "main.js",
     "icon": "solarviewdatareader.png",
