@@ -33,7 +33,7 @@
     "@types/node": "^20.12.2",
     "chai": "^4.4.1",
     "chai-as-promised": "^7.1.1",
-    "eslint": "^8.57.0",
+    "eslint": "^9.1.1",
     "mocha": "^10.4.0"
   },
   "main": "main.js",
