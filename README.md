@@ -65,6 +65,7 @@ TKK= Temperature inverter
 * (afuerhoff) code optimizations
 * (afuerhoff) jsonConfig added
 * (afuerhoff) dependencies updated
+* (afuerhoff) node >=18
 
 ### 1.0.8 (2024-01-18)
 * (afuerhoff) dependencies updated
