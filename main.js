@@ -15,7 +15,6 @@ let gthis;
 const sv_cmd = '00*';
 let conn;
 let jobSchedule;
-let flag_jsonConfig = true;
 
 
 //Timeout
@@ -161,7 +160,6 @@ async function getData(port, ip_address) {
 
 async function adjustIntervalToSeconds() {
     const adapterObj = await this.getForeignObjectAsync(`system.adapter.${this.namespace}`);
-    if (adapterObj.common.adminUI.config == 'json') flag_jsonConfig = true;
     if (!this.config.interval_seconds) {
         this.log.warn('Interval changed to seconds!');
         adapterObj.native.interval_seconds = true;
