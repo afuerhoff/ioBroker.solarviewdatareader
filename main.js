@@ -118,19 +118,12 @@ async function createSolarviewObjects(that, device, additional) {
     }
 }
 
-function isDate(str){
-    return !isNaN(Date.parse(str));
-}
-
 async function getData(port, ip_address) {
     const { intervalstart, intervalend, d0converter, scm0, scm1, scm2, scm3, scm4, pvi1, pvi2, pvi3, pvi4 } = gthis.config;
-    let starttime = intervalstart;
 
-    if (flag_jsonConfig){ //workaround new timePicker
-        starttime = this.config.intervalstart.split(':').slice(0, 2).join(':');
-        endtime = this.config.intervalend.split(':').slice(0, 2).join(':');
-    }
-    let endtime = intervalend === '00:00' ? '23:59' : intervalend;
+    const starttime = intervalstart.split(':').slice(0, 2).join(':');
+    let endtime = intervalend.split(':').slice(0, 2).join(':');
+    endtime = endtime === '00:00' ? '23:59' : endtime;
 
     const dnow = new Date();
     const dstart = new Date(`${dnow.getFullYear()}-${dnow.getMonth() + 1}-${dnow.getDate()} ${starttime}`);
@@ -208,13 +201,9 @@ class Solarviewdatareader extends utils.Adapter {
         const ip_address = this.config.ipaddress;
         const port = this.config.port;
         let chkCnt = 0;
-        let starttime;
-        let endtime;
 
-        if (flag_jsonConfig){ //workaround new timePicker
-            starttime = this.config.intervalstart.split(':').slice(0, 2).join(':');
-            endtime = this.config.intervalend.split(':').slice(0, 2).join(':');
-        }
+        const starttime = this.config.intervalstart.split(':').slice(0, 2).join(':');
+        const endtime = this.config.intervalend.split(':').slice(0, 2).join(':');
     
         this.log.info('start solarview ' + ip_address + ':' + port + ' - polling interval: ' + this.config.intervalVal + ' Min. (' + starttime + ' to ' + endtime + ')');
         //this.log.info('start solarview ' + ip_address + ':' + port + ' - polling interval: ' + this.config.intervalVal);
