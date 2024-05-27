@@ -15,7 +15,7 @@ let gthis;
 const sv_cmd = '00*';
 let conn;
 let jobSchedule;
-let flag_jsonConfig = false;
+let flag_jsonConfig = true;
 
 
 //Timeout
