@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "solarviewdatareader",
-    "version": "1.0.8",
+    "version": "1.1.0",
     "news": {
+      "1.1.0": {
+        "en": "code optimizations\njsonConfig added\ndependencies updated\nnode >= 18, js-controller >= 5.0.19\nadmin >= 6.17.13 due to timePicker failure",
+        "de": "codeoptimierungen\njsonConfig hinzugefügt\naktualisierte abhängigkeiten\nknoten >= 18, js-controller >= 5.19\nadmin >= 6.17.13 aufgrund von timePicker Ausfall",
+        "ru": "оптимизация кода\njsonConfig добавлен\nобновленная информация о зависимостях\nnode >= 18, js-контроллер >= 5.0.19\nadmin >= 6.17.13 из-за отказа TimePicker",
+        "pt": "otimizações de código\njsonConfig adicionado\ndependências atualizadas\nnode >= 18, js-controller >= 5.0.19\nadmin >= 6.17.13 devido à falha do timePicker",
+        "nl": "code optimalisaties\njsonConfig toegevoegd\nafhankelijkheden bijgewerkt\nvoor de toepassing van deze onderverdeling wordt verstaan onder: 5.0.19\nadmin < 6,17.13 als gevolg van timePicker-fout",
+        "fr": "optimisation des codes\njsonConfig ajouté\ndépendances mises à jour\nnoeud >= 18, js-controller >= 5.0.19\nadmin >= 6.17.13 en raison de la panne de temps",
+        "it": "ottimizzazioni del codice\njsonConfig aggiunto\ndipendenze aggiornate\n>= 18, js-controller 5.0.19\nadmin >= 6.17.13 a causa di guasto timePicker",
+        "es": "optimizaciones de código\njsonConfig añadido\ndependencias actualizadas\nnodo >= 18, js-controller 5.0.19\nadmin= 6.17.13 debido al tiempo Fallo del pirata",
+        "pl": "optymalizacja kodu\njsonConfig dodany\nzaktualizowane zależności\nwęzeł > = 18, kontroler sms > = 5. 0. 19\nadmin > = 6.17.13 z powodu awarii timePicker",
+        "uk": "оптимізація коду\njsonConfig додано\nоновлені залежності\nвузол >= 18, js-controller >= 5,0.19\nadmin >= 6.17.13 через часНездатність файлу",
+        "zh-cn": "代码优化\n添加了 json 图形\n更新依赖关系\n18号节点,js控制器 5.0.19 (中文(简体) )\n6.17.13 由于时间选择失败"
+      },
       "1.0.8": {
         "en": "dependencies updated\ntranslations updated",
         "de": "aktualisierte abhängigkeiten\nübersetzungen aktualisiert",
@@ -80,19 +93,6 @@
         "pl": "zaktualizowano zależności",
         "zh-cn": "依赖项已更新",
         "uk": "залежності оновлено"
-      },
-      "1.0.2": {
-        "en": "node.js 14 and 16 compatibilty\ndependencies updated",
-        "de": "node.js 14 und 16 kompatibel\nAbhängigkeiten aktualisiert",
-        "ru": "Совместимость node.js 14 и 16\nзависимости обновлены",
-        "pt": "compatibilidade node.js 14 e 16\ndependências atualizadas",
-        "nl": "node.js 14 en 16 compatibiliteit\nafhankelijkheden bijgewerkt",
-        "fr": "compatibilité node.js 14 et 16\ndépendances mises à jour",
-        "it": "Node.js 14 e 16 compatibilità\ndipendenze aggiornate",
-        "es": "Compatibilidad de node.js 14 y 16\ndependencias actualizadas",
-        "pl": "node.js 14 i 16 kompatybilność\nzaktualizowane zależności",
-        "zh-cn": "node.js 14和16的兼容性\n依赖关系已更新",
-        "uk": "сумісність node.js 14 і 16\nзалежності оновлено"
       }
     },
     "titleLang": {
@@ -147,7 +147,9 @@
     "connectionType": "local",
     "dataSource": "poll",
     "compact": true,
-    "adminUI": {"config": "json"},
+    "adminUI": {
+      "config": "json"
+    },
     "dependencies": [
       {
         "js-controller": ">=5.0.19"
@@ -158,7 +160,6 @@
         "admin": ">=6.17.9"
       }
     ]
- 
   },
   "native": {
     "ipaddress": "",
