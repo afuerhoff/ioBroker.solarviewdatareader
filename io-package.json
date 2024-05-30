@@ -173,11 +173,11 @@
     "pvi2": false,
     "pvi3": false,
     "pvi4": false,
+    "scm0": false,
     "scm1": false,
     "scm2": false,
     "scm3": false,
     "scm4": false,
-    "scm5": false,
     "setCCU": false,
     "CCUSystemV": "hm-rega.0.xxxxx"
   },

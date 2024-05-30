@@ -5,6 +5,6 @@
 	"all": false,
 	"plugins": ["iobroker", "license", "manual-review"],
 	"exec": {
-		"before_commit": "echo Hello World!"
+		"before_commit": "npm run build"
 	}
 }

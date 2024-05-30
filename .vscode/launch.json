@@ -8,14 +8,14 @@
 			"type": "node",
 			"request": "launch",
 			"name": "Launch Program",
-			"program": "${workspaceFolder}/main.js",
-			"outFiles": ["${workspaceFolder}/**/*.js"]
+			"program": "${workspaceFolder}/build/main.js",
+			"outFiles": ["${workspaceFolder}/build/**/*.js"]
 		},
 		{
 			"type": "node",
 			"request": "attach",
 			"name": "An den Prozess anfügen", // Name, der im VSCode Auswahlmenü neben dem grünen Play angezeigt wird
-			"address": "192.168.178.67", // Adresse, an dem der node.js Prozess läuft (bei Remote Debug, der Remote-Rechner)
+			"address": "http://127.0.0.1", // Adresse, an dem der node.js Prozess läuft (bei Remote Debug, der Remote-Rechner)
 			"port": 5858 // Port, auf dem der node.js Debugger lauscht, der mit node --debug-brk ... gestartet wird
 		}
 	]
