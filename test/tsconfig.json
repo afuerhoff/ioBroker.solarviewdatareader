@@ -1,17 +1,17 @@
 {
-    "extends": "../../tsconfig.json",
+    "extends": "../tsconfig.json",
     "compilerOptions": {
-        "rootDir": "../../src",
-        "outDir": "../../build",
+        "rootDir": "./",
+        "outDir": "../build/test",
         "module": "Node16",
         "noImplicitAny": false
     },
     "include": [
-        "../src/**/*.ts",
+        "./**/*.ts",
         "./**/*.js"
     ],
     "exclude": [
         "node_modules",
-        "../../build"
+        "../build"
     ]
 }

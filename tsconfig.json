@@ -41,13 +41,13 @@
 	},
 	"include": [
 		"src/**/*.ts",
-		"src/lib/**/*.ts",
-		"test/**/*.js"
+		
 	],
 	"exclude": [
 		"build/**",
 		"node_modules/**",
 		"admin/**",
-		"widgets/**"
+		"widgets/**",
+		"test"
 	]
 }
