@@ -4,17 +4,14 @@
  */
 
 // The adapter-core module gives you access to the core ioBroker functions
-// you need to create an adapter
 import * as utils from '@iobroker/adapter-core';
 
 // Load your modules here, e.g.:
 import * as net from 'net';
 
-//let gthis: Solarviewdatareader;
 const sv_cmd : string = '00*';
 let conn: net.Socket;
 let jobSchedule: NodeJS.Timeout;
-
 
 //Timeout
 let tout: NodeJS.Timeout;
@@ -36,7 +33,6 @@ class Solarviewdatareader extends utils.Adapter {
         });
         this.on('ready', this.onReady.bind(this));
         this.on('unload', this.onUnload.bind(this));
-        //gthis = this;
     }
 
     // Nullen voranstellen - add Leading Zero
@@ -308,7 +304,7 @@ class Solarviewdatareader extends utils.Adapter {
     }
 }
 
-if (module.parent) {
+if (require.main !== module) {
     module.exports = (options: Partial<utils.AdapterOptions> | undefined) => new Solarviewdatareader(options);
 } else {
     (() => new Solarviewdatareader())();
