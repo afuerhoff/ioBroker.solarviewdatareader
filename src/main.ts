@@ -213,9 +213,17 @@ class Solarviewdatareader extends utils.Adapter {
         conn = new net.Socket();
         conn.setTimeout(2000);
 
+        const starttime = this.config.intervalstart.split(':').slice(0, 2).join(':');
+        const endtime = this.config.intervalend.split(':').slice(0, 2).join(':');
+
+        this.log.info('start solarview ' + ip_address + ':' + port + ' - polling interval: ' + this.config.intervalVal + ' Min. (' + starttime + ' to ' + endtime + ')');
+        this.log.info('d0 converter: ' + this.config.d0converter.toString());
+
         await this.createGlobalObjects();
 
-        if (this.config.d0converter) await this.createSolarviewObjects('d0', false);
+        await this.createSolarviewObjects('pvig', false);
+        if (this.config.d0converter) await this.createSolarviewObjects('d0supply', false);
+        if (this.config.d0converter) await this.createSolarviewObjects('d0consumption', false);
         if (this.config.scm0) await this.createSolarviewObjects('scm0', false);
         if (this.config.scm1) await this.createSolarviewObjects('scm1', false);
         if (this.config.scm2) await this.createSolarviewObjects('scm2', false);
@@ -264,6 +272,7 @@ class Solarviewdatareader extends utils.Adapter {
         });
 
         conn.on('close', () => {
+            this.log.debug('connection closed');
             if (chkCnt > 3) {
                 this.setState('info.connection', false, true);
                 this.log.warn('Solarview Server is not reachable');
@@ -278,6 +287,7 @@ class Solarviewdatareader extends utils.Adapter {
 
         conn.on('error', (err) => {
             this.log.error(err.message);
+            this.setStateChanged('info.connection', { val: false, ack: true });
         });
 
         if (this.config.interval_seconds) {
@@ -296,6 +306,7 @@ class Solarviewdatareader extends utils.Adapter {
             clearTimeout(jobSchedule);
             clearTimeout(tout);
             conn.destroy();
+            this.setStateChanged('info.connection', { val: false, ack: true });
             this.log.info('cleaned everything up...');
             callback();
         } catch (e) {
