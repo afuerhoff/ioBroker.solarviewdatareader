@@ -212,6 +212,7 @@ class Solarviewdatareader extends utils.Adapter {
 
         const sDate = `${sv_data[3]}-${this.aLZ(parseInt(sv_data[2]))}-${this.aLZ(parseInt(sv_data[1]))} ${this.aLZ(parseInt(sv_data[4]))}:${this.aLZ(parseInt(sv_data[5]))}`;
         this.setStateChanged('info.lastUpdate', { val: sDate, ack: true });
+        this.setStateChanged('info.connection', { val: true, ack: true });
     }
 
     handleChecksumFailure(csum: ChecksumResult, response: Buffer): void {
@@ -350,7 +351,6 @@ class Solarviewdatareader extends utils.Adapter {
         };
 
         conn.on('data', async (data) => {
-            this.setStateChanged('info.connection', { val: true, ack: true });
             chkCnt = 0;
             clearTimeout(jobSchedule);
             jobSchedule = setTimeout(() => {
