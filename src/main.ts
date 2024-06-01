@@ -45,7 +45,7 @@ class Solarviewdatareader extends utils.Adapter {
         const buffer = Buffer.from(inputString);
         let sum = 0;
         let index = 0;
-    
+
         for (let i = 0; i < buffer.length; i++) {
             sum = (sum + buffer[i]) % 128;
             if (buffer[i] === 125) {
@@ -53,21 +53,21 @@ class Solarviewdatareader extends utils.Adapter {
                 break;
             }
         }
-    
+
         const result: ChecksumResult = {
             'result': buffer[index] === sum,
             'chksum': sum,
             'ind': index,
             'data': buffer
         };
-    
+
         return result;
     }
 
     //async createObject(that: Solarviewdatareader, id: string, typeVal: ioBroker.CommonType, name: string, commonType: string, role: string, def: any, rd: boolean, wr: boolean, desc: string, unit: string) {
-    async createObject(id: string, obj: ioBroker.SettableObject) {
+    async createObject(id: string, obj: ioBroker.SettableObject): Promise<void>  {
         await this.setObjectNotExistsAsync(id, obj);
-    
+
         const currentState = await this.getStateAsync(id);
         const stCommon: ioBroker.StateCommon = obj.common as ioBroker.StateCommon; // Type Assertion
         if (currentState === null && stCommon.def !== undefined) {
@@ -75,7 +75,7 @@ class Solarviewdatareader extends utils.Adapter {
         }
     }
 
-    async createGlobalObjects() {
+    async createGlobalObjects(): Promise<void> {
         const options: [string, ioBroker.SettableObject][] =[
             ['info.connection', {type: 'state', common: {name: 'connection', type: 'boolean', role: 'indicator.connected', def: false, read: true, write: false, desc: 'Solarview connection state', unit: ''}, native: {}}],
             ['info.lastUpdate', {type: 'state', common: {name: 'lastUpdate', type: 'string', role: 'date', def: (new Date('1900-01-01T00:00:00')).toString(), read: true, write: false, desc: 'Last connection date/time', unit: ''}, native: {}}],
@@ -86,13 +86,13 @@ class Solarviewdatareader extends utils.Adapter {
             ['info.connection', 'state', 'connection', 'boolean', 'indicator.connected', false, true, false, 'Solarview connection state', ''],
             ['info.lastUpdate', 'state', 'lastUpdate', 'string', 'date', (new Date('1900-01-01T00:00:00')).toString(), true, false, 'Last connection date/time', ''],
         ];*/
-    
+
         for (const option of options) {
             await this.createObject(...option);
         }
     }
 
-    async createSolarviewObjects(device: string, additional: boolean = false) {
+    async createSolarviewObjects(device: string, additional: boolean = false): Promise<void> {
         let options: [string, ioBroker.SettableObject][] =[
             [device + '.current', {type: 'state', common: {name: 'current', type: 'number', role: 'value', def: 0, read: true, write: false, desc: 'Current PAC', unit: 'W'}, native: {}}],
             [device + '.daily', {type: 'state', common: {name: 'daily', type: 'number', role: 'value', def: 0, read: true, write: false, desc: 'Daily yield', unit: 'kWh'}, native: {}}],
@@ -100,7 +100,7 @@ class Solarviewdatareader extends utils.Adapter {
             [device + '.yearly', {type: 'state', common: {name: 'yearly', type: 'number', role: 'value', def: 0, read: true, write: false, desc: 'Yearly yield', unit: 'kWh'}, native: {}}],
             [device + '.total', {type: 'state', common: {name: 'total', type: 'number', role: 'value', def: 0, read: true, write: false, desc: 'Total yield', unit: 'kWh'}, native: {}}],
         ];
-    
+
         if (additional) {
             const additionalOptions: [string, ioBroker.SettableObject][] =[
                 [device + '.udc', {type: 'state', common: {name: 'udc', type: 'number', role: 'value', def: 0, read: true, write: false, desc: 'Generator voltage', unit: 'V'}, native: {}}],
@@ -121,13 +121,13 @@ class Solarviewdatareader extends utils.Adapter {
             ];
             options = options.concat(additionalOptions);
         }
-    
+
         for (const option of options) {
             await this.createObject(...option);
         }
     }
 
-    async adjustIntervalToSeconds() {
+    async adjustIntervalToSeconds(): Promise<void> {
         const adapterObj: ioBroker.Object | null | undefined = await this.getForeignObjectAsync(`system.adapter.${this.namespace}`);
         if (!this.config.interval_seconds) {
             if (adapterObj) {
@@ -142,18 +142,18 @@ class Solarviewdatareader extends utils.Adapter {
 
     async getData(port: number, ip_address: string): Promise<void> {
         const { intervalstart, intervalend, d0converter, scm0, scm1, scm2, scm3, scm4, pvi1, pvi2, pvi3, pvi4 } = this.config;
-    
+
         const starttime = intervalstart.split(':').slice(0, 2).join(':');
         let endtime = intervalend.split(':').slice(0, 2).join(':');
         endtime = endtime === '00:00' ? '23:59' : endtime;
-    
+
         const dnow = new Date();
         const dstart = new Date(`${dnow.getFullYear()}-${dnow.getMonth() + 1}-${dnow.getDate()} ${starttime}`);
         const dend = new Date(`${dnow.getFullYear()}-${dnow.getMonth() + 1}-${dnow.getDate()} ${endtime}`);
-    
+
         let timeoutCnt = 0;
-    
-        const executeCommand = (cmd: string) => {
+
+        const executeCommand = (cmd: string):void => {
             timeoutCnt += 500;
             tout = setTimeout(() => {
                 conn.connect(port, ip_address, () => {
@@ -162,17 +162,17 @@ class Solarviewdatareader extends utils.Adapter {
                 });
             }, timeoutCnt);
         };
-    
+
         if (dnow >= dstart && dnow <= dend) {
             executeCommand('00*'); // pvig
-    
+
             if (d0converter) executeCommand('21*');
             if (pvi1) executeCommand('01*');
             if (pvi2) executeCommand('02*');
             if (pvi3) executeCommand('03*');
             if (pvi4) executeCommand('04*');
         }
-    
+
         if (d0converter) executeCommand('22*');
         if (scm0) executeCommand('10*');
         if (scm1) executeCommand('11*');
@@ -203,17 +203,17 @@ class Solarviewdatareader extends utils.Adapter {
         this.log.error(errorMessage);
         this.setStateChanged('info.connection', { val: false, ack: true });
     }
-    
+
     handleChecksumSuccess(sv_data: string[], sv_prefix: string, response: Buffer): void {
         chkCnt = 0;
         this.log.debug(sv_cmd + ': ' + response.toString('ascii'));
-    
+
         this.updateSolarviewStates(sv_data, sv_prefix);
-    
+
         const sDate = `${sv_data[3]}-${this.aLZ(parseInt(sv_data[2]))}-${this.aLZ(parseInt(sv_data[1]))} ${this.aLZ(parseInt(sv_data[4]))}:${this.aLZ(parseInt(sv_data[5]))}`;
         this.setStateChanged('info.lastUpdate', { val: sDate, ack: true });
     }
-    
+
     handleChecksumFailure(csum: ChecksumResult, response: Buffer): void {
         chkCnt += 1;
         if (chkCnt > 0 && csum.chksum !== 0) {
@@ -232,17 +232,17 @@ class Solarviewdatareader extends utils.Adapter {
         this.updateState(sv_prefix + 'monthly', sv_data, 7);
         this.updateState(sv_prefix + 'yearly', sv_data, 8);
         this.updateState(sv_prefix + 'total', sv_data, 9);
-    
+
         if (sv_data.length >= 23) {
             this.updateExtendedStates(sv_data, sv_prefix);
         }
     }
-    
+
     updateState(stateName: string, sv_data: string[], index: number): void {
         const value = Number(sv_data[index]);
         this.setStateChanged(stateName, { val: value, ack: true });
     }
-    
+
     async handleCCUUpdate(sv_data: string[]): Promise<void> {
         if (this.config.setCCU) {
             const obj = await this.findForeignObjectAsync(this.config.CCUSystemV, 'state');
@@ -254,7 +254,7 @@ class Solarviewdatareader extends utils.Adapter {
             }
         }
     }
-    
+
     updateExtendedStates(sv_data: string[], sv_prefix: string): void {
         this.updateState(sv_prefix + 'udc', sv_data, 11);
         this.updateState(sv_prefix + 'idc', sv_data, 12);
@@ -264,7 +264,7 @@ class Solarviewdatareader extends utils.Adapter {
         this.updateState(sv_prefix + 'idcc', sv_data, 16);
         this.updateState(sv_prefix + 'udcd', sv_data, 17);
         this.updateState(sv_prefix + 'idcd', sv_data, 18);
-    
+
         if (sv_data.length === 27) { // Neue Version Solarview
             this.updateState(sv_prefix + 'ul1', sv_data, 19);
             this.updateState(sv_prefix + 'il1', sv_data, 20);
@@ -279,12 +279,11 @@ class Solarviewdatareader extends utils.Adapter {
             this.updateState(sv_prefix + 'tkk', sv_data, 21);
         }
     }
-    
-    async onReady() {
+
+    private async onReady(): Promise<void> {
         const ip_address: string = this.config.ipaddress;
         const port: number = this.config.port;
         let chkCnt = 0;
-        const that = this;
 
         conn = new net.Socket();
         conn.setTimeout(2000);
@@ -316,14 +315,13 @@ class Solarviewdatareader extends utils.Adapter {
             return sv_data.split(',');
         }
 
-        const processData = async (data: Buffer) => {
-            let strdata: string[] = preprocessSolarviewData(data);
+        const processData = async (data: Buffer): Promise<void> => {
+            const strdata: string[] = preprocessSolarviewData(data);
             const id = this.getSolarviewPrefix(strdata[0]);
             //let strdata = data.toString('ascii');
             //let id: string = strdata.substring(1, 3);
             //let pv: string = strdata.substring(4, strdata.length - 5);
-            let cs: ChecksumResult = this.calcChecksum(data.toString('ascii'));
-            let sdata: string[]; 
+            const cs: ChecksumResult = this.calcChecksum(data.toString('ascii'));
             if (cs.result) {
                 this.handleChecksumSuccess(strdata, id, data);
             } else {

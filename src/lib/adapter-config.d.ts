@@ -8,29 +8,29 @@
 
 // Augment the globally declared type ioBroker.AdapterConfig
 declare global {
-	namespace ioBroker {
-		interface AdapterConfig {
-			ipaddress: string;
-			port: number;
-			intervalVal: number;
-			interval_seconds: boolean;
-			intervalstart: string;
-			intervalend: string;
-			d0converter: boolean;
-			pvi1: boolean;
-			pvi2: boolean;
-			pvi3: boolean;
-			pvi4: boolean;
-			scm0: boolean;
-			scm1: boolean;
-			scm2: boolean;
-			scm3: boolean;
-			scm4: boolean;
-			setCCU: boolean;
-			CCUSystemV: string;
-			// Do not enter anything here!
-		}
-	}
+    namespace ioBroker {
+        interface AdapterConfig {
+            ipaddress: string;
+            port: number;
+            intervalVal: number;
+            interval_seconds: boolean;
+            intervalstart: string;
+            intervalend: string;
+            d0converter: boolean;
+            pvi1: boolean;
+            pvi2: boolean;
+            pvi3: boolean;
+            pvi4: boolean;
+            scm0: boolean;
+            scm1: boolean;
+            scm2: boolean;
+            scm3: boolean;
+            scm4: boolean;
+            setCCU: boolean;
+            CCUSystemV: string;
+            // Do not enter anything here!
+        }
+    }
 }
 
 // this is required so the above AdapterConfig is found by TypeScript / type checking
