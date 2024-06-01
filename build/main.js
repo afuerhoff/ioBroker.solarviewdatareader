@@ -259,7 +259,6 @@ class Solarviewdatareader extends utils.Adapter {
     const ip_address = this.config.ipaddress;
     const port = this.config.port;
     let chkCnt2 = 0;
-    const that = this;
     conn = new net.Socket();
     conn.setTimeout(2e3);
     const starttime = this.config.intervalstart.split(":").slice(0, 2).join(":");
@@ -296,10 +295,9 @@ class Solarviewdatareader extends utils.Adapter {
       return sv_data.split(",");
     }
     const processData = async (data) => {
-      let strdata = preprocessSolarviewData(data);
+      const strdata = preprocessSolarviewData(data);
       const id = this.getSolarviewPrefix(strdata[0]);
-      let cs = this.calcChecksum(data.toString("ascii"));
-      let sdata;
+      const cs = this.calcChecksum(data.toString("ascii"));
       if (cs.result) {
         this.handleChecksumSuccess(strdata, id, data);
       } else {
@@ -307,6 +305,7 @@ class Solarviewdatareader extends utils.Adapter {
       }
     };
     conn.on("data", async (data) => {
+      this.setStateChanged("info.connection", { val: true, ack: true });
       chkCnt2 = 0;
       clearTimeout(jobSchedule);
       jobSchedule = setTimeout(() => {
