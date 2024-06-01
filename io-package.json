@@ -136,7 +136,7 @@
     },
     "tier": 3,
     "platform": "Javascript/Node.js",
-    "main": "main.js",
+    "main": "build/main.js",
     "icon": "solarviewdatareader.png",
     "enabled": true,
     "extIcon": "https://raw.githubusercontent.com/afuerhoff/ioBroker.solarviewdatareader/master/admin/solarviewdatareader.png",
@@ -182,5 +182,26 @@
     "CCUSystemV": "hm-rega.0.xxxxx"
   },
   "objects": [],
-  "instanceObjects": []
-}
+  "instanceObjects": [
+    {
+        "_id": "info",
+        "type": "channel",
+        "common": {
+            "name": "Information"
+        },
+        "native": {}
+    },
+    {
+        "_id": "info.connection",
+        "type": "state",
+        "common": {
+            "role": "indicator.connected",
+            "name": "Device or service connected",
+            "type": "boolean",
+            "read": true,
+            "write": false,
+            "def": false
+        },
+        "native": {}
+    }
+]}

@@ -12,6 +12,7 @@ import * as net from 'net';
 const sv_cmd : string = '00*';
 let conn: net.Socket;
 let jobSchedule: NodeJS.Timeout;
+let chkCnt: number = 0;
 
 //Timeout
 let tout: NodeJS.Timeout;
@@ -99,13 +100,6 @@ class Solarviewdatareader extends utils.Adapter {
             [device + '.yearly', {type: 'state', common: {name: 'yearly', type: 'number', role: 'value', def: 0, read: true, write: false, desc: 'Yearly yield', unit: 'kWh'}, native: {}}],
             [device + '.total', {type: 'state', common: {name: 'total', type: 'number', role: 'value', def: 0, read: true, write: false, desc: 'Total yield', unit: 'kWh'}, native: {}}],
         ];
-        /*let options: [string, string, string, string, string, any, boolean, boolean, string, string][] = [
-            [device + '.current', 'state', 'current', 'number', 'value', 0, true, false, 'Current PAC', 'W'],
-            [device + '.daily', 'state', 'daily', 'number', 'value', 0, true, false, 'Daily yield', 'kWh'],
-            [device + '.monthly', 'state', 'monthly', 'number', 'value', 0, true, false, 'Monthly yield', 'kWh'],
-            [device + '.yearly', 'state', 'yearly', 'number', 'value', 0, true, false, 'Yearly yield', 'kWh'],
-            [device + '.total', 'state', 'total', 'number', 'value', 0, true, false, 'Total yield', 'kWh'],
-        ];*/
     
         if (additional) {
             const additionalOptions: [string, ioBroker.SettableObject][] =[
@@ -125,23 +119,6 @@ class Solarviewdatareader extends utils.Adapter {
                 [device + '.il3', {type: 'state', common: {name: 'il3', type: 'number', role: 'value', def: 0, read: true, write: false, desc: 'Mains current', unit: 'A'}, native: {}}],
                 [device + '.tkk', {type: 'state', common: {name: 'tkk', type: 'number', role: 'value', def: 0, read: true, write: false, desc: 'Temperature', unit: '°C'}, native: {}}],
             ];
-            /*const additionalOptions: [string, string, string, string, string, any, boolean, boolean, string, string][] = [
-                [device + '.udc', 'state', 'udc', 'number', 'value', 0, true, false, 'Generator voltage', 'V'],
-                [device + '.idc', 'state', 'idc', 'number', 'value', 0, true, false, 'Generator current', 'A'],
-                [device + '.udcb', 'state', 'udcb', 'number', 'value', 0, true, false, 'Generator voltage', 'V'],
-                [device + '.idcb', 'state', 'idcb', 'number', 'value', 0, true, false, 'Generator current', 'A'],
-                [device + '.udcc', 'state', 'udcc', 'number', 'value', 0, true, false, 'Generator voltage', 'V'],
-                [device + '.idcc', 'state', 'idcc', 'number', 'value', 0, true, false, 'Generator current', 'A'],
-                [device + '.udcd', 'state', 'udcd', 'number', 'value', 0, true, false, 'Generator voltage', 'V'],
-                [device + '.idcd', 'state', 'idcd', 'number', 'value', 0, true, false, 'Generator current', 'A'],
-                [device + '.ul1', 'state', 'ul1', 'number', 'value', 0, true, false, 'Mains voltage', 'V'],
-                [device + '.il1', 'state', 'il1', 'number', 'value', 0, true, false, 'Mains current', 'A'],
-                [device + '.ul2', 'state', 'ul2', 'number', 'value', 0, true, false, 'Mains voltage', 'V'],
-                [device + '.il2', 'state', 'il2', 'number', 'value', 0, true, false, 'Mains current', 'A'],
-                [device + '.ul3', 'state', 'ul3', 'number', 'value', 0, true, false, 'Mains voltage', 'V'],
-                [device + '.il3', 'state', 'il3', 'number', 'value', 0, true, false, 'Mains current', 'A'],
-                [device + '.tkk', 'state', 'tkk', 'number', 'value', 0, true, false, 'Temperature', '°C'],
-            ];*/
             options = options.concat(additionalOptions);
         }
     
@@ -204,6 +181,105 @@ class Solarviewdatareader extends utils.Adapter {
         if (scm4) executeCommand('14*');
     }
 
+    getSolarviewPrefix(dataCode: string): string {
+        const prefixMap: { [key: string]: string } = {
+            '00': 'pvig.',
+            '01': 'pvi1.',
+            '02': 'pvi2.',
+            '03': 'pvi3.',
+            '04': 'pvi4.',
+            '10': 'scm0.',
+            '11': 'scm1.',
+            '12': 'scm2.',
+            '13': 'scm3.',
+            '14': 'scm4.',
+            '21': 'd0supply.',
+            '22': 'd0consumption.'
+        };
+        return prefixMap[dataCode] || '';
+    }
+
+    handleConnectionError(errorMessage: string): void {
+        this.log.error(errorMessage);
+        this.setStateChanged('info.connection', { val: false, ack: true });
+    }
+    
+    handleChecksumSuccess(sv_data: string[], sv_prefix: string, response: Buffer): void {
+        chkCnt = 0;
+        this.log.debug(sv_cmd + ': ' + response.toString('ascii'));
+    
+        this.updateSolarviewStates(sv_data, sv_prefix);
+    
+        const sDate = `${sv_data[3]}-${this.aLZ(parseInt(sv_data[2]))}-${this.aLZ(parseInt(sv_data[1]))} ${this.aLZ(parseInt(sv_data[4]))}:${this.aLZ(parseInt(sv_data[5]))}`;
+        this.setStateChanged('info.lastUpdate', { val: sDate, ack: true });
+    }
+    
+    handleChecksumFailure(csum: ChecksumResult, response: Buffer): void {
+        chkCnt += 1;
+        if (chkCnt > 0 && csum.chksum !== 0) {
+            const buf = Buffer.from(response.toString('ascii'));
+            this.log.warn(`checksum not correct! <${buf[csum.ind - 1]} ${buf[csum.ind]} ${buf[csum.ind + 1]} ${buf[csum.ind + 2]}   ${csum.chksum}>`);
+            this.log.warn(`${sv_cmd}: ${csum.data}`);
+        }
+    }
+
+    updateSolarviewStates(sv_data: string[], sv_prefix: string): void {
+        this.updateState(sv_prefix + 'current', sv_data, 10);
+        if (sv_prefix === 'pvig.') {
+            this.handleCCUUpdate(sv_data);
+        }
+        this.updateState(sv_prefix + 'daily', sv_data, 6);
+        this.updateState(sv_prefix + 'monthly', sv_data, 7);
+        this.updateState(sv_prefix + 'yearly', sv_data, 8);
+        this.updateState(sv_prefix + 'total', sv_data, 9);
+    
+        if (sv_data.length >= 23) {
+            this.updateExtendedStates(sv_data, sv_prefix);
+        }
+    }
+    
+    updateState(stateName: string, sv_data: string[], index: number): void {
+        const value = Number(sv_data[index]);
+        this.setStateChanged(stateName, { val: value, ack: true });
+    }
+    
+    async handleCCUUpdate(sv_data: string[]): Promise<void> {
+        if (this.config.setCCU) {
+            const obj = await this.findForeignObjectAsync(this.config.CCUSystemV, 'state');
+            if (obj && obj.id) {
+                this.log.debug('set CCU system variable: ' + this.config.CCUSystemV);
+                this.setForeignState(this.config.CCUSystemV, { val: Number(sv_data[10]), ack: false });
+            } else {
+                this.log.error(`CCU system variable ${this.config.CCUSystemV} does not exist!`);
+            }
+        }
+    }
+    
+    updateExtendedStates(sv_data: string[], sv_prefix: string): void {
+        this.updateState(sv_prefix + 'udc', sv_data, 11);
+        this.updateState(sv_prefix + 'idc', sv_data, 12);
+        this.updateState(sv_prefix + 'udcb', sv_data, 13);
+        this.updateState(sv_prefix + 'idcb', sv_data, 14);
+        this.updateState(sv_prefix + 'udcc', sv_data, 15);
+        this.updateState(sv_prefix + 'idcc', sv_data, 16);
+        this.updateState(sv_prefix + 'udcd', sv_data, 17);
+        this.updateState(sv_prefix + 'idcd', sv_data, 18);
+    
+        if (sv_data.length === 27) { // Neue Version Solarview
+            this.updateState(sv_prefix + 'ul1', sv_data, 19);
+            this.updateState(sv_prefix + 'il1', sv_data, 20);
+            this.updateState(sv_prefix + 'ul2', sv_data, 21);
+            this.updateState(sv_prefix + 'il2', sv_data, 22);
+            this.updateState(sv_prefix + 'ul3', sv_data, 23);
+            this.updateState(sv_prefix + 'il3', sv_data, 24);
+            this.updateState(sv_prefix + 'tkk', sv_data, 25);
+        } else if (sv_data.length === 23) { // Alte Version Solarview
+            this.updateState(sv_prefix + 'ul1', sv_data, 19);
+            this.updateState(sv_prefix + 'il1', sv_data, 20);
+            this.updateState(sv_prefix + 'tkk', sv_data, 21);
+        }
+    }
+    
     async onReady() {
         const ip_address: string = this.config.ipaddress;
         const port: number = this.config.port;
@@ -234,14 +310,27 @@ class Solarviewdatareader extends utils.Adapter {
         if (this.config.pvi3) await this.createSolarviewObjects('pvi3', true);
         if (this.config.pvi4) await this.createSolarviewObjects('pvi4', true);
 
-        const processData = async (data: Buffer) => {
-            let strdata = data.toString();
-            let id: string;
-            let pv: string;
-            let cs: ChecksumResult;
-            let sdata: string[];
+        function preprocessSolarviewData(response: Buffer): string[] {
+            let sv_data = response.toString('ascii');
+            sv_data = sv_data.replace(/[{}]+/g, ''); // Remove "{}"
+            return sv_data.split(',');
+        }
 
-            switch (true) {
+        const processData = async (data: Buffer) => {
+            let strdata: string[] = preprocessSolarviewData(data);
+            const id = this.getSolarviewPrefix(strdata[0]);
+            //let strdata = data.toString('ascii');
+            //let id: string = strdata.substring(1, 3);
+            //let pv: string = strdata.substring(4, strdata.length - 5);
+            let cs: ChecksumResult = this.calcChecksum(data.toString('ascii'));
+            let sdata: string[]; 
+            if (cs.result) {
+                this.handleChecksumSuccess(strdata, id, data);
+            } else {
+                this.handleChecksumFailure(cs, data);
+            }
+
+            /*switch (true) {
                 case strdata.startsWith('/'):
                     id = strdata.substring(1, 4);
                     pv = strdata.substring(5, strdata.length - 4);
@@ -259,7 +348,7 @@ class Solarviewdatareader extends utils.Adapter {
                 default:
                     that.log.warn(`Data cannot be processed: ${strdata}`);
                     break;
-            }
+            }*/
         };
 
         conn.on('data', async (data) => {
@@ -301,7 +390,7 @@ class Solarviewdatareader extends utils.Adapter {
         }, 1000);
     }
 
-    async onUnload(callback: () => void) {
+    private onUnload(callback: () => void): void{
         try {
             clearTimeout(jobSchedule);
             clearTimeout(tout);
