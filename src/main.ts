@@ -350,6 +350,7 @@ class Solarviewdatareader extends utils.Adapter {
         };
 
         conn.on('data', async (data) => {
+            this.setStateChanged('info.connection', { val: true, ack: true });
             chkCnt = 0;
             clearTimeout(jobSchedule);
             jobSchedule = setTimeout(() => {
