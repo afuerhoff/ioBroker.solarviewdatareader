@@ -15,7 +15,7 @@
     	
 		"noEmitOnError": true,
     	"outDir": "./build/",
-    	"rootDir": "src",
+    	//"rootDir": "src",
 		"removeComments": false,
 		
 		// this is necessary for the automatic typing of the adapter config
@@ -47,6 +47,5 @@
 		"node_modules/**",
 		"admin/**",
 		"widgets/**",
-		"test"
 	]
 }

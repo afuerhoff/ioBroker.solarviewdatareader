@@ -6,9 +6,6 @@
       "checkJs": false,
       "noEmit": false,
       "declaration": false,
-      //"types": ["node", "@iobroker/types"]
-      //"types": ["@types/iobroker"],
-      //"typeRoots": ["./node_modules/@types"]
     },
     "include": [
       "src/**/*.ts"
