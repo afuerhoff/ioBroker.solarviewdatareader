@@ -26,12 +26,14 @@ interface ChecksumResult {
 }
 
 class Solarviewdatareader extends utils.Adapter {
+    pTimeoutcnt!: number;
 
     public constructor(options: Partial<utils.AdapterOptions> = {}) {
         super({
             ...options,
             name: 'solarviewdatareader',
         });
+        this.pTimeoutcnt = 0;
         this.on('ready', this.onReady.bind(this));
         this.on('unload', this.onUnload.bind(this));
     }
@@ -79,13 +81,7 @@ class Solarviewdatareader extends utils.Adapter {
         const options: [string, ioBroker.SettableObject][] =[
             ['info.connection', {type: 'state', common: {name: 'connection', type: 'boolean', role: 'indicator.connected', def: false, read: true, write: false, desc: 'Solarview connection state', unit: ''}, native: {}}],
             ['info.lastUpdate', {type: 'state', common: {name: 'lastUpdate', type: 'string', role: 'date', def: (new Date('1900-01-01T00:00:00')).toString(), read: true, write: false, desc: 'Last connection date/time', unit: ''}, native: {}}],
-            //['info.connection', 'state', 'connection', 'boolean', 'indicator.connected', false, true, false, 'Solarview connection state', ''],
-            //['info.lastUpdate', 'state', 'lastUpdate', 'string', 'date', (new Date('1900-01-01T00:00:00')).toString(), true, false, 'Last connection date/time', ''],
         ];
-        /*const options: [string, string, string, string, string, any, boolean, boolean, string, string][] = [
-            ['info.connection', 'state', 'connection', 'boolean', 'indicator.connected', false, true, false, 'Solarview connection state', ''],
-            ['info.lastUpdate', 'state', 'lastUpdate', 'string', 'date', (new Date('1900-01-01T00:00:00')).toString(), true, false, 'Last connection date/time', ''],
-        ];*/
 
         for (const option of options) {
             await this.createObject(...option);
@@ -140,45 +136,10 @@ class Solarviewdatareader extends utils.Adapter {
         }
     }
 
-    async getData(port: number, ip_address: string): Promise<void> {
-        const { intervalstart, intervalend, d0converter, scm0, scm1, scm2, scm3, scm4, pvi1, pvi2, pvi3, pvi4 } = this.config;
-
-        const starttime = intervalstart.split(':').slice(0, 2).join(':');
-        let endtime = intervalend.split(':').slice(0, 2).join(':');
-        endtime = endtime === '00:00' ? '23:59' : endtime;
-
-        const dnow = new Date();
-        const dstart = new Date(`${dnow.getFullYear()}-${dnow.getMonth() + 1}-${dnow.getDate()} ${starttime}`);
-        const dend = new Date(`${dnow.getFullYear()}-${dnow.getMonth() + 1}-${dnow.getDate()} ${endtime}`);
-
-        let timeoutCnt = 0;
-
-        const executeCommand = (cmd: string):void => {
-            timeoutCnt += 500;
-            tout = setTimeout(() => {
-                conn.connect(port, ip_address, () => {
-                    conn.write(cmd);
-                    conn.end();
-                });
-            }, timeoutCnt);
-        };
-
-        if (dnow >= dstart && dnow <= dend) {
-            executeCommand('00*'); // pvig
-
-            if (d0converter) executeCommand('21*');
-            if (pvi1) executeCommand('01*');
-            if (pvi2) executeCommand('02*');
-            if (pvi3) executeCommand('03*');
-            if (pvi4) executeCommand('04*');
-        }
-
-        if (d0converter) executeCommand('22*');
-        if (scm0) executeCommand('10*');
-        if (scm1) executeCommand('11*');
-        if (scm2) executeCommand('12*');
-        if (scm3) executeCommand('13*');
-        if (scm4) executeCommand('14*');
+    preprocessSolarviewData(response: Buffer): string[] {
+        let sv_data = response.toString('ascii');
+        sv_data = sv_data.replace(/[{}]+/g, ''); // Remove "{}"
+        return sv_data.split(',');
     }
 
     getSolarviewPrefix(dataCode: string): string {
@@ -198,6 +159,17 @@ class Solarviewdatareader extends utils.Adapter {
         };
         return prefixMap[dataCode] || '';
     }
+
+    processData = async (data: Buffer): Promise<void> => {
+        const strdata: string[] = this.preprocessSolarviewData(data);
+        const id = this.getSolarviewPrefix(strdata[0]);
+        const cs: ChecksumResult = this.calcChecksum(data.toString('ascii'));
+        if (cs.result) {
+            this.handleChecksumSuccess(strdata, id, data);
+        } else {
+            this.handleChecksumFailure(cs, data);
+        }
+    };
 
     handleConnectionError(errorMessage: string): void {
         this.log.error(errorMessage);
@@ -292,7 +264,7 @@ class Solarviewdatareader extends utils.Adapter {
         const starttime = this.config.intervalstart.split(':').slice(0, 2).join(':');
         const endtime = this.config.intervalend.split(':').slice(0, 2).join(':');
 
-        this.log.info('start solarview ' + ip_address + ':' + port + ' - polling interval: ' + this.config.intervalVal + ' Min. (' + starttime + ' to ' + endtime + ')');
+        this.log.info('start solarview ' + ip_address + ':' + port + ' - polling interval: ' + this.config.intervalVal + 's (' + starttime + ' to ' + endtime + ')');
         this.log.info('d0 converter: ' + this.config.d0converter.toString());
 
         await this.createGlobalObjects();
@@ -310,53 +282,13 @@ class Solarviewdatareader extends utils.Adapter {
         if (this.config.pvi3) await this.createSolarviewObjects('pvi3', true);
         if (this.config.pvi4) await this.createSolarviewObjects('pvi4', true);
 
-        function preprocessSolarviewData(response: Buffer): string[] {
-            let sv_data = response.toString('ascii');
-            sv_data = sv_data.replace(/[{}]+/g, ''); // Remove "{}"
-            return sv_data.split(',');
-        }
-
-        const processData = async (data: Buffer): Promise<void> => {
-            const strdata: string[] = preprocessSolarviewData(data);
-            const id = this.getSolarviewPrefix(strdata[0]);
-            //let strdata = data.toString('ascii');
-            //let id: string = strdata.substring(1, 3);
-            //let pv: string = strdata.substring(4, strdata.length - 5);
-            const cs: ChecksumResult = this.calcChecksum(data.toString('ascii'));
-            if (cs.result) {
-                this.handleChecksumSuccess(strdata, id, data);
-            } else {
-                this.handleChecksumFailure(cs, data);
-            }
-
-            /*switch (true) {
-                case strdata.startsWith('/'):
-                    id = strdata.substring(1, 4);
-                    pv = strdata.substring(5, strdata.length - 4);
-                    cs = this.calcChecksum(strdata);
-                    if (cs.result) {
-                        that.setState(id, pv, true);
-                    }
-                    break;
-
-                case strdata.startsWith(':'):
-                    sdata = strdata.substring(1, strdata.length - 2).split(',');
-                    that.setState('total', Number(sdata[3]) * 1000, true);
-                    break;
-
-                default:
-                    that.log.warn(`Data cannot be processed: ${strdata}`);
-                    break;
-            }*/
-        };
-
         conn.on('data', async (data) => {
             chkCnt = 0;
             clearTimeout(jobSchedule);
             jobSchedule = setTimeout(() => {
                 this.getData(port, ip_address);
-            }, this.config.intervalVal * 1000);
-            await processData(data);
+            }, this.config.intervalVal * 1000 - this.pTimeoutcnt);
+            await this.processData(data);
         });
 
         conn.on('close', () => {
@@ -379,14 +311,57 @@ class Solarviewdatareader extends utils.Adapter {
         });
 
         if (this.config.interval_seconds) {
-            this.config.intervalVal = this.config.intervalVal / 60;
+            this.config.intervalVal = this.config.intervalVal;
         } else {
             await this.adjustIntervalToSeconds.call(this);
         }
 
-        jobSchedule = setTimeout(() => {
+        //First start of getData
+        jobSchedule = setTimeout(async () =>  {
             this.getData(port, ip_address);
         }, 1000);
+    }
+
+    async getData(port: number, ip_address: string): Promise<void> {
+        const { intervalstart, intervalend, d0converter, scm0, scm1, scm2, scm3, scm4, pvi1, pvi2, pvi3, pvi4 } = this.config;
+
+        const starttime = intervalstart.split(':').slice(0, 2).join(':');
+        let endtime = intervalend.split(':').slice(0, 2).join(':');
+        endtime = endtime === '00:00' ? '23:59' : endtime;
+
+        const dnow = new Date();
+        const dstart = new Date(`${dnow.getFullYear()}-${dnow.getMonth() + 1}-${dnow.getDate()} ${starttime}`);
+        const dend = new Date(`${dnow.getFullYear()}-${dnow.getMonth() + 1}-${dnow.getDate()} ${endtime}`);
+
+        let timeoutCnt = 0;
+
+        const executeCommand = (cmd: string):void => {
+            timeoutCnt += 500;
+            tout = setTimeout(() => {
+                conn.connect(port, ip_address, () => {
+                    conn.write(cmd);
+                    conn.end();
+                });
+            }, timeoutCnt);
+        };
+
+        if (dnow >= dstart && dnow <= dend) {
+            executeCommand('00*'); // pvig
+
+            if (d0converter) executeCommand('21*');
+            if (pvi1) executeCommand('01*');
+            if (pvi2) executeCommand('02*');
+            if (pvi3) executeCommand('03*');
+            if (pvi4) executeCommand('04*');
+        }
+
+        if (d0converter) executeCommand('22*');
+        if (scm0) executeCommand('10*');
+        if (scm1) executeCommand('11*');
+        if (scm2) executeCommand('12*');
+        if (scm3) executeCommand('13*');
+        if (scm4) executeCommand('14*');
+        if (this.pTimeoutcnt === 0) this.pTimeoutcnt = timeoutCnt;
     }
 
     private onUnload(callback: () => void): void{
