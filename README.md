@@ -62,6 +62,9 @@ TKK= Temperature inverter
 ## Changelog
 ### **WORK IN PROGRESS**
 * (afuerhoff) change to typescript
+* (afuerhoff) dependencies updated
+* (afuerhoff) bugfix CCU variable
+* (afuerhoff) documentation changed
 
 ### 1.1.0 (2024-05-29)
 * (afuerhoff) code optimizations
