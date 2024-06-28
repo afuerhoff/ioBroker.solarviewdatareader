@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "solarviewdatareader",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "news": {
+      "1.1.1": {
+        "en": "change to typescript\ndependencies updated\nbugfix CCU variable\ndocumentation changed",
+        "de": "änderung der schrift\naktualisierte abhängigkeiten\nbugfix CCU Variable\ndokumentation geändert",
+        "ru": "изменения в типографию\nобновленная информация о зависимостях\nbugfix переменная CCU\nдокументация изменена",
+        "pt": "mudar para typescript\ndependências atualizadas\nvariável de bugfix CCU\ndocumentação alterada",
+        "nl": "wijzigen naar typescript\nafhankelijkheden bijgewerkt\nbugfix CCU variabele\ndocumentatie gewijzigd",
+        "fr": "changement de code\ndépendances mises à jour\nbugfix variable CCU\nmodification de la documentation",
+        "it": "cambiamento a typescript\ndipendenze aggiornate\nbugfix CCU variabile\ndocumentazione modificata",
+        "es": "cambio a la escritura\ndependencias actualizadas\nbugfix CCU variable\ndocumentación modificada",
+        "pl": "zmiana na maszynopis\nzaktualizowane zależności\nzmienna CCU bugfix\nzmiana dokumentacji",
+        "uk": "зміна за замовчуванням\nоновлені залежності\njavaScript licenses API Веб-сайт\nдокументація",
+        "zh-cn": "更改为打字符\n更新依赖关系\nbugfix CCU 变量\n文件已更改"
+      },
       "1.1.0": {
         "en": "code optimizations\njsonConfig added\ndependencies updated\nnode >= 18, js-controller >= 5.0.19\nadmin >= 6.17.13 due to timePicker failure",
         "de": "codeoptimierungen\njsonConfig hinzugefügt\naktualisierte abhängigkeiten\nknoten >= 18, js-controller >= 5.19\nadmin >= 6.17.13 aufgrund von timePicker Ausfall",
@@ -80,19 +93,6 @@
         "pl": "zaktualizowano zależności\nproblem nr 20 naprawiony",
         "zh-cn": "已更新依赖项\n问题 #20 已修复",
         "uk": "залежності оновлено\nпроблема №20 виправлена"
-      },
-      "1.0.3": {
-        "en": "dependencies updated",
-        "de": "Abhängigkeiten aktualisiert",
-        "ru": "зависимости обновлены",
-        "pt": "dependências atualizadas",
-        "nl": "afhankelijkheden bijgewerkt",
-        "fr": "dépendances mises à jour",
-        "it": "dipendenze aggiornate",
-        "es": "dependencias actualizadas",
-        "pl": "zaktualizowano zależności",
-        "zh-cn": "依赖项已更新",
-        "uk": "залежності оновлено"
       }
     },
     "titleLang": {
@@ -186,24 +186,25 @@
   "objects": [],
   "instanceObjects": [
     {
-        "_id": "info",
-        "type": "channel",
-        "common": {
-            "name": "Information"
-        },
-        "native": {}
+      "_id": "info",
+      "type": "channel",
+      "common": {
+        "name": "Information"
+      },
+      "native": {}
     },
     {
-        "_id": "info.connection",
-        "type": "state",
-        "common": {
-            "role": "indicator.connected",
-            "name": "Device or service connected",
-            "type": "boolean",
-            "read": true,
-            "write": false,
-            "def": false
-        },
-        "native": {}
+      "_id": "info.connection",
+      "type": "state",
+      "common": {
+        "role": "indicator.connected",
+        "name": "Device or service connected",
+        "type": "boolean",
+        "read": true,
+        "write": false,
+        "def": false
+      },
+      "native": {}
     }
-]}
+  ]
+}

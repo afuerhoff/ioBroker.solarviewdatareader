@@ -1,4 +1,9 @@
 # Older changes
+## 1.0.5 (2022-02-17)
+* (afuerhoff) dependencies updated
+* (afuerhoff) test and release updated
+* (afuerhoff) smaller changes
+
 ## 1.0.4 (2022-02-09)
 * (afuerhoff) dependencies updated
 * (afuerhoff) issue #20 fixed
