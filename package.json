@@ -9,6 +9,7 @@
   "homepage": "https://github.com/afuerhoff/ioBroker.solarviewdatareader",
   "license": "MIT",
   "keywords": [
+    "ioBroker",
     "SolarView",
     "Data Logger",
     "Photovoltaik"

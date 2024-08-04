@@ -61,6 +61,7 @@ TKK= Temperature inverter
 
 ## Changelog
 ### **WORK IN PROGRESS**
+* (afuerhoff) adapter checker changes
 
 ### 1.1.1 (2024-06-28)
 * (afuerhoff) change to typescript

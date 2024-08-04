@@ -136,7 +136,6 @@
     },
     "tier": 3,
     "platform": "Javascript/Node.js",
-    "main": "build/main.js",
     "icon": "solarviewdatareader.png",
     "enabled": true,
     "extIcon": "https://raw.githubusercontent.com/afuerhoff/ioBroker.solarviewdatareader/master/admin/solarviewdatareader.png",
