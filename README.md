@@ -60,6 +60,8 @@ UL3, IL3 = mains voltage, mains power phase 3
 TKK= Temperature inverter
 
 ## Changelog
+### **WORK IN PROGRESS**
+
 ### 1.1.1 (2024-06-28)
 * (afuerhoff) change to typescript
 * (afuerhoff) dependencies updated
