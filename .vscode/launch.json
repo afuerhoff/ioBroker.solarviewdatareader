@@ -17,6 +17,39 @@
 			"name": "An den Prozess anfügen", // Name, der im VSCode Auswahlmenü neben dem grünen Play angezeigt wird
 			"address": "http://127.0.0.1", // Adresse, an dem der node.js Prozess läuft (bei Remote Debug, der Remote-Rechner)
 			"port": 5858 // Port, auf dem der node.js Debugger lauscht, der mit node --debug-brk ... gestartet wird
+		},
+		{ //https://github.com/ioBroker/dev-server/issues/286
+			"type": "node",
+			"request": "attach",
+			"name": "Attach to ioBroker Adapter (1)",
+			"address": "127.0.0.1",
+			"port": 9229,
+			"localRoot": "${workspaceFolder}",
+			"remoteRoot": "${workspaceFolder}/.dev-server/default/node_modules/iobroker.solarviewdatareader/",
+			"smartStep": true,
+			"skipFiles": ["<node_internals>/**"],
+			"preLaunchTask": "preLaunchTask_startDevServer", // Start dev server before attaching a debugger to it
+			"postDebugTask": "postDebug_KillAll", // Kill all tasks after debugging
+			"continueOnAttach": true // This is needed to prevent the debugger from stopping on the first line
+		},
+		{
+			"name": "Attach to ioBroker Adapter (2)",
+			"port": 9229,
+			"request": "attach",
+			"skipFiles": ["<node_internals>/**"],
+			"type": "node",
+			"resolveSourceMapLocations": [
+			  "${workspaceFolder}/**",
+			  // only exclude node_modules from the workspace folder
+			  // If we exclude node_modules from .dev-server/..., we don't get sourcemaps
+			  "!${workspaceFolder}/node_modules/**"
+			],
+			"sourceMapPathOverrides": {
+			  "../src/*": "${workspaceFolder}/src/*"
+			},
+			"preLaunchTask": "preLaunchTask_startDevServer", // Start dev server before attaching a debugger to it
+			"postDebugTask": "postDebug_KillAll", // Kill all tasks after debugging
+			"continueOnAttach": true // This is needed to prevent the debugger from stopping on the first line
 		}
 	]
 }

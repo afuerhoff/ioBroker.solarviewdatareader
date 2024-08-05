@@ -4,40 +4,46 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "upload adapter",
-            "type": "shell",
-            "command": "./scripts/upload.sh",
+            "type": "npm",
+            "script": "devserver:debug", // <-- from package.json <-- scripts: dev-server debug --wait
+            "label": "preLaunchTask_startDevServer",
+            "isBackground": true,
             "presentation": {
-                "reveal": "always",
-                "panel": "new"
+              "reveal": "always",
+              "panel": "new"
+            },
+            "problemMatcher": {
+              "pattern": {
+                "regexp": "^$"
+              },
+              "background": {
+                "activeOnStart": true,
+                "beginsPattern": "devserver:debug",
+                "endsPattern": "Debugger is now waiting on process id"
+              }
             }
-        },
-        {
-            "label": "debug start",
+          },
+          {
+            "label": "postDebug_KillChoice",
+            "type": "process",
+            "command": [
+              "${command:workbench.action.tasks.terminate}",
+              "${command:workbench.action.acceptSelectedQuickOpenItem}"
+            ]
+          },
+          {
+            "label": "postDebug_KillAll",
+            "command": "echo ${input:terminate}",
             "type": "shell",
-            "command": "./scripts/debug.sh",
-            "presentation": {
-                "reveal": "always",
-                "panel": "new"
-            }
-        },
-        {
-            "label": "gulp translate",
-            "type": "shell",
-            "command": "./scripts/gulp.sh",
-            "presentation": {
-                "reveal": "always",
-                "panel": "new"
-            }
-        },
-        {
-            "label": "release",
-            "type": "shell",
-            "command": "./scripts/release.sh",
-            "presentation": {
-                "reveal": "always",
-                "panel": "new"
-            }
-        }
+            "problemMatcher": []
+          }
+        ],
+        "inputs": [
+          {
+            "id": "terminate",
+            "type": "command",
+            "command": "workbench.action.tasks.terminate",
+            "args": "terminateAll"
+          }
     ]
 }
