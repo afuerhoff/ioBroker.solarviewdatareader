@@ -65,6 +65,7 @@ class Solarviewdatareader extends utils.Adapter {
   //async createObject(that: Solarviewdatareader, id: string, typeVal: ioBroker.CommonType, name: string, commonType: string, role: string, def: any, rd: boolean, wr: boolean, desc: string, unit: string) {
   async createObject(id, obj) {
     await this.setObjectNotExistsAsync(id, obj);
+    this.extendObject(id, obj);
     const currentState = await this.getStateAsync(id);
     const stCommon = obj.common;
     if (currentState === null && stCommon.def !== void 0) {
@@ -82,29 +83,30 @@ class Solarviewdatareader extends utils.Adapter {
   }
   async createSolarviewObjects(device, additional = false) {
     let options = [
-      [device + ".current", { type: "state", common: { name: "current", type: "number", role: "value", def: 0, read: true, write: false, desc: "Current PAC", unit: "W" }, native: {} }],
-      [device + ".daily", { type: "state", common: { name: "daily", type: "number", role: "value", def: 0, read: true, write: false, desc: "Daily yield", unit: "kWh" }, native: {} }],
-      [device + ".monthly", { type: "state", common: { name: "monthly", type: "number", role: "value", def: 0, read: true, write: false, desc: "Monthly yield", unit: "kWh" }, native: {} }],
-      [device + ".yearly", { type: "state", common: { name: "yearly", type: "number", role: "value", def: 0, read: true, write: false, desc: "Yearly yield", unit: "kWh" }, native: {} }],
-      [device + ".total", { type: "state", common: { name: "total", type: "number", role: "value", def: 0, read: true, write: false, desc: "Total yield", unit: "kWh" }, native: {} }]
+      [device, { type: "channel", common: { name: device }, native: {} }],
+      [device + ".current", { type: "state", common: { name: "current", type: "number", role: "value.power", def: 0, read: true, write: false, desc: "Current PAC", unit: "W" }, native: {} }],
+      [device + ".daily", { type: "state", common: { name: "daily", type: "number", role: "value.energy", def: 0, read: true, write: false, desc: "Daily yield", unit: "kWh" }, native: {} }],
+      [device + ".monthly", { type: "state", common: { name: "monthly", type: "number", role: "value.energy", def: 0, read: true, write: false, desc: "Monthly yield", unit: "kWh" }, native: {} }],
+      [device + ".yearly", { type: "state", common: { name: "yearly", type: "number", role: "value.energy", def: 0, read: true, write: false, desc: "Yearly yield", unit: "kWh" }, native: {} }],
+      [device + ".total", { type: "state", common: { name: "total", type: "number", role: "value.energy", def: 0, read: true, write: false, desc: "Total yield", unit: "kWh" }, native: {} }]
     ];
     if (additional) {
       const additionalOptions = [
-        [device + ".udc", { type: "state", common: { name: "udc", type: "number", role: "value", def: 0, read: true, write: false, desc: "Generator voltage", unit: "V" }, native: {} }],
-        [device + ".idc", { type: "state", common: { name: "idc", type: "number", role: "value", def: 0, read: true, write: false, desc: "Generator current", unit: "A" }, native: {} }],
-        [device + ".udcb", { type: "state", common: { name: "udcb", type: "number", role: "value", def: 0, read: true, write: false, desc: "Generator voltage", unit: "V" }, native: {} }],
-        [device + ".idcb", { type: "state", common: { name: "idcb", type: "number", role: "value", def: 0, read: true, write: false, desc: "Generator current", unit: "A" }, native: {} }],
-        [device + ".udcc", { type: "state", common: { name: "udcc", type: "number", role: "value", def: 0, read: true, write: false, desc: "Generator voltage", unit: "V" }, native: {} }],
-        [device + ".idcc", { type: "state", common: { name: "idcc", type: "number", role: "value", def: 0, read: true, write: false, desc: "Generator current", unit: "A" }, native: {} }],
-        [device + ".udcd", { type: "state", common: { name: "udcd", type: "number", role: "value", def: 0, read: true, write: false, desc: "Generator voltage", unit: "V" }, native: {} }],
-        [device + ".idcd", { type: "state", common: { name: "idcd", type: "number", role: "value", def: 0, read: true, write: false, desc: "Generator current", unit: "A" }, native: {} }],
-        [device + ".ul1", { type: "state", common: { name: "ul1", type: "number", role: "value", def: 0, read: true, write: false, desc: "Mains voltage", unit: "V" }, native: {} }],
-        [device + ".il1", { type: "state", common: { name: "il1", type: "number", role: "value", def: 0, read: true, write: false, desc: "Mains current", unit: "A" }, native: {} }],
-        [device + ".ul2", { type: "state", common: { name: "ul2", type: "number", role: "value", def: 0, read: true, write: false, desc: "Mains voltage", unit: "V" }, native: {} }],
-        [device + ".il2", { type: "state", common: { name: "il2", type: "number", role: "value", def: 0, read: true, write: false, desc: "Mains current", unit: "A" }, native: {} }],
-        [device + ".ul3", { type: "state", common: { name: "ul3", type: "number", role: "value", def: 0, read: true, write: false, desc: "Mains voltage", unit: "V" }, native: {} }],
-        [device + ".il3", { type: "state", common: { name: "il3", type: "number", role: "value", def: 0, read: true, write: false, desc: "Mains current", unit: "A" }, native: {} }],
-        [device + ".tkk", { type: "state", common: { name: "tkk", type: "number", role: "value", def: 0, read: true, write: false, desc: "Temperature", unit: "\xB0C" }, native: {} }]
+        [device + ".udc", { type: "state", common: { name: "udc", type: "number", role: "value.voltage", def: 0, read: true, write: false, desc: "Generator voltage", unit: "V" }, native: {} }],
+        [device + ".idc", { type: "state", common: { name: "idc", type: "number", role: "value.current", def: 0, read: true, write: false, desc: "Generator current", unit: "A" }, native: {} }],
+        [device + ".udcb", { type: "state", common: { name: "udcb", type: "number", role: "value.voltage", def: 0, read: true, write: false, desc: "Generator voltage", unit: "V" }, native: {} }],
+        [device + ".idcb", { type: "state", common: { name: "idcb", type: "number", role: "value.current", def: 0, read: true, write: false, desc: "Generator current", unit: "A" }, native: {} }],
+        [device + ".udcc", { type: "state", common: { name: "udcc", type: "number", role: "value.voltage", def: 0, read: true, write: false, desc: "Generator voltage", unit: "V" }, native: {} }],
+        [device + ".idcc", { type: "state", common: { name: "idcc", type: "number", role: "value.current", def: 0, read: true, write: false, desc: "Generator current", unit: "A" }, native: {} }],
+        [device + ".udcd", { type: "state", common: { name: "udcd", type: "number", role: "value.voltage", def: 0, read: true, write: false, desc: "Generator voltage", unit: "V" }, native: {} }],
+        [device + ".idcd", { type: "state", common: { name: "idcd", type: "number", role: "value.current", def: 0, read: true, write: false, desc: "Generator current", unit: "A" }, native: {} }],
+        [device + ".ul1", { type: "state", common: { name: "ul1", type: "number", role: "value.voltage", def: 0, read: true, write: false, desc: "Mains voltage", unit: "V" }, native: {} }],
+        [device + ".il1", { type: "state", common: { name: "il1", type: "number", role: "value.current", def: 0, read: true, write: false, desc: "Mains current", unit: "A" }, native: {} }],
+        [device + ".ul2", { type: "state", common: { name: "ul2", type: "number", role: "value.voltage", def: 0, read: true, write: false, desc: "Mains voltage", unit: "V" }, native: {} }],
+        [device + ".il2", { type: "state", common: { name: "il2", type: "number", role: "value.current", def: 0, read: true, write: false, desc: "Mains current", unit: "A" }, native: {} }],
+        [device + ".ul3", { type: "state", common: { name: "ul3", type: "number", role: "value.voltage", def: 0, read: true, write: false, desc: "Mains voltage", unit: "V" }, native: {} }],
+        [device + ".il3", { type: "state", common: { name: "il3", type: "number", role: "value.current", def: 0, read: true, write: false, desc: "Mains current", unit: "A" }, native: {} }],
+        [device + ".tkk", { type: "state", common: { name: "tkk", type: "number", role: "value.temperature", def: 0, read: true, write: false, desc: "Temperature", unit: "\xB0C" }, native: {} }]
       ];
       options = options.concat(additionalOptions);
     }
