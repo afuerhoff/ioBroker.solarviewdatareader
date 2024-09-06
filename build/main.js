@@ -338,7 +338,7 @@ class Solarviewdatareader extends utils.Adapter {
   }
   onUnload(callback) {
     try {
-      clearTimeout(jobSchedule);
+      clearInterval(jobSchedule);
       clearTimeout(tout);
       conn.destroy();
       this.setStateChanged("info.connection", { val: false, ack: true });
