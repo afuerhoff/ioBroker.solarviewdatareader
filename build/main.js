@@ -265,10 +265,6 @@ class Solarviewdatareader extends utils.Adapter {
       await this.createSolarviewObjects("pvi4", true);
     conn.on("data", async (data) => {
       chkCnt2 = 0;
-      clearTimeout(jobSchedule);
-      jobSchedule = setTimeout(() => {
-        this.getData(port, ip_address);
-      }, this.config.intervalVal * 1e3 - this.pTimeoutcnt);
       await this.processData(data);
     });
     conn.on("close", () => {
@@ -279,10 +275,6 @@ class Solarviewdatareader extends utils.Adapter {
         chkCnt2 = 0;
       }
       chkCnt2++;
-      clearTimeout(jobSchedule);
-      jobSchedule = setTimeout(() => {
-        this.getData(port, ip_address);
-      }, 1e4);
     });
     conn.on("error", (err) => {
       this.log.error(err.message);
@@ -293,9 +285,10 @@ class Solarviewdatareader extends utils.Adapter {
     } else {
       await this.adjustIntervalToSeconds.call(this);
     }
-    jobSchedule = setTimeout(async () => {
+    this.getData(port, ip_address);
+    jobSchedule = setInterval(async () => {
       this.getData(port, ip_address);
-    }, 1e3);
+    }, this.config.intervalVal * 1e3);
   }
   async getData(port, ip_address) {
     const { intervalstart, intervalend, d0converter, scm0, scm1, scm2, scm3, scm4, pvi1, pvi2, pvi3, pvi4 } = this.config;

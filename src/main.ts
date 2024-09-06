@@ -286,10 +286,6 @@ class Solarviewdatareader extends utils.Adapter {
 
         conn.on('data', async (data) => {
             chkCnt = 0;
-            clearTimeout(jobSchedule);
-            jobSchedule = setTimeout(() => {
-                this.getData(port, ip_address);
-            }, this.config.intervalVal * 1000 - this.pTimeoutcnt);
             await this.processData(data);
         });
 
@@ -301,10 +297,6 @@ class Solarviewdatareader extends utils.Adapter {
                 chkCnt = 0;
             }
             chkCnt++;
-            clearTimeout(jobSchedule);
-            jobSchedule = setTimeout(() => {
-                this.getData(port, ip_address);
-            }, 10000);
         });
 
         conn.on('error', (err) => {
@@ -319,9 +311,11 @@ class Solarviewdatareader extends utils.Adapter {
         }
 
         //First start of getData
-        jobSchedule = setTimeout(async () =>  {
+        this.getData(port, ip_address);
+
+        jobSchedule = setInterval(async () => {
             this.getData(port, ip_address);
-        }, 1000);
+        }, this.config.intervalVal * 1000);
     }
 
     async getData(port: number, ip_address: string): Promise<void> {
