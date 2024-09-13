@@ -1,4 +1,9 @@
 # Older changes
+## 1.0.6 (2022-07-04)
+* (afuerhoff) dependencies updated
+* (afuerhoff) Interval settings changed from minutes to seconds
+* (afuerhoff) States only writen after changes
+
 ## 1.0.5 (2022-02-17)
 * (afuerhoff) dependencies updated
 * (afuerhoff) test and release updated

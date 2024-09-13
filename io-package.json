@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "solarviewdatareader",
-    "version": "1.1.1",
+    "version": "1.1.2",
     "news": {
+      "1.1.2": {
+        "en": "adapter checker changes\ndependencies updated\nautomatic restart [#170](https://github.com/afuerhoff/ioBroker.solarviewdatareader/issues/170)",
+        "de": "adapter checker änderungen\naktualisierte abhängigkeiten\nautomatischer Neustart [#170](https://github.com/afuerhoff/ioBroker.solarviewdatareader/issues/170)",
+        "ru": "изменения адаптера\nобновленная информация о зависимостях\nавтоматический перезапуск [#170] (https://github.com/afuerhoff/ioBroker.solarviewdatareader/issues/170)",
+        "pt": "alterações do verificador do adaptador\ndependências atualizadas\nautomatic restart [#170](https://github.com/afuerhoff/ioBroker.solarviewdatareader/issues/170)",
+        "nl": "wijzigingen in de adaptercontrole\nafhankelijkheden bijgewerkt\nautomatische herstart [#170](https://github.com/afuerhoff/ioBroker.solarviewdatareader/issues/170)",
+        "fr": "changement d'adaptateur\ndépendances mises à jour\nredémarrage automatique [#170](https://github.com/afuerhoff/ioBroker.solarviewdatareader/issues/170)",
+        "it": "adattatore checker modifiche\ndipendenze aggiornate\nriavvio automatico [#170](https://github.com/afuerhoff/ioBroker.solarviewdatareader/issues/170)",
+        "es": "cambios de control de adaptador\ndependencias actualizadas\nreinicio automático [#170](https://github.com/afuerhoff/ioBroker.solarviewdatareader/issues/170)",
+        "pl": "zmiany w kontrolerze adaptera\nzaktualizowane zależności\nw załączniku II wprowadza się następujące zmiany:",
+        "uk": "зміни адаптера\nоновлені залежності\nавтоматичний перезапуск [#170] (https://github.com/afuerhoff/ioBroker.solarviewdatareader/products/170)",
+        "zh-cn": "适配器检查器更改\n更新依赖关系\n自动重启 [# 170] (https://github.com/afuerhoff/ioBroker.solarviewdatareader/issues/170) (中文(简体) )"
+      },
       "1.1.1": {
         "en": "change to typescript\ndependencies updated\nbugfix CCU variable\ndocumentation changed",
         "de": "änderung der schrift\naktualisierte abhängigkeiten\nbugfix CCU Variable\ndokumentation geändert",
@@ -80,19 +93,6 @@
         "pl": "zaktualizowano zależności\nzaktualizowano test i wydanie\nmniejsze zmiany",
         "zh-cn": "已更新依赖项\n测试和发布更新\n较小的变化",
         "uk": "залежності оновлено\nтестування та випуск оновлено\nменші зміни"
-      },
-      "1.0.4": {
-        "en": "dependencies updated\nissue #20 fixed",
-        "de": "Abhängigkeiten aktualisiert\nProblem Nr. 20 behoben",
-        "ru": "зависимости обновлены\nпроблема №20 исправлена",
-        "pt": "dependências atualizadas\nproblema nº 20 corrigido",
-        "nl": "afhankelijkheden bijgewerkt\nprobleem #20 opgelost",
-        "fr": "dépendances mises à jour\nproblème #20 corrigé",
-        "it": "dipendenze aggiornate\nproblema n. 20 risolto",
-        "es": "dependencias actualizadas\nproblema #20 solucionado",
-        "pl": "zaktualizowano zależności\nproblem nr 20 naprawiony",
-        "zh-cn": "已更新依赖项\n问题 #20 已修复",
-        "uk": "залежності оновлено\nпроблема №20 виправлена"
       }
     },
     "titleLang": {
