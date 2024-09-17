@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "solarviewdatareader",
-    "version": "1.1.2",
+    "version": "1.1.3",
     "news": {
+      "1.1.3": {
+        "en": "adapter checker changes [#176](https://github.com/afuerhoff/ioBroker.solarviewdatareader/issues/176)\ndependencies updated",
+        "de": "adapter-Checker ändert [#176](https://github.com/afuerhoff/ioBroker.solarviewdatareader/issues/176)\naktualisierte abhängigkeiten",
+        "ru": "изменение адаптера [#176] (https://github.com/afuerhoff/ioBroker.solarviewdatareader/issues/176)\nобновленная информация о зависимостях",
+        "pt": "alterações do verificador do adaptador [#176](https://github.com/afuerhoff/ioBroker.solarviewdatareader/issues/176)\ndependências atualizadas",
+        "nl": "wijzigingen van de adaptercontrole [#176](https://github.com/afuerhoff/ioBroker.solarviewdatareader/issues/176)\nafhankelijkheden bijgewerkt",
+        "fr": "changement d'adaptateur [#176](https://github.com/afuerhoff/ioBroker.solarviewdatareader/issues/176)\ndépendances mises à jour",
+        "it": "modifica dell'adattatore [#176](https://github.com/afuerhoff/ioBroker.solarviewdatareader/issues/176)\ndipendenze aggiornate",
+        "es": "adapter checker changes [#176](https://github.com/afuerhoff/ioBroker.solarviewdatareader/issues/176)\ndependencias actualizadas",
+        "pl": "zAŁĄCZNIK II\nzaktualizowane zależności",
+        "uk": "[#176](https://github.com/afuerhoff/ioBroker.solarviewdatareader/products/176)\nоновлені залежності",
+        "zh-cn": "适配器检查器改变 [# 176] (https://github.com/afuerhoff/ioBroker.solarviewdatareader/issues/ 1976) (中文(简体) )\n更新依赖关系"
+      },
       "1.1.2": {
         "en": "adapter checker changes\ndependencies updated\nautomatic restart [#170](https://github.com/afuerhoff/ioBroker.solarviewdatareader/issues/170)",
         "de": "adapter checker änderungen\naktualisierte abhängigkeiten\nautomatischer Neustart [#170](https://github.com/afuerhoff/ioBroker.solarviewdatareader/issues/170)",
@@ -80,19 +93,6 @@
         "pl": "aktualizacja\nPrzeszłość zmieniała się z minut na sekundę\nPaństwa pisane są tylko po zmianach",
         "zh-cn": "b. 更新的依赖\n汇率环境从分钟改为第二秒\n国家在修改后只写信",
         "uk": "залежності оновлено\nПараметри інтервалу змінено з хвилин на секунди\nСтани написані лише після змін"
-      },
-      "1.0.5": {
-        "en": "dependencies updated\ntest and release updated\nsmaller changes",
-        "de": "Abhängigkeiten aktualisiert\nTest und Release aktualisiert\nkleinere Änderungen",
-        "ru": "зависимости обновлены\nтест и выпуск обновлены\nнебольшие изменения",
-        "pt": "dependências atualizadas\nteste e lançamento atualizado\nmudanças menores",
-        "nl": "afhankelijkheden bijgewerkt\ntest en release bijgewerkt\nkleinere veranderingen",
-        "fr": "dépendances mises à jour\ntest et version mis à jour\npetits changements",
-        "it": "dipendenze aggiornate\ntest e rilascio aggiornati\npiccoli cambiamenti",
-        "es": "dependencias actualizadas\nprueba y versión actualizada\npequeños cambios",
-        "pl": "zaktualizowano zależności\nzaktualizowano test i wydanie\nmniejsze zmiany",
-        "zh-cn": "已更新依赖项\n测试和发布更新\n较小的变化",
-        "uk": "залежності оновлено\nтестування та випуск оновлено\nменші зміни"
       }
     },
     "titleLang": {
