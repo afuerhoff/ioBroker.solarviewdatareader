@@ -1,5 +1,8 @@
 {
     "type": "tabs",
+    "tabsStyle": {
+      "width": "calc(100% - 100px)"
+    },
     "i18n": true,
     "items": {
       "tab-main": {
@@ -10,9 +13,11 @@
             "type": "text",
             "label": "IP-Address",
             "tooltip": "Please enter the IP-Address from your SolarView data logger",
-            "sm": 8,
+            "xs": 12,
+            "sm": 6,
             "md": 6,
-            "lg": 3
+            "lg": 3,
+            "xl": 3
           },
           "port": {
             "type": "port",
@@ -20,104 +25,124 @@
             "max": 65565,
             "label": "Port",
             "tooltip": "Please enter the port",
-            "sm": 4,
-            "md": 3,
-            "lg": 2
+            "xs": 12,
+            "sm": 6,
+            "md": 6,
+            "lg": 3,
+            "xl": 3
           },
           "d0converter": {
-            "newLine": true,
             "type": "checkbox",
             "label": "d0-converter",
             "tooltip": "Please enter if you have a d0-converter",
+            "xs": 12,
             "sm": 6,
-            "md": 4,
-            "lg": 2
+            "md": 6,
+            "lg": 3,
+            "xl": 3
           },
           "scm0": {
             "type": "checkbox",
             "label": "Self consumption meter sum",
             "tooltip": "Please check if you use the self consumption meter sum",
-            "sm": 12,
+            "xs": 12,
+            "sm": 6,
             "md": 6,
-            "lg": 2
+            "lg": 3,
+            "xl": 3
           },
           "scm1": {
             "newLine": true,
             "type": "checkbox",
             "label": "Self consumption meter 1",
             "tooltip": "Please check if self consumption meter 1 is available",
-            "sm": 12,
+            "xs": 12,
+            "sm": 6,
             "md": 6,
-            "lg": 2
+            "lg": 3,
+            "xl": 3
           },
           "scm2": {
             "type": "checkbox",
             "label": "Self consumption meter 2",
             "tooltip": "Please check if self consumption meter 2 is available",
-            "sm": 12,
+            "xs": 12,
+            "sm": 6,
             "md": 6,
-            "lg": 2
+            "lg": 3,
+            "xl": 3
           },
           "scm3": {
-            "newLine": true,
             "type": "checkbox",
             "label": "Self consumption meter 3",
             "tooltip": "Please check if self consumption meter 3 is available",
-            "sm": 12,
+            "xs": 12,
+            "sm": 6,
             "md": 6,
-            "lg": 2
+            "lg": 3,
+            "xl": 3
           },
           "scm4": {
             "type": "checkbox",
             "label": "Self consumption meter 4",
             "tooltip": "Please check if self consumption meter 4 is available",
-            "sm": 12,
+            "xs": 12,
+            "sm": 6,
             "md": 6,
-            "lg": 2
+            "lg": 3,
+            "xl": 3
           },
           "pvi1": {
             "newLine": true,
             "type": "checkbox",
             "label": "Inverter 1",
             "tooltip": "Please check if inverter 1 available",
-            "sm": 12,
+            "xs": 12,
+            "sm": 6,
             "md": 6,
-            "lg": 2
+            "lg": 3,
+            "xl": 3
           },
           "pvi2": {
             "type": "checkbox",
             "label": "Inverter 2",
             "tooltip": "Please check if inverter 2 available",
-            "sm": 12,
+            "xs": 12,
+            "sm": 6,
             "md": 6,
-            "lg": 2
+            "lg": 3,
+            "xl": 3
           },
           "pvi3": {
-            "newLine": true,
             "type": "checkbox",
             "label": "Inverter 3",
             "tooltip": "Please check if inverter 3 available",
-            "sm": 12,
+            "xs": 12,
+            "sm": 6,
             "md": 6,
-            "lg": 2
+            "lg": 3,
+            "xl": 3
           },
           "pvi4": {
             "type": "checkbox",
             "label": "Inverter 4",
             "tooltip": "Please check if inverter 4 available",
-            "sm": 12,
+            "xs": 12,
+            "sm": 6,
             "md": 6,
-            "lg": 2
+            "lg": 3,
+            "xl": 3
           },
           "intervalVal": {
             "newLine": true,
             "type": "number",
             "label": "polling interval in seconds",
-            "help": "sec",
             "tooltip": "Here you can define the polling interval [between 10 to 3600 seconds]",
+            "xs": 12,
             "sm": 12,
-            "md": 6,
-            "lg": 2
+            "md": 12,
+            "lg": 3,
+            "xl": 3
           },
           "intervalstart": {
             "type": "timePicker",
@@ -127,9 +152,11 @@
             "returnFormat": "HH:mm:ss",
             "views": ["hours", "minutes"],
             "timeSteps": {"hours": 1, "minutes": 1},
-            "sm": 12,
+            "xs": 12,
+            "sm": 6,
             "md": 6,
-            "lg": 2
+            "lg": 3,
+            "xl": 3
           },
           "intervalend": {
             "type": "timePicker",
@@ -139,26 +166,32 @@
             "returnFormat": "HH:mm:ss",
             "views": ["hours", "minutes"],
             "timeSteps": {"hours": 1, "minutes": 1},
-            "sm": 12,
+            "xs": 12,
+            "sm": 6,
             "md": 6,
-            "lg": 2
+            "lg": 3,
+            "xl": 3
           },
           "setCCU": {
             "newLine": true,
             "type": "checkbox",
             "label": "Set system variable CCU",
             "tooltip": "Please check if you want to set a system variable in the CCU",
+            "xs": 12,
             "sm": 6,
-            "md": 4,
-            "lg": 2
+            "md": 6,
+            "lg": 3,
+            "xl": 3
           },
           "CCUSystemV": {
             "type": "text",
             "label": "System variable",
             "tooltip": "System variable e.g. hm-rega.0.12345",
+            "xs": 12,
             "sm": 6,
-            "md": 4,
-            "lg": 2
+            "md": 6,
+            "lg": 3,
+            "xl": 3
           }		
         }
       }
