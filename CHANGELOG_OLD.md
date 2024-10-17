@@ -1,4 +1,8 @@
 # Older changes
+## 1.0.8 (2024-01-18)
+* (afuerhoff) dependencies updated
+* (afuerhoff) translations updated
+
 ## 1.0.7 (2022-12-21)
 * (afuerhoff) dependencies updated
 

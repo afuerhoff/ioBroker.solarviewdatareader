@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "solarviewdatareader",
-    "version": "1.1.3",
+    "version": "1.1.4",
     "news": {
+      "1.1.4": {
+        "en": "dependencies updated\nFixes [#182](https://github.com/afuerhoff/ioBroker.solarviewdatareader/issues/182)",
+        "de": "aktualisierte abhängigkeiten\n[#182](https://github.com/afuerhoff/ioBroker.solarviewdatareader/issues/182)",
+        "ru": "обновленная информация о зависимостях\nFixes [#182] (https://github.com/afuerhoff/ioBroker.solarviewdatareader/issues/182)",
+        "pt": "dependências atualizadas\nCorrige [#182](https://github.com/afuerhoff/ioBroker.solarviewdatareader/issues/182)",
+        "nl": "afhankelijkheden bijgewerkt\nFixes [#182](https://github.com/afuerhoff/ioBroker.solarviewdatareader/issues/182)",
+        "fr": "dépendances mises à jour\nCorrections [#182](https://github.com/afuerhoff/ioBroker.solarviewdatareader/issues/182)",
+        "it": "dipendenze aggiornate\n[#182](https://github.com/afuerhoff/ioBroker.solarviewdatareader/issues/182)",
+        "es": "dependencias actualizadas\nFixes [#182](https://github.com/afuerhoff/ioBroker.solarviewdatareader/issues/182)",
+        "pl": "zaktualizowane zależności\nFixes [# 182] (https: / / github.com / afuerhoff / ioBroker.solarviewdatarader / issues / 182)",
+        "uk": "оновлені залежності\nВиправлення [#182](https://github.com/afuerhoff/ioBroker.solarviewdatareader/products/182)",
+        "zh-cn": "更新依赖关系\nFixs [#182] (https://github.com/afuerhoff/ioBroker.solarviewdatareader/issues/182) (英语)"
+      },
       "1.1.3": {
         "en": "adapter checker changes [#176](https://github.com/afuerhoff/ioBroker.solarviewdatareader/issues/176)\ndependencies updated",
         "de": "adapter-Checker ändert [#176](https://github.com/afuerhoff/ioBroker.solarviewdatareader/issues/176)\naktualisierte abhängigkeiten",
@@ -80,19 +93,6 @@
         "pl": "aktualizacja",
         "uk": "оновлені залежності",
         "zh-cn": "b. 更新的依赖"
-      },
-      "1.0.6": {
-        "en": "dependencies updated\nInterval settings changed from minutes to seconds\nStates only writen after changes",
-        "de": "aktualisierte abhängigkeiten\nIntervalleinstellungen von Minuten bis Sekunden geändert\nNur nach Änderungen geschriebene Staaten",
-        "ru": "зависимости обновлены\nИнтервалные настройки изменены с минут до секунд\nГосударства только пишут после изменений",
-        "pt": "dependências atualizadas\nAs configurações de intervalo mudaram de minutos para segundos\nEstados apenas escrevem após mudanças",
-        "nl": "afhankelijkheid geüpdateerd\nVerandering van minuten tot seconden\nAmerika schreef alleen na veranderingen",
-        "fr": "dépendances mises à jour\nLes réglages d'intervalle ont changé de minutes en secondes\nÉtats seulement énumérés après changement",
-        "it": "dipendenze aggiornate\nLe impostazioni di intervallazione sono cambiate da minuti a secondi\nStati solo dopo i cambiamenti",
-        "es": "dependencias actualizadas\nLos ajustes de intervalor cambiaron de minutos a segundos\nEstados sólo escriben después de los cambios",
-        "pl": "aktualizacja\nPrzeszłość zmieniała się z minut na sekundę\nPaństwa pisane są tylko po zmianach",
-        "zh-cn": "b. 更新的依赖\n汇率环境从分钟改为第二秒\n国家在修改后只写信",
-        "uk": "залежності оновлено\nПараметри інтервалу змінено з хвилин на секунди\nСтани написані лише після змін"
       }
     },
     "titleLang": {
