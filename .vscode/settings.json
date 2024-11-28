@@ -1,7 +1,4 @@
 {
-	"eslint.options": {
-		"overrideConfigFile": ".eslintrc.js" // Passe dies an den Namen deiner Konfigurationsdatei an
-	},
 	"eslint.validate": [
 		"javascript",
 		"javascriptreact",
