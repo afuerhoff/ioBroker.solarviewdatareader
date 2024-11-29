@@ -9,15 +9,6 @@ import * as utils from '@iobroker/adapter-core';
 // Load your modules here, e.g.:
 import * as net from 'net';
 
-const sv_cmd = '00*';
-let conn: net.Socket;
-let jobSchedule: NodeJS.Timeout;
-let chkCnt = 0;
-
-//Timeout
-let tout: NodeJS.Timeout;
-//let to1, to2, to3, to4, to5, to6, to7, to8, to9, to10, to11;
-
 interface ChecksumResult {
     result: boolean;
     chksum: number;
@@ -26,14 +17,18 @@ interface ChecksumResult {
 }
 
 class Solarviewdatareader extends utils.Adapter {
-    pTimeoutcnt!: number;
+    //pTimeoutcnt!: number;
+    tout!: NodeJS.Timeout;
+    jobSchedule!: NodeJS.Timeout;
+    chkCnt = 0;
+    conn!: net.Socket;
 
     public constructor(options: Partial<utils.AdapterOptions> = {}) {
         super({
             ...options,
             name: 'solarviewdatareader',
         });
-        this.pTimeoutcnt = 0;
+        //this.pTimeoutcnt = 0;
         this.on('ready', this.onReady.bind(this));
         this.on('unload', this.onUnload.bind(this));
     }
@@ -66,7 +61,6 @@ class Solarviewdatareader extends utils.Adapter {
         return result;
     }
 
-    //async createObject(that: Solarviewdatareader, id: string, typeVal: ioBroker.CommonType, name: string, commonType: string, role: string, def: any, rd: boolean, wr: boolean, desc: string, unit: string) {
     async createObject(id: string, obj: ioBroker.SettableObject): Promise<void> {
         await this.setObjectNotExistsAsync(id, obj);
         await this.extendObject(id, obj);
@@ -524,7 +518,7 @@ class Solarviewdatareader extends utils.Adapter {
             if (cs.result) {
                 await this.handleChecksumSuccess(strdata, id, data);
             } else {
-                this.handleChecksumFailure(cs, data);
+                this.handleChecksumFailure(strdata, cs);
             }
         } catch (error: any) {
             this.log.error(`processData: ${error}`);
@@ -538,8 +532,8 @@ class Solarviewdatareader extends utils.Adapter {
 
     async handleChecksumSuccess(sv_data: string[], sv_prefix: string, response: Buffer): Promise<void> {
         try {
-            chkCnt = 0;
-            this.log.debug(`${sv_cmd}: ${response.toString('ascii')}`);
+            this.chkCnt = 0;
+            this.log.debug(`${response.toString('ascii')}`);
 
             await this.updateSolarviewStates(sv_data, sv_prefix);
 
@@ -551,14 +545,10 @@ class Solarviewdatareader extends utils.Adapter {
         }
     }
 
-    handleChecksumFailure(csum: ChecksumResult, response: Buffer): void {
-        chkCnt += 1;
-        if (chkCnt > 0 && csum.chksum !== 0) {
-            const buf = Buffer.from(response.toString('ascii'));
-            this.log.warn(
-                `checksum not correct! <${buf[csum.ind - 1]} ${buf[csum.ind]} ${buf[csum.ind + 1]} ${buf[csum.ind + 2]}   ${csum.chksum}>`,
-            );
-            this.log.warn(`${sv_cmd}: ${csum.data.toString('ascii')}`);
+    handleChecksumFailure(sv_data: string[], csum: ChecksumResult): void {
+        this.chkCnt += 1;
+        if (this.chkCnt > 0 && csum.chksum !== 0) {
+            this.log.warn(`checksum not correct! ${sv_data[0]}: ${csum.data.toString('ascii')}`);
         }
     }
 
@@ -629,10 +619,10 @@ class Solarviewdatareader extends utils.Adapter {
         try {
             const ip_address: string = this.config.ipaddress;
             const port: number = this.config.port;
-            let chkCnt = 0;
+            this.chkCnt = 0;
 
-            conn = new net.Socket();
-            conn.setTimeout(2000);
+            this.conn = new net.Socket();
+            this.conn.setTimeout(2000);
 
             const starttime = this.config.intervalstart.split(':').slice(0, 2).join(':');
             const endtime = this.config.intervalend.split(':').slice(0, 2).join(':');
@@ -681,26 +671,30 @@ class Solarviewdatareader extends utils.Adapter {
                 await this.createSolarviewObjects('pvi4', true);
             }
 
-            conn.on('data', async data => {
-                chkCnt = 0;
-                await this.processData(data);
-            });
-
-            conn.on('close', async () => {
+            this.conn.on('data', async data => {
                 try {
-                    this.log.debug('connection closed');
-                    if (chkCnt > 3) {
-                        await this.setState('info.connection', false, true);
-                        this.log.warn('Solarview Server is not reachable');
-                        chkCnt = 0;
-                    }
-                    chkCnt++;
+                    this.chkCnt = 0;
+                    await this.processData(data);
                 } catch (error: any) {
-                    this.log.error(`conn.on: ${error}`);
+                    this.log.error(`conn.on data: ${error}`);
                 }
             });
 
-            conn.on('error', err => {
+            this.conn.on('close', async () => {
+                try {
+                    this.log.debug('connection closed');
+                    if (this.chkCnt > 3) {
+                        await this.setState('info.connection', false, true);
+                        this.log.warn('Solarview Server is not reachable');
+                        this.chkCnt = 0;
+                    }
+                    this.chkCnt++;
+                } catch (error: any) {
+                    this.log.error(`conn.on close: ${error}`);
+                }
+            });
+
+            this.conn.on('error', err => {
                 this.log.error(err.message);
                 this.setStateChanged('info.connection', { val: false, ack: true });
             });
@@ -712,7 +706,7 @@ class Solarviewdatareader extends utils.Adapter {
             //First start of getData
             this.getData(port, ip_address);
 
-            jobSchedule = setInterval(() => {
+            this.jobSchedule = setInterval(() => {
                 try {
                     this.getData(port, ip_address);
                 } catch (error: any) {
@@ -744,10 +738,10 @@ class Solarviewdatareader extends utils.Adapter {
 
         const executeCommand = (cmd: string): void => {
             timeoutCnt += 500;
-            tout = setTimeout(() => {
-                conn.connect(port, ip_address, () => {
-                    conn.write(cmd);
-                    conn.end();
+            this.tout = setTimeout(() => {
+                this.conn.connect(port, ip_address, () => {
+                    this.conn.write(cmd);
+                    this.conn.end();
                 });
             }, timeoutCnt);
         };
@@ -790,16 +784,16 @@ class Solarviewdatareader extends utils.Adapter {
         if (scm4) {
             executeCommand('14*');
         }
-        if (this.pTimeoutcnt === 0) {
+        /*if (this.pTimeoutcnt === 0) {
             this.pTimeoutcnt = timeoutCnt;
-        }
+        }*/
     }
 
     private onUnload(callback: () => void): void {
         try {
-            clearInterval(jobSchedule);
-            clearTimeout(tout);
-            conn.destroy();
+            clearInterval(this.jobSchedule);
+            clearTimeout(this.tout);
+            this.conn.destroy();
             this.setStateChanged('info.connection', { val: false, ack: true });
             this.log.info('cleaned everything up...');
             callback();
