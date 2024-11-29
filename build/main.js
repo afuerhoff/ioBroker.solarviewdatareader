@@ -684,6 +684,9 @@ class Solarviewdatareader extends utils.Adapter {
       this.log.error(`onReady: ${error}`);
     }
   }
+  _sleep(milliseconds) {
+    return new Promise((resolve) => setTimeout(resolve, milliseconds));
+  }
   getData(port, ip_address) {
     const { intervalstart, intervalend, d0converter, scm0, scm1, scm2, scm3, scm4, pvi1, pvi2, pvi3, pvi4 } = this.config;
     const starttime = intervalstart.split(":").slice(0, 2).join(":");
@@ -695,12 +698,13 @@ class Solarviewdatareader extends utils.Adapter {
     let timeoutCnt = 0;
     const executeCommand = (cmd) => {
       try {
-        timeoutCnt += 500;
+        timeoutCnt += 700;
         this.tout = setTimeout(() => {
-          this.conn.connect(port, ip_address, () => {
+          this.conn.connect(port, ip_address, async () => {
             try {
               this.lastCommand = cmd;
               this.conn.write(cmd);
+              await this._sleep(50);
               this.conn.end();
             } catch (error) {
               this.log.error(`conn.connect: ${error}`);
