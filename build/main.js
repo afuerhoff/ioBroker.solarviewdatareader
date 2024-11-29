@@ -24,7 +24,6 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
 var utils = __toESM(require("@iobroker/adapter-core"));
 var net = __toESM(require("net"));
 class Solarviewdatareader extends utils.Adapter {
-  //pTimeoutcnt!: number;
   tout;
   jobSchedule;
   chkCnt = 0;
@@ -514,10 +513,10 @@ class Solarviewdatareader extends utils.Adapter {
       this.log.error(`processData: ${error}`);
     }
   };
-  handleConnectionError(errorMessage) {
-    this.log.error(`handleConnectionError: ${errorMessage}`);
-    this.setStateChanged("info.connection", { val: false, ack: true });
-  }
+  /*handleConnectionError(errorMessage: string): void {
+      this.log.error(`handleConnectionError: ${errorMessage}`);
+      this.setStateChanged('info.connection', { val: false, ack: true });
+  }*/
   async handleChecksumSuccess(sv_data, sv_prefix, response) {
     try {
       this.chkCnt = 0;
@@ -531,9 +530,9 @@ class Solarviewdatareader extends utils.Adapter {
     }
   }
   handleChecksumFailure(sv_data, csum) {
-    this.chkCnt += 1;
-    if (this.chkCnt > 0 && csum.chksum !== 0) {
+    if (csum.chksum !== 0) {
       if (csum.data.toString("ascii") != ";-)\n") {
+        this.chkCnt += 1;
         this.log.warn(`checksum not correct! ${sv_data[0]}: ${csum.data.toString("ascii")}`);
       }
     }
@@ -597,7 +596,6 @@ class Solarviewdatareader extends utils.Adapter {
     try {
       const ip_address = this.config.ipaddress;
       const port = this.config.port;
-      this.chkCnt = 0;
       this.conn = new net.Socket();
       this.conn.setTimeout(2e3);
       const starttime = this.config.intervalstart.split(":").slice(0, 2).join(":");
@@ -643,8 +641,8 @@ class Solarviewdatareader extends utils.Adapter {
       }
       this.conn.on("data", async (data) => {
         try {
-          this.chkCnt = 0;
           await this.processData(data);
+          this.conn.end();
         } catch (error) {
           this.log.error(`conn.on data: ${error}`);
         }
@@ -661,7 +659,6 @@ class Solarviewdatareader extends utils.Adapter {
             this.log.warn("Solarview Server is not reachable");
             this.chkCnt = 0;
           }
-          this.chkCnt++;
         } catch (error) {
           this.log.error(`conn.on close: ${error}`);
         }
@@ -700,12 +697,10 @@ class Solarviewdatareader extends utils.Adapter {
       try {
         timeoutCnt += 500;
         this.tout = setTimeout(() => {
-          this.conn.connect(port, ip_address, async () => {
+          this.conn.connect(port, ip_address, () => {
             try {
               this.lastCommand = cmd;
               this.conn.write(cmd);
-              await this._sleep(100);
-              this.conn.end();
             } catch (error) {
               this.log.error(`conn.connect: ${error}`);
             }
