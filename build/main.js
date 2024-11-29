@@ -532,7 +532,9 @@ class Solarviewdatareader extends utils.Adapter {
   handleChecksumFailure(sv_data, csum) {
     this.chkCnt += 1;
     if (this.chkCnt > 0 && csum.chksum !== 0) {
-      this.log.warn(`checksum not correct! ${sv_data[0]}: ${csum.data.toString("ascii")}`);
+      if (csum.data.toString("ascii") != ";-)\n") {
+        this.log.warn(`checksum not correct! ${sv_data[0]}: ${csum.data.toString("ascii")}`);
+      }
     }
   }
   async updateSolarviewStates(sv_data, sv_prefix) {
@@ -639,8 +641,12 @@ class Solarviewdatareader extends utils.Adapter {
         await this.createSolarviewObjects("pvi4", true);
       }
       this.conn.on("data", async (data) => {
-        this.chkCnt = 0;
-        await this.processData(data);
+        try {
+          this.chkCnt = 0;
+          await this.processData(data);
+        } catch (error) {
+          this.log.error(`conn.on data: ${error}`);
+        }
       });
       this.conn.on("close", async () => {
         try {
@@ -652,7 +658,7 @@ class Solarviewdatareader extends utils.Adapter {
           }
           this.chkCnt++;
         } catch (error) {
-          this.log.error(`conn.on: ${error}`);
+          this.log.error(`conn.on close: ${error}`);
         }
       });
       this.conn.on("error", (err) => {

@@ -548,7 +548,10 @@ class Solarviewdatareader extends utils.Adapter {
     handleChecksumFailure(sv_data: string[], csum: ChecksumResult): void {
         this.chkCnt += 1;
         if (this.chkCnt > 0 && csum.chksum !== 0) {
-            this.log.warn(`checksum not correct! ${sv_data[0]}: ${csum.data.toString('ascii')}`);
+            if (csum.data.toString('ascii') != ';-)\n') {
+                this.log.warn(`checksum not correct! ${sv_data[0]}: ${csum.data.toString('ascii')}`);
+            }
+            //else -> option not supported from Solarview due to missing Inverter -> chksum ;-)\n
         }
     }
 

@@ -63,7 +63,8 @@ TKK= Temperature inverter
 ### **WORK IN PROGRESS**
 * (afuerhoff) dependencies updated
 * (afuerhoff) Migration to ESLint 9 and @iobroker/eslint-config - issue [#189]
-* (afuerhoff) eslint: code optimized 
+* (afuerhoff) eslint: code optimized
+* (afuerhoff) fixing chksum message if inverter 2 - 4 is not available  
 
 ### 1.1.4 (2024-10-17)
 * (afuerhoff) dependencies updated
