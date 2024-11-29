@@ -750,13 +750,13 @@ class Solarviewdatareader extends utils.Adapter {
 
         const executeCommand = (cmd: string): void => {
             try {
-                timeoutCnt += 700;
+                timeoutCnt += 500;
                 this.tout = setTimeout(() => {
                     this.conn.connect(port, ip_address, async () => {
                         try {
                             this.lastCommand = cmd;
                             this.conn.write(cmd);
-                            await this._sleep(50);
+                            await this._sleep(100);
                             this.conn.end();
                         } catch (error: any) {
                             this.log.error(`conn.connect: ${error}`);
