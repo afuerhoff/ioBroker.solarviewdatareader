@@ -703,7 +703,7 @@ class Solarviewdatareader extends utils.Adapter {
             });
 
             this.conn.on('error', err => {
-                this.log.error(`conn.on error: ${err.message}`);
+                this.log.error(`conn.on error - cmd: ${this.lastCommand} - ${err.message}`);
                 //this.setStateChanged('info.connection', { val: false, ack: true });
             });
 
