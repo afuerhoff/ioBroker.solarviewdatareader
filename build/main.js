@@ -29,6 +29,7 @@ class Solarviewdatareader extends utils.Adapter {
   jobSchedule;
   chkCnt = 0;
   conn;
+  lastCommand = null;
   constructor(options = {}) {
     super({
       ...options,
@@ -514,7 +515,7 @@ class Solarviewdatareader extends utils.Adapter {
     }
   };
   handleConnectionError(errorMessage) {
-    this.log.error(errorMessage);
+    this.log.error(`handleConnectionError: ${errorMessage}`);
     this.setStateChanged("info.connection", { val: false, ack: true });
   }
   async handleChecksumSuccess(sv_data, sv_prefix, response) {
@@ -554,10 +555,6 @@ class Solarviewdatareader extends utils.Adapter {
       this.log.error(`updateSolarviewStates: ${error}`);
     }
   }
-  updateState(stateName, sv_data, index) {
-    const value = Number(sv_data[index]);
-    this.setStateChanged(stateName, { val: value, ack: true });
-  }
   async handleCCUUpdate(sv_data) {
     if (this.config.setCCU) {
       const obj = await this.findForeignObjectAsync(this.config.CCUSystemV, "state");
@@ -591,6 +588,10 @@ class Solarviewdatareader extends utils.Adapter {
       this.updateState(`${sv_prefix}il1`, sv_data, 20);
       this.updateState(`${sv_prefix}tkk`, sv_data, 21);
     }
+  }
+  updateState(stateName, sv_data, index) {
+    const value = Number(sv_data[index]);
+    this.setStateChanged(stateName, { val: value, ack: true });
   }
   async onReady() {
     try {
@@ -650,7 +651,11 @@ class Solarviewdatareader extends utils.Adapter {
       });
       this.conn.on("close", async () => {
         try {
-          this.log.debug("connection closed");
+          if (this.lastCommand) {
+            this.log.debug(`Connection closed after executing command: ${this.lastCommand}`);
+          } else {
+            this.log.debug("Connection closed");
+          }
           if (this.chkCnt > 3) {
             await this.setState("info.connection", false, true);
             this.log.warn("Solarview Server is not reachable");
@@ -662,8 +667,7 @@ class Solarviewdatareader extends utils.Adapter {
         }
       });
       this.conn.on("error", (err) => {
-        this.log.error(err.message);
-        this.setStateChanged("info.connection", { val: false, ack: true });
+        this.log.error(`conn.on error: ${err.message}`);
       });
       if (!this.config.interval_seconds) {
         await this.adjustIntervalToSeconds.call(this);
@@ -690,13 +694,22 @@ class Solarviewdatareader extends utils.Adapter {
     const dend = /* @__PURE__ */ new Date(`${dnow.getFullYear()}-${dnow.getMonth() + 1}-${dnow.getDate()} ${endtime}`);
     let timeoutCnt = 0;
     const executeCommand = (cmd) => {
-      timeoutCnt += 500;
-      this.tout = setTimeout(() => {
-        this.conn.connect(port, ip_address, () => {
-          this.conn.write(cmd);
-          this.conn.end();
-        });
-      }, timeoutCnt);
+      try {
+        timeoutCnt += 500;
+        this.tout = setTimeout(() => {
+          this.conn.connect(port, ip_address, () => {
+            try {
+              this.lastCommand = cmd;
+              this.conn.write(cmd);
+              this.conn.end();
+            } catch (error) {
+              this.log.error(`conn.connect: ${error}`);
+            }
+          });
+        }, timeoutCnt);
+      } catch (error) {
+        this.log.error(`executeCommand: ${error}`);
+      }
     };
     if (dnow >= dstart && dnow <= dend) {
       executeCommand("00*");
