@@ -642,7 +642,6 @@ class Solarviewdatareader extends utils.Adapter {
       this.conn.on("data", async (data) => {
         try {
           await this.processData(data);
-          this.conn.end();
         } catch (error) {
           this.log.error(`conn.on data: ${error}`);
         }
@@ -701,6 +700,7 @@ class Solarviewdatareader extends utils.Adapter {
             try {
               this.lastCommand = cmd;
               this.conn.write(cmd);
+              this.conn.end();
             } catch (error) {
               this.log.error(`conn.connect: ${error}`);
             }
