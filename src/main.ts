@@ -729,6 +729,17 @@ class Solarviewdatareader extends utils.Adapter {
         return new Promise(resolve => setTimeout(resolve, milliseconds));
     }
 
+    connectAsync = (port: number, ip_address: string): Promise<void> => {
+        return new Promise((resolve, reject) => {
+            this.conn.connect(port, ip_address, () => {
+                resolve();
+            });
+            this.conn.on('error', err => {
+                reject(err);
+            });
+        });
+    };
+
     getData(port: number, ip_address: string): void {
         const { intervalstart, intervalend, d0converter, scm0, scm1, scm2, scm3, scm4, pvi1, pvi2, pvi3, pvi4 } =
             this.config;
@@ -746,16 +757,21 @@ class Solarviewdatareader extends utils.Adapter {
         const executeCommand = (cmd: string): void => {
             try {
                 timeoutCnt += 500;
-                this.tout = setTimeout(() => {
-                    this.conn.connect(port, ip_address, () => {
-                        try {
-                            this.lastCommand = cmd;
-                            this.conn.write(cmd);
-                            this.conn.end();
-                        } catch (error: any) {
-                            this.log.error(`conn.connect: ${error}`);
-                        }
-                    });
+                this.tout = setTimeout(async () => {
+                    try {
+                        /*if (this.conn.readyState === 'open') {
+                            this.log.warn(`Connection already open, skipping command execution: ${cmd}`);
+                            return;
+                        }*/
+                        await this.connectAsync(port, ip_address);
+                        this.lastCommand = cmd;
+                        this.conn.write(cmd);
+                        this.log.debug(`executeCommand: ${cmd}`);
+                        this.conn.end();
+                        this.log.debug(`executeCommand end: ${cmd}`);
+                    } catch (error: any) {
+                        this.log.error(`conn.connect: ${error}`);
+                    }
                 }, timeoutCnt);
             } catch (error: any) {
                 this.log.error(`executeCommand: ${error}`);

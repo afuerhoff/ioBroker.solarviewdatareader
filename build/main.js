@@ -683,6 +683,16 @@ class Solarviewdatareader extends utils.Adapter {
   _sleep(milliseconds) {
     return new Promise((resolve) => setTimeout(resolve, milliseconds));
   }
+  connectAsync = (port, ip_address) => {
+    return new Promise((resolve, reject) => {
+      this.conn.connect(port, ip_address, () => {
+        resolve();
+      });
+      this.conn.on("error", (err) => {
+        reject(err);
+      });
+    });
+  };
   getData(port, ip_address) {
     const { intervalstart, intervalend, d0converter, scm0, scm1, scm2, scm3, scm4, pvi1, pvi2, pvi3, pvi4 } = this.config;
     const starttime = intervalstart.split(":").slice(0, 2).join(":");
@@ -695,16 +705,17 @@ class Solarviewdatareader extends utils.Adapter {
     const executeCommand = (cmd) => {
       try {
         timeoutCnt += 500;
-        this.tout = setTimeout(() => {
-          this.conn.connect(port, ip_address, () => {
-            try {
-              this.lastCommand = cmd;
-              this.conn.write(cmd);
-              this.conn.end();
-            } catch (error) {
-              this.log.error(`conn.connect: ${error}`);
-            }
-          });
+        this.tout = setTimeout(async () => {
+          try {
+            await this.connectAsync(port, ip_address);
+            this.lastCommand = cmd;
+            this.conn.write(cmd);
+            this.log.debug(`executeCommand: ${cmd}`);
+            this.conn.end();
+            this.log.debug(`executeCommand end: ${cmd}`);
+          } catch (error) {
+            this.log.error(`conn.connect: ${error}`);
+          }
         }, timeoutCnt);
       } catch (error) {
         this.log.error(`executeCommand: ${error}`);
