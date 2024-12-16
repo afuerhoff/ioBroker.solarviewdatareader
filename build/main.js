@@ -29,6 +29,9 @@ class Solarviewdatareader extends utils.Adapter {
   chkCnt = 0;
   conn;
   lastCommand = null;
+  commandQueue = [];
+  isProcessingQueue = false;
+  isProcessingCmd = false;
   constructor(options = {}) {
     super({
       ...options,
@@ -499,20 +502,6 @@ class Solarviewdatareader extends utils.Adapter {
     };
     return prefixMap[dataCode] || "";
   }
-  processData = async (data) => {
-    try {
-      const strdata = this.preprocessSolarviewData(data);
-      const id = this.getSolarviewPrefix(strdata[0]);
-      const cs = this.calcChecksum(data.toString("ascii"));
-      if (cs.result) {
-        await this.handleChecksumSuccess(strdata, id, data);
-      } else {
-        this.handleChecksumFailure(strdata, cs);
-      }
-    } catch (error) {
-      this.log.error(`processData: ${error}`);
-    }
-  };
   /*handleConnectionError(errorMessage: string): void {
       this.log.error(`handleConnectionError: ${errorMessage}`);
       this.setStateChanged('info.connection', { val: false, ack: true });
@@ -594,14 +583,10 @@ class Solarviewdatareader extends utils.Adapter {
   }
   async onReady() {
     try {
-      const ip_address = this.config.ipaddress;
-      const port = this.config.port;
-      this.conn = new net.Socket();
-      this.conn.setTimeout(2e3);
       const starttime = this.config.intervalstart.split(":").slice(0, 2).join(":");
       const endtime = this.config.intervalend.split(":").slice(0, 2).join(":");
       this.log.info(
-        `start solarview ${ip_address}:${port} - polling interval: ${this.config.intervalVal}s (${starttime} to ${endtime})`
+        `start solarview ${this.config.ipaddress}:${this.config.port} - polling interval: ${this.config.intervalVal}s (${starttime} to ${endtime})`
       );
       this.log.info(`d0 converter: ${this.config.d0converter.toString()}`);
       await this.createGlobalObjects();
@@ -639,39 +624,18 @@ class Solarviewdatareader extends utils.Adapter {
       if (this.config.pvi4) {
         await this.createSolarviewObjects("pvi4", true);
       }
-      this.conn.on("data", async (data) => {
-        try {
-          await this.processData(data);
-        } catch (error) {
-          this.log.error(`conn.on data: ${error}`);
-        }
-      });
-      this.conn.on("close", async () => {
-        try {
-          if (this.lastCommand) {
-            this.log.debug(`Connection closed after executing command: ${this.lastCommand}`);
-          } else {
-            this.log.debug("Connection closed");
-          }
-          if (this.chkCnt > 3) {
-            await this.setState("info.connection", false, true);
-            this.log.warn("Solarview Server is not reachable");
-            this.chkCnt = 0;
-          }
-        } catch (error) {
-          this.log.error(`conn.on close: ${error}`);
-        }
-      });
-      this.conn.on("error", (err) => {
-        this.log.error(`conn.on error - cmd: ${this.lastCommand} - ${err.message}`);
-      });
       if (!this.config.interval_seconds) {
         await this.adjustIntervalToSeconds.call(this);
       }
-      this.getData(port, ip_address);
-      this.jobSchedule = setInterval(() => {
+      this.conn = new net.Socket();
+      this.conn.setTimeout(2e3);
+      this.conn.on("data", this.onDataHandler.bind(this));
+      this.conn.on("close", this.onCloseHandler.bind(this));
+      this.conn.on("error", this.onErrorHandler.bind(this));
+      await this.setCmdQueue();
+      this.jobSchedule = setInterval(async () => {
         try {
-          this.getData(port, ip_address);
+          await this.setCmdQueue();
         } catch (error) {
           this.log.error(`onReady.getData: ${error}`);
         }
@@ -679,6 +643,48 @@ class Solarviewdatareader extends utils.Adapter {
     } catch (error) {
       this.log.error(`onReady: ${error}`);
     }
+  }
+  async onDataHandler(data) {
+    try {
+      await this.processData(data);
+      this.conn.end();
+    } catch (error) {
+      this.log.error(`conn.on data: ${error}`);
+    }
+  }
+  processData = async (data) => {
+    try {
+      const strdata = this.preprocessSolarviewData(data);
+      const id = this.getSolarviewPrefix(strdata[0]);
+      const cs = this.calcChecksum(data.toString("ascii"));
+      if (cs.result) {
+        await this.handleChecksumSuccess(strdata, id, data);
+      } else {
+        this.handleChecksumFailure(strdata, cs);
+      }
+    } catch (error) {
+      this.log.error(`processData: ${error}`);
+    }
+  };
+  async onCloseHandler() {
+    try {
+      if (this.lastCommand) {
+        this.log.debug(`Connection closed after executing command: ${this.lastCommand}`);
+      } else {
+        this.log.debug("Connection closed");
+      }
+      this.isProcessingCmd = false;
+      if (this.chkCnt > 3) {
+        await this.setState("info.connection", false, true);
+        this.log.warn("Solarview Server is not reachable");
+        this.chkCnt = 0;
+      }
+    } catch (error) {
+      this.log.error(`conn.on close: ${error}`);
+    }
+  }
+  onErrorHandler(err) {
+    this.log.error(`conn.on error - cmd: ${this.lastCommand} - ${err.message}`);
   }
   _sleep(milliseconds) {
     return new Promise((resolve) => setTimeout(resolve, milliseconds));
@@ -693,69 +699,85 @@ class Solarviewdatareader extends utils.Adapter {
       });
     });
   };
-  getData(port, ip_address) {
-    const { intervalstart, intervalend, d0converter, scm0, scm1, scm2, scm3, scm4, pvi1, pvi2, pvi3, pvi4 } = this.config;
+  async setCmdQueue() {
+    const commands = [];
+    const { d0converter, scm0, scm1, scm2, scm3, scm4, pvi1, pvi2, pvi3, pvi4, intervalstart, intervalend } = this.config;
     const starttime = intervalstart.split(":").slice(0, 2).join(":");
     let endtime = intervalend.split(":").slice(0, 2).join(":");
     endtime = endtime === "00:00" ? "23:59" : endtime;
     const dnow = /* @__PURE__ */ new Date();
     const dstart = /* @__PURE__ */ new Date(`${dnow.getFullYear()}-${dnow.getMonth() + 1}-${dnow.getDate()} ${starttime}`);
     const dend = /* @__PURE__ */ new Date(`${dnow.getFullYear()}-${dnow.getMonth() + 1}-${dnow.getDate()} ${endtime}`);
-    let timeoutCnt = 0;
-    const executeCommand = (cmd) => {
-      try {
-        timeoutCnt += 500;
-        this.tout = setTimeout(async () => {
-          try {
-            await this.connectAsync(port, ip_address);
-            this.lastCommand = cmd;
-            this.conn.write(cmd);
-            this.log.debug(`executeCommand: ${cmd}`);
-            this.conn.end();
-            this.log.debug(`executeCommand end: ${cmd}`);
-          } catch (error) {
-            this.log.error(`conn.connect: ${error}`);
-          }
-        }, timeoutCnt);
-      } catch (error) {
-        this.log.error(`executeCommand: ${error}`);
-      }
-    };
     if (dnow >= dstart && dnow <= dend) {
-      executeCommand("00*");
+      commands.push("00*");
       if (d0converter) {
-        executeCommand("21*");
+        commands.push("21*");
       }
       if (pvi1) {
-        executeCommand("01*");
+        commands.push("01*");
       }
       if (pvi2) {
-        executeCommand("02*");
+        commands.push("02*");
       }
       if (pvi3) {
-        executeCommand("03*");
+        commands.push("03*");
       }
       if (pvi4) {
-        executeCommand("04*");
+        commands.push("04*");
       }
     }
     if (d0converter) {
-      executeCommand("22*");
+      commands.push("22*");
     }
     if (scm0) {
-      executeCommand("10*");
+      commands.push("10*");
     }
     if (scm1) {
-      executeCommand("11*");
+      commands.push("11*");
     }
     if (scm2) {
-      executeCommand("12*");
+      commands.push("12*");
     }
     if (scm3) {
-      executeCommand("13*");
+      commands.push("13*");
     }
     if (scm4) {
-      executeCommand("14*");
+      commands.push("14*");
+    }
+    this.commandQueue.push(...commands);
+    await this.processQueue();
+  }
+  async processQueue() {
+    if (this.isProcessingQueue) {
+      return;
+    }
+    this.isProcessingQueue = true;
+    while (this.commandQueue.length > 0) {
+      if (!this.isProcessingCmd) {
+        const cmd = this.commandQueue.shift();
+        if (cmd) {
+          try {
+            this.isProcessingCmd = true;
+            await this.executeCommand(cmd);
+          } catch (error) {
+            this.log.error(`processQueue.executeCommand: ${error}`);
+          }
+        }
+      }
+      await this._sleep(500);
+    }
+    this.isProcessingQueue = false;
+  }
+  async executeCommand(cmd) {
+    this.log.debug(`Attempting to execute command: ${cmd}`);
+    try {
+      await this.connectAsync(this.config.port, this.config.ipaddress);
+      this.lastCommand = cmd;
+      this.conn.write(cmd);
+      this.log.debug(`Command successfully sent: ${cmd}`);
+    } catch (error) {
+      this.log.error(`Error executing command ${cmd}: ${error.message}`);
+      throw error;
     }
   }
   onUnload(callback) {

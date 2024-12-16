@@ -22,6 +22,9 @@ class Solarviewdatareader extends utils.Adapter {
     chkCnt = 0;
     conn!: net.Socket;
     lastCommand: string | null = null;
+    private commandQueue: string[] = [];
+    private isProcessingQueue = false;
+    private isProcessingCmd = false;
 
     public constructor(options: Partial<utils.AdapterOptions> = {}) {
         super({
@@ -510,21 +513,6 @@ class Solarviewdatareader extends utils.Adapter {
         return prefixMap[dataCode] || '';
     }
 
-    processData = async (data: Buffer): Promise<void> => {
-        try {
-            const strdata: string[] = this.preprocessSolarviewData(data);
-            const id = this.getSolarviewPrefix(strdata[0]);
-            const cs: ChecksumResult = this.calcChecksum(data.toString('ascii'));
-            if (cs.result) {
-                await this.handleChecksumSuccess(strdata, id, data);
-            } else {
-                this.handleChecksumFailure(strdata, cs);
-            }
-        } catch (error: any) {
-            this.log.error(`processData: ${error}`);
-        }
-    };
-
     /*handleConnectionError(errorMessage: string): void {
         this.log.error(`handleConnectionError: ${errorMessage}`);
         this.setStateChanged('info.connection', { val: false, ack: true });
@@ -620,18 +608,11 @@ class Solarviewdatareader extends utils.Adapter {
 
     private async onReady(): Promise<void> {
         try {
-            const ip_address: string = this.config.ipaddress;
-            const port: number = this.config.port;
-            //this.chkCnt = 0;
-
-            this.conn = new net.Socket();
-            this.conn.setTimeout(2000);
-
             const starttime = this.config.intervalstart.split(':').slice(0, 2).join(':');
             const endtime = this.config.intervalend.split(':').slice(0, 2).join(':');
 
             this.log.info(
-                `start solarview ${ip_address}:${port} - polling interval: ${this.config.intervalVal}s (${starttime} to ${
+                `start solarview ${this.config.ipaddress}:${this.config.port} - polling interval: ${this.config.intervalVal}s (${starttime} to ${
                     endtime
                 })`,
             );
@@ -674,48 +655,27 @@ class Solarviewdatareader extends utils.Adapter {
                 await this.createSolarviewObjects('pvi4', true);
             }
 
-            this.conn.on('data', async data => {
-                try {
-                    //this.chkCnt = 0;
-                    await this.processData(data);
-                } catch (error: any) {
-                    this.log.error(`conn.on data: ${error}`);
-                }
-            });
-
-            this.conn.on('close', async () => {
-                try {
-                    if (this.lastCommand) {
-                        this.log.debug(`Connection closed after executing command: ${this.lastCommand}`);
-                    } else {
-                        this.log.debug('Connection closed');
-                    }
-                    if (this.chkCnt > 3) {
-                        await this.setState('info.connection', false, true);
-                        this.log.warn('Solarview Server is not reachable');
-                        this.chkCnt = 0;
-                    }
-                    //this.chkCnt++;
-                } catch (error: any) {
-                    this.log.error(`conn.on close: ${error}`);
-                }
-            });
-
-            this.conn.on('error', err => {
-                this.log.error(`conn.on error - cmd: ${this.lastCommand} - ${err.message}`);
-                //this.setStateChanged('info.connection', { val: false, ack: true });
-            });
-
             if (!this.config.interval_seconds) {
                 await this.adjustIntervalToSeconds.call(this);
             }
 
-            //First start of getData
-            this.getData(port, ip_address);
+            this.conn = new net.Socket();
+            this.conn.setTimeout(2000);
+            this.conn.on('data', this.onDataHandler.bind(this));
+            this.conn.on('close', this.onCloseHandler.bind(this));
+            this.conn.on('error', this.onErrorHandler.bind(this));
 
-            this.jobSchedule = setInterval(() => {
+            /*this.conn.on('error', err => {
+                this.log.error(`conn.on error - cmd: ${this.lastCommand} - ${err.message}`);
+                //this.setStateChanged('info.connection', { val: false, ack: true });
+            });*/
+
+            //First start
+            await this.setCmdQueue();
+
+            this.jobSchedule = setInterval(async () => {
                 try {
-                    this.getData(port, ip_address);
+                    await this.setCmdQueue();
                 } catch (error: any) {
                     this.log.error(`onReady.getData: ${error}`);
                 }
@@ -723,6 +683,63 @@ class Solarviewdatareader extends utils.Adapter {
         } catch (error: any) {
             this.log.error(`onReady: ${error}`);
         }
+    }
+
+    async onDataHandler(data: any): Promise<void> {
+        try {
+            //this.chkCnt = 0;
+            await this.processData(data);
+            this.conn.end();
+        } catch (error: any) {
+            this.log.error(`conn.on data: ${error}`);
+        }
+    }
+
+    processData = async (data: Buffer): Promise<void> => {
+        try {
+            const strdata: string[] = this.preprocessSolarviewData(data);
+            const id = this.getSolarviewPrefix(strdata[0]);
+            const cs: ChecksumResult = this.calcChecksum(data.toString('ascii'));
+            if (cs.result) {
+                await this.handleChecksumSuccess(strdata, id, data);
+            } else {
+                this.handleChecksumFailure(strdata, cs);
+            }
+        } catch (error: any) {
+            this.log.error(`processData: ${error}`);
+        }
+    };
+
+    private async onCloseHandler(): Promise<void> {
+        try {
+            //this.log.warn('Connection closed');
+            if (this.lastCommand) {
+                this.log.debug(`Connection closed after executing command: ${this.lastCommand}`);
+            } else {
+                this.log.debug('Connection closed');
+            }
+            this.isProcessingCmd = false;
+            if (this.chkCnt > 3) {
+                await this.setState('info.connection', false, true);
+                this.log.warn('Solarview Server is not reachable');
+                this.chkCnt = 0;
+            }
+        } catch (error: any) {
+            this.log.error(`conn.on close: ${error}`);
+        }
+
+        //this.conn = new net.Socket();
+        //this.conn.setTimeout(2000);
+        //this.conn.on('data', this.onDataHandler.bind(this));
+        //this.conn.on('close', this.onCloseHandler.bind(this));
+        //this.conn.on('error', this.onErrorHandler.bind(this));
+        /*this.connectAsync(this.config.port, this.config.ipaddress).catch(err => {
+            this.log.error(`Reconnection failed: ${err.message}`);
+        });*/
+    }
+
+    onErrorHandler(err: any): void {
+        this.log.error(`conn.on error - cmd: ${this.lastCommand} - ${err.message}`);
     }
 
     _sleep(milliseconds: number): Promise<void> {
@@ -740,8 +757,9 @@ class Solarviewdatareader extends utils.Adapter {
         });
     };
 
-    getData(port: number, ip_address: string): void {
-        const { intervalstart, intervalend, d0converter, scm0, scm1, scm2, scm3, scm4, pvi1, pvi2, pvi3, pvi4 } =
+    async setCmdQueue(): Promise<void> {
+        const commands: string[] = [];
+        const { d0converter, scm0, scm1, scm2, scm3, scm4, pvi1, pvi2, pvi3, pvi4, intervalstart, intervalend } =
             this.config;
 
         const starttime = intervalstart.split(':').slice(0, 2).join(':');
@@ -752,73 +770,90 @@ class Solarviewdatareader extends utils.Adapter {
         const dstart = new Date(`${dnow.getFullYear()}-${dnow.getMonth() + 1}-${dnow.getDate()} ${starttime}`);
         const dend = new Date(`${dnow.getFullYear()}-${dnow.getMonth() + 1}-${dnow.getDate()} ${endtime}`);
 
-        let timeoutCnt = 0;
-
-        const executeCommand = (cmd: string): void => {
-            try {
-                timeoutCnt += 500;
-                this.tout = setTimeout(async () => {
-                    try {
-                        /*if (this.conn.readyState === 'open') {
-                            this.log.warn(`Connection already open, skipping command execution: ${cmd}`);
-                            return;
-                        }*/
-                        await this.connectAsync(port, ip_address);
-                        this.lastCommand = cmd;
-                        this.conn.write(cmd);
-                        this.log.debug(`executeCommand: ${cmd}`);
-                        this.conn.end();
-                        this.log.debug(`executeCommand end: ${cmd}`);
-                    } catch (error: any) {
-                        this.log.error(`conn.connect: ${error}`);
-                    }
-                }, timeoutCnt);
-            } catch (error: any) {
-                this.log.error(`executeCommand: ${error}`);
-            }
-        };
-
         if (dnow >= dstart && dnow <= dend) {
-            executeCommand('00*'); // pvig
-
+            commands.push('00*'); // pvig
             if (d0converter) {
-                executeCommand('21*');
+                commands.push('21*');
             }
             if (pvi1) {
-                executeCommand('01*');
+                commands.push('01*');
             }
             if (pvi2) {
-                executeCommand('02*');
+                commands.push('02*');
             }
             if (pvi3) {
-                executeCommand('03*');
+                commands.push('03*');
             }
             if (pvi4) {
-                executeCommand('04*');
+                commands.push('04*');
             }
         }
 
         if (d0converter) {
-            executeCommand('22*');
+            commands.push('22*');
         }
         if (scm0) {
-            executeCommand('10*');
+            commands.push('10*');
         }
         if (scm1) {
-            executeCommand('11*');
+            commands.push('11*');
         }
         if (scm2) {
-            executeCommand('12*');
+            commands.push('12*');
         }
         if (scm3) {
-            executeCommand('13*');
+            commands.push('13*');
         }
         if (scm4) {
-            executeCommand('14*');
+            commands.push('14*');
         }
-        /*if (this.pTimeoutcnt === 0) {
-            this.pTimeoutcnt = timeoutCnt;
-        }*/
+
+        // Befehle zur Warteschlange hinzufügen
+        this.commandQueue.push(...commands);
+
+        // Verarbeite die Warteschlange
+        await this.processQueue();
+    }
+
+    async processQueue(): Promise<void> {
+        if (this.isProcessingQueue) {
+            return;
+        }
+        this.isProcessingQueue = true;
+
+        while (this.commandQueue.length > 0) {
+            if (!this.isProcessingCmd) {
+                const cmd = this.commandQueue.shift();
+                if (cmd) {
+                    try {
+                        this.isProcessingCmd = true;
+                        await this.executeCommand(cmd);
+                    } catch (error: any) {
+                        this.log.error(`processQueue.executeCommand: ${error}`);
+                    }
+                }
+            }
+            await this._sleep(500);
+        }
+        this.isProcessingQueue = false;
+    }
+
+    private async executeCommand(cmd: string): Promise<void> {
+        this.log.debug(`Attempting to execute command: ${cmd}`);
+        try {
+            /*if (!this.conn || this.conn.destroyed) {
+                this.log.debug('Connection not active. Reconnecting...');
+                await this.connectAsync(this.config.port, this.config.ipaddress);
+            }*/
+            await this.connectAsync(this.config.port, this.config.ipaddress);
+            this.lastCommand = cmd;
+            this.conn.write(cmd);
+            this.log.debug(`Command successfully sent: ${cmd}`);
+            //await this._sleep(500);
+        } catch (error: any) {
+            this.log.error(`Error executing command ${cmd}: ${error.message}`);
+            throw error;
+        }
     }
 
     private onUnload(callback: () => void): void {
