@@ -513,33 +513,6 @@ class Solarviewdatareader extends utils.Adapter {
         return prefixMap[dataCode] || '';
     }
 
-    async handleChecksumSuccess(sv_data: string[], sv_prefix: string, response: Buffer): Promise<void> {
-        try {
-            this.chkCnt = 0;
-            this.log.debug(`${response.toString('ascii')}`);
-
-            await this.updateSolarviewStates(sv_data, sv_prefix);
-
-            const sDate = `${sv_data[3]}-${this.aLZ(parseInt(sv_data[2]))}-${this.aLZ(parseInt(sv_data[1]))} ${this.aLZ(parseInt(sv_data[4]))}:${this.aLZ(parseInt(sv_data[5]))}`;
-            this.setStateChanged('info.lastUpdate', { val: sDate, ack: true });
-            this.setStateChanged('info.connection', { val: true, ack: true });
-        } catch (error: any) {
-            this.log.error(`handleChecksumSuccess: ${error}`);
-        }
-    }
-
-    handleChecksumFailure(sv_data: string[], csum: ChecksumResult): void {
-        if (csum.chksum !== 0) {
-            if (csum.data.toString('ascii') != ';-)\n') {
-                this.chkCnt += 1;
-                this.log.warn(`checksum not correct! ${sv_data[0]}: ${csum.data.toString('ascii')}`);
-            } else {
-                //else -> option not supported from Solarview due to missing Inverter -> chksum ;-)\n
-                this.log.warn(`command ${this.lastCommand} not supported!`);
-            }
-        }
-    }
-
     async updateSolarviewStates(sv_data: string[], sv_prefix: string): Promise<void> {
         try {
             this.updateState(`${sv_prefix}current`, sv_data, 10);
@@ -701,9 +674,35 @@ class Solarviewdatareader extends utils.Adapter {
         }
     };
 
+    async handleChecksumSuccess(sv_data: string[], sv_prefix: string, response: Buffer): Promise<void> {
+        try {
+            this.chkCnt = 0;
+            this.log.debug(`${response.toString('ascii')}`);
+
+            await this.updateSolarviewStates(sv_data, sv_prefix);
+
+            const sDate = `${sv_data[3]}-${this.aLZ(parseInt(sv_data[2]))}-${this.aLZ(parseInt(sv_data[1]))} ${this.aLZ(parseInt(sv_data[4]))}:${this.aLZ(parseInt(sv_data[5]))}`;
+            this.setStateChanged('info.lastUpdate', { val: sDate, ack: true });
+            this.setStateChanged('info.connection', { val: true, ack: true });
+        } catch (error: any) {
+            this.log.error(`handleChecksumSuccess: ${error}`);
+        }
+    }
+
+    handleChecksumFailure(sv_data: string[], csum: ChecksumResult): void {
+        if (csum.chksum !== 0) {
+            if (csum.data.toString('ascii') != ';-)\n') {
+                this.chkCnt += 1;
+                this.log.warn(`checksum not correct! ${sv_data[0]}: ${csum.data.toString('ascii')}`);
+            } else {
+                //else -> option not supported from Solarview due to missing Inverter -> chksum ;-)\n
+                this.log.warn(`command ${this.lastCommand} not supported!`);
+            }
+        }
+    }
+
     private async onCloseHandler(): Promise<void> {
         try {
-            //this.log.warn('Connection closed');
             if (this.lastCommand) {
                 this.log.debug(`Connection closed after executing command: ${this.lastCommand}`);
             } else {
@@ -799,6 +798,7 @@ class Solarviewdatareader extends utils.Adapter {
 
     async processQueue(): Promise<void> {
         if (this.isProcessingQueue) {
+            this.log.error(`processQueue: queue not empty! Waiting ...`);
             return;
         }
         this.isProcessingQueue = true;

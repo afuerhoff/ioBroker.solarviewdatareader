@@ -502,28 +502,6 @@ class Solarviewdatareader extends utils.Adapter {
     };
     return prefixMap[dataCode] || "";
   }
-  async handleChecksumSuccess(sv_data, sv_prefix, response) {
-    try {
-      this.chkCnt = 0;
-      this.log.debug(`${response.toString("ascii")}`);
-      await this.updateSolarviewStates(sv_data, sv_prefix);
-      const sDate = `${sv_data[3]}-${this.aLZ(parseInt(sv_data[2]))}-${this.aLZ(parseInt(sv_data[1]))} ${this.aLZ(parseInt(sv_data[4]))}:${this.aLZ(parseInt(sv_data[5]))}`;
-      this.setStateChanged("info.lastUpdate", { val: sDate, ack: true });
-      this.setStateChanged("info.connection", { val: true, ack: true });
-    } catch (error) {
-      this.log.error(`handleChecksumSuccess: ${error}`);
-    }
-  }
-  handleChecksumFailure(sv_data, csum) {
-    if (csum.chksum !== 0) {
-      if (csum.data.toString("ascii") != ";-)\n") {
-        this.chkCnt += 1;
-        this.log.warn(`checksum not correct! ${sv_data[0]}: ${csum.data.toString("ascii")}`);
-      } else {
-        this.log.warn(`command ${this.lastCommand} not supported!`);
-      }
-    }
-  }
   async updateSolarviewStates(sv_data, sv_prefix) {
     try {
       this.updateState(`${sv_prefix}current`, sv_data, 10);
@@ -664,6 +642,28 @@ class Solarviewdatareader extends utils.Adapter {
       this.log.error(`processData: ${error.message}`);
     }
   };
+  async handleChecksumSuccess(sv_data, sv_prefix, response) {
+    try {
+      this.chkCnt = 0;
+      this.log.debug(`${response.toString("ascii")}`);
+      await this.updateSolarviewStates(sv_data, sv_prefix);
+      const sDate = `${sv_data[3]}-${this.aLZ(parseInt(sv_data[2]))}-${this.aLZ(parseInt(sv_data[1]))} ${this.aLZ(parseInt(sv_data[4]))}:${this.aLZ(parseInt(sv_data[5]))}`;
+      this.setStateChanged("info.lastUpdate", { val: sDate, ack: true });
+      this.setStateChanged("info.connection", { val: true, ack: true });
+    } catch (error) {
+      this.log.error(`handleChecksumSuccess: ${error}`);
+    }
+  }
+  handleChecksumFailure(sv_data, csum) {
+    if (csum.chksum !== 0) {
+      if (csum.data.toString("ascii") != ";-)\n") {
+        this.chkCnt += 1;
+        this.log.warn(`checksum not correct! ${sv_data[0]}: ${csum.data.toString("ascii")}`);
+      } else {
+        this.log.warn(`command ${this.lastCommand} not supported!`);
+      }
+    }
+  }
   async onCloseHandler() {
     try {
       if (this.lastCommand) {
@@ -747,6 +747,7 @@ class Solarviewdatareader extends utils.Adapter {
   }
   async processQueue() {
     if (this.isProcessingQueue) {
+      this.log.error(`processQueue: queue not empty! Waiting ...`);
       return;
     }
     this.isProcessingQueue = true;
