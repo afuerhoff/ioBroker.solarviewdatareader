@@ -533,8 +533,10 @@ class Solarviewdatareader extends utils.Adapter {
             if (csum.data.toString('ascii') != ';-)\n') {
                 this.chkCnt += 1;
                 this.log.warn(`checksum not correct! ${sv_data[0]}: ${csum.data.toString('ascii')}`);
+            } else {
+                //else -> option not supported from Solarview due to missing Inverter -> chksum ;-)\n
+                this.log.warn(`command ${this.lastCommand} not supported!`);
             }
-            //else -> option not supported from Solarview due to missing Inverter -> chksum ;-)\n
         }
     }
 
