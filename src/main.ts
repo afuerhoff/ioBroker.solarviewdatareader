@@ -798,7 +798,7 @@ class Solarviewdatareader extends utils.Adapter {
 
     async processQueue(): Promise<void> {
         if (this.isProcessingQueue) {
-            this.log.error(`processQueue: queue not empty! Waiting ...`);
+            this.log.warn(`processQueue: queue not empty! Waiting ...`);
             return;
         }
         this.isProcessingQueue = true;
