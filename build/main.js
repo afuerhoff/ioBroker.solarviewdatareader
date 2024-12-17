@@ -502,10 +502,6 @@ class Solarviewdatareader extends utils.Adapter {
     };
     return prefixMap[dataCode] || "";
   }
-  /*handleConnectionError(errorMessage: string): void {
-      this.log.error(`handleConnectionError: ${errorMessage}`);
-      this.setStateChanged('info.connection', { val: false, ack: true });
-  }*/
   async handleChecksumSuccess(sv_data, sv_prefix, response) {
     try {
       this.chkCnt = 0;
@@ -637,11 +633,11 @@ class Solarviewdatareader extends utils.Adapter {
         try {
           await this.setCmdQueue();
         } catch (error) {
-          this.log.error(`onReady.getData: ${error}`);
+          this.log.error(`onReady.schedule: ${error.message}`);
         }
       }, this.config.intervalVal * 1e3);
     } catch (error) {
-      this.log.error(`onReady: ${error}`);
+      this.log.error(`onReady: ${error.message}`);
     }
   }
   async onDataHandler(data) {
@@ -649,7 +645,7 @@ class Solarviewdatareader extends utils.Adapter {
       await this.processData(data);
       this.conn.end();
     } catch (error) {
-      this.log.error(`conn.on data: ${error}`);
+      this.log.error(`conn.on data: ${error.message}`);
     }
   }
   processData = async (data) => {
@@ -663,7 +659,7 @@ class Solarviewdatareader extends utils.Adapter {
         this.handleChecksumFailure(strdata, cs);
       }
     } catch (error) {
-      this.log.error(`processData: ${error}`);
+      this.log.error(`processData: ${error.message}`);
     }
   };
   async onCloseHandler() {
@@ -680,7 +676,7 @@ class Solarviewdatareader extends utils.Adapter {
         this.chkCnt = 0;
       }
     } catch (error) {
-      this.log.error(`conn.on close: ${error}`);
+      this.log.error(`conn.on close: ${error.message}`);
     }
   }
   onErrorHandler(err) {
@@ -789,7 +785,7 @@ class Solarviewdatareader extends utils.Adapter {
       this.log.info("cleaned everything up...");
       callback();
     } catch (error) {
-      this.log.info(`onUnload: ${error}`);
+      this.log.info(`onUnload: ${error.message}`);
       callback();
     }
   }

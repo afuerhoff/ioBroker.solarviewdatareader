@@ -513,11 +513,6 @@ class Solarviewdatareader extends utils.Adapter {
         return prefixMap[dataCode] || '';
     }
 
-    /*handleConnectionError(errorMessage: string): void {
-        this.log.error(`handleConnectionError: ${errorMessage}`);
-        this.setStateChanged('info.connection', { val: false, ack: true });
-    }*/
-
     async handleChecksumSuccess(sv_data: string[], sv_prefix: string, response: Buffer): Promise<void> {
         try {
             this.chkCnt = 0;
@@ -574,7 +569,7 @@ class Solarviewdatareader extends utils.Adapter {
         }
     }
 
-    updateExtendedStates(sv_data: string[], sv_prefix: string): void {
+    private updateExtendedStates(sv_data: string[], sv_prefix: string): void {
         this.updateState(`${sv_prefix}udc`, sv_data, 11);
         this.updateState(`${sv_prefix}idc`, sv_data, 12);
         this.updateState(`${sv_prefix}udcb`, sv_data, 13);
@@ -601,7 +596,7 @@ class Solarviewdatareader extends utils.Adapter {
         }
     }
 
-    updateState(stateName: string, sv_data: string[], index: number): void {
+    private updateState(stateName: string, sv_data: string[], index: number): void {
         const value = Number(sv_data[index]);
         this.setStateChanged(stateName, { val: value, ack: true });
     }
@@ -665,11 +660,6 @@ class Solarviewdatareader extends utils.Adapter {
             this.conn.on('close', this.onCloseHandler.bind(this));
             this.conn.on('error', this.onErrorHandler.bind(this));
 
-            /*this.conn.on('error', err => {
-                this.log.error(`conn.on error - cmd: ${this.lastCommand} - ${err.message}`);
-                //this.setStateChanged('info.connection', { val: false, ack: true });
-            });*/
-
             //First start
             await this.setCmdQueue();
 
@@ -677,21 +667,20 @@ class Solarviewdatareader extends utils.Adapter {
                 try {
                     await this.setCmdQueue();
                 } catch (error: any) {
-                    this.log.error(`onReady.getData: ${error}`);
+                    this.log.error(`onReady.schedule: ${error.message}`);
                 }
             }, this.config.intervalVal * 1000);
         } catch (error: any) {
-            this.log.error(`onReady: ${error}`);
+            this.log.error(`onReady: ${error.message}`);
         }
     }
 
     async onDataHandler(data: any): Promise<void> {
         try {
-            //this.chkCnt = 0;
             await this.processData(data);
             this.conn.end();
         } catch (error: any) {
-            this.log.error(`conn.on data: ${error}`);
+            this.log.error(`conn.on data: ${error.message}`);
         }
     }
 
@@ -706,7 +695,7 @@ class Solarviewdatareader extends utils.Adapter {
                 this.handleChecksumFailure(strdata, cs);
             }
         } catch (error: any) {
-            this.log.error(`processData: ${error}`);
+            this.log.error(`processData: ${error.message}`);
         }
     };
 
@@ -725,17 +714,8 @@ class Solarviewdatareader extends utils.Adapter {
                 this.chkCnt = 0;
             }
         } catch (error: any) {
-            this.log.error(`conn.on close: ${error}`);
+            this.log.error(`conn.on close: ${error.message}`);
         }
-
-        //this.conn = new net.Socket();
-        //this.conn.setTimeout(2000);
-        //this.conn.on('data', this.onDataHandler.bind(this));
-        //this.conn.on('close', this.onCloseHandler.bind(this));
-        //this.conn.on('error', this.onErrorHandler.bind(this));
-        /*this.connectAsync(this.config.port, this.config.ipaddress).catch(err => {
-            this.log.error(`Reconnection failed: ${err.message}`);
-        });*/
     }
 
     onErrorHandler(err: any): void {
@@ -841,15 +821,10 @@ class Solarviewdatareader extends utils.Adapter {
     private async executeCommand(cmd: string): Promise<void> {
         this.log.debug(`Attempting to execute command: ${cmd}`);
         try {
-            /*if (!this.conn || this.conn.destroyed) {
-                this.log.debug('Connection not active. Reconnecting...');
-                await this.connectAsync(this.config.port, this.config.ipaddress);
-            }*/
             await this.connectAsync(this.config.port, this.config.ipaddress);
             this.lastCommand = cmd;
             this.conn.write(cmd);
             this.log.debug(`Command successfully sent: ${cmd}`);
-            //await this._sleep(500);
         } catch (error: any) {
             this.log.error(`Error executing command ${cmd}: ${error.message}`);
             throw error;
@@ -865,7 +840,7 @@ class Solarviewdatareader extends utils.Adapter {
             this.log.info('cleaned everything up...');
             callback();
         } catch (error: any) {
-            this.log.info(`onUnload: ${error}`);
+            this.log.info(`onUnload: ${error.message}`);
             callback();
         }
     }
