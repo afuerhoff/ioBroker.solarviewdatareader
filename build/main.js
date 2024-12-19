@@ -26,12 +26,12 @@ var net = __toESM(require("net"));
 class Solarviewdatareader extends utils.Adapter {
   tout;
   jobSchedule;
-  chkCnt = 0;
+  chkCnt;
   conn;
-  lastCommand = null;
-  commandQueue = [];
-  isProcessingQueue = false;
-  isProcessingCmd = false;
+  lastCommand;
+  commandQueue;
+  isProcessingQueue;
+  isProcessingCmd;
   constructor(options = {}) {
     super({
       ...options,
@@ -39,29 +39,11 @@ class Solarviewdatareader extends utils.Adapter {
     });
     this.on("ready", this.onReady.bind(this));
     this.on("unload", this.onUnload.bind(this));
-  }
-  // Nullen voranstellen - add Leading Zero
-  aLZ(n) {
-    return n <= 9 ? `0${n}` : n.toString();
-  }
-  calcChecksum(inputString) {
-    const buffer = Buffer.from(inputString);
-    let sum = 0;
-    let index = 0;
-    for (let i = 0; i < buffer.length; i++) {
-      sum = (sum + buffer[i]) % 128;
-      if (buffer[i] === 125) {
-        index = i + 2;
-        break;
-      }
-    }
-    const result = {
-      result: buffer[index] === sum,
-      chksum: sum,
-      ind: index,
-      data: buffer
-    };
-    return result;
+    this.lastCommand = "";
+    this.commandQueue = [];
+    this.isProcessingQueue = false;
+    this.isProcessingCmd = false;
+    this.chkCnt = 0;
   }
   async createObject(id, obj) {
     await this.setObjectNotExistsAsync(id, obj);
@@ -466,6 +448,7 @@ class Solarviewdatareader extends utils.Adapter {
       await this.createObject(...option);
     }
   }
+  //for compatibility reasons. Minute interval changed to seconds.
   async adjustIntervalToSeconds() {
     const adapterObj = await this.getForeignObjectAsync(
       `system.adapter.${this.namespace}`
@@ -479,6 +462,29 @@ class Solarviewdatareader extends utils.Adapter {
         this.log.info("Adapter restarts");
       }
     }
+  }
+  // Nullen voranstellen - add Leading Zero
+  aLZ(n) {
+    return n <= 9 ? `0${n}` : n.toString();
+  }
+  calcChecksum(inputString) {
+    const buffer = Buffer.from(inputString);
+    let sum = 0;
+    let index = 0;
+    for (let i = 0; i < buffer.length; i++) {
+      sum = (sum + buffer[i]) % 128;
+      if (buffer[i] === 125) {
+        index = i + 2;
+        break;
+      }
+    }
+    const result = {
+      result: buffer[index] === sum,
+      chksum: sum,
+      ind: index,
+      data: buffer
+    };
+    return result;
   }
   preprocessSolarviewData(response) {
     let sv_data = response.toString("ascii");
@@ -516,18 +522,24 @@ class Solarviewdatareader extends utils.Adapter {
         this.updateExtendedStates(sv_data, sv_prefix);
       }
     } catch (error) {
-      this.log.error(`updateSolarviewStates: ${error}`);
+      this.errorHandler(`updateSolarviewStates`, error);
+      throw error;
     }
   }
   async handleCCUUpdate(sv_data) {
-    if (this.config.setCCU) {
-      const obj = await this.findForeignObjectAsync(this.config.CCUSystemV, "state");
-      if (obj && obj.name) {
-        this.log.debug(`set CCU system variable: ${this.config.CCUSystemV}`);
-        this.setForeignState(this.config.CCUSystemV, { val: Number(sv_data[10]), ack: false });
-      } else {
-        this.log.error(`CCU system variable ${this.config.CCUSystemV} does not exist!`);
+    try {
+      if (this.config.setCCU) {
+        const obj = await this.findForeignObjectAsync(this.config.CCUSystemV, "state");
+        if (obj && obj.name) {
+          this.log.debug(`set CCU system variable: ${this.config.CCUSystemV}`);
+          this.setForeignState(this.config.CCUSystemV, { val: Number(sv_data[10]), ack: false });
+        } else {
+          this.log.error(`CCU system variable ${this.config.CCUSystemV} does not exist!`);
+        }
       }
+    } catch (error) {
+      this.errorHandler(`handleCCUUpdate`, error);
+      throw error;
     }
   }
   updateExtendedStates(sv_data, sv_prefix) {
@@ -617,7 +629,7 @@ class Solarviewdatareader extends utils.Adapter {
         }
       }, this.config.intervalVal * 1e3);
     } catch (error) {
-      this.log.error(`onReady: ${error.message}`);
+      this.errorHandler(`onReady`, error);
     }
   }
   async onDataHandler(data) {
@@ -625,7 +637,7 @@ class Solarviewdatareader extends utils.Adapter {
       await this.processData(data);
       this.conn.end();
     } catch (error) {
-      this.log.error(`conn.on data: ${error.message}`);
+      this.errorHandler(`conn.on data`, error);
     }
   }
   processData = async (data) => {
@@ -639,7 +651,8 @@ class Solarviewdatareader extends utils.Adapter {
         this.handleChecksumFailure(strdata, cs);
       }
     } catch (error) {
-      this.log.error(`processData: ${error.message}`);
+      this.errorHandler(`processData`, error);
+      throw error;
     }
   };
   async handleChecksumSuccess(sv_data, sv_prefix, response) {
@@ -651,7 +664,8 @@ class Solarviewdatareader extends utils.Adapter {
       this.setStateChanged("info.lastUpdate", { val: sDate, ack: true });
       this.setStateChanged("info.connection", { val: true, ack: true });
     } catch (error) {
-      this.log.error(`handleChecksumSuccess: ${error}`);
+      this.errorHandler(`handleChecksumSuccess`, error);
+      throw error;
     }
   }
   handleChecksumFailure(sv_data, csum) {
@@ -678,11 +692,11 @@ class Solarviewdatareader extends utils.Adapter {
         this.chkCnt = 0;
       }
     } catch (error) {
-      this.log.error(`conn.on close: ${error.message}`);
+      this.errorHandler(`conn.on close`, error);
     }
   }
-  onErrorHandler(err) {
-    this.log.error(`conn.on error - cmd: ${this.lastCommand} - ${err.message}`);
+  onErrorHandler(error) {
+    this.errorHandler(`conn.on error - cmd: ${this.lastCommand}`, error);
   }
   _sleep(milliseconds) {
     return new Promise((resolve) => setTimeout(resolve, milliseconds));
@@ -698,52 +712,57 @@ class Solarviewdatareader extends utils.Adapter {
     });
   };
   async setCmdQueue() {
-    const commands = [];
-    const { d0converter, scm0, scm1, scm2, scm3, scm4, pvi1, pvi2, pvi3, pvi4, intervalstart, intervalend } = this.config;
-    const starttime = intervalstart.split(":").slice(0, 2).join(":");
-    let endtime = intervalend.split(":").slice(0, 2).join(":");
-    endtime = endtime === "00:00" ? "23:59" : endtime;
-    const dnow = /* @__PURE__ */ new Date();
-    const dstart = /* @__PURE__ */ new Date(`${dnow.getFullYear()}-${dnow.getMonth() + 1}-${dnow.getDate()} ${starttime}`);
-    const dend = /* @__PURE__ */ new Date(`${dnow.getFullYear()}-${dnow.getMonth() + 1}-${dnow.getDate()} ${endtime}`);
-    if (dnow >= dstart && dnow <= dend) {
-      commands.push("00*");
+    try {
+      const commands = [];
+      const { d0converter, scm0, scm1, scm2, scm3, scm4, pvi1, pvi2, pvi3, pvi4, intervalstart, intervalend } = this.config;
+      const starttime = intervalstart.split(":").slice(0, 2).join(":");
+      let endtime = intervalend.split(":").slice(0, 2).join(":");
+      endtime = endtime === "00:00" ? "23:59" : endtime;
+      const dnow = /* @__PURE__ */ new Date();
+      const dstart = /* @__PURE__ */ new Date(`${dnow.getFullYear()}-${dnow.getMonth() + 1}-${dnow.getDate()} ${starttime}`);
+      const dend = /* @__PURE__ */ new Date(`${dnow.getFullYear()}-${dnow.getMonth() + 1}-${dnow.getDate()} ${endtime}`);
+      if (dnow >= dstart && dnow <= dend) {
+        commands.push("00*");
+        if (d0converter) {
+          commands.push("21*");
+        }
+        if (pvi1) {
+          commands.push("01*");
+        }
+        if (pvi2) {
+          commands.push("02*");
+        }
+        if (pvi3) {
+          commands.push("03*");
+        }
+        if (pvi4) {
+          commands.push("04*");
+        }
+      }
       if (d0converter) {
-        commands.push("21*");
+        commands.push("22*");
       }
-      if (pvi1) {
-        commands.push("01*");
+      if (scm0) {
+        commands.push("10*");
       }
-      if (pvi2) {
-        commands.push("02*");
+      if (scm1) {
+        commands.push("11*");
       }
-      if (pvi3) {
-        commands.push("03*");
+      if (scm2) {
+        commands.push("12*");
       }
-      if (pvi4) {
-        commands.push("04*");
+      if (scm3) {
+        commands.push("13*");
       }
+      if (scm4) {
+        commands.push("14*");
+      }
+      this.commandQueue.push(...commands);
+      await this.processQueue();
+    } catch (error) {
+      this.errorHandler(`setCmdQueue`, error);
+      throw error;
     }
-    if (d0converter) {
-      commands.push("22*");
-    }
-    if (scm0) {
-      commands.push("10*");
-    }
-    if (scm1) {
-      commands.push("11*");
-    }
-    if (scm2) {
-      commands.push("12*");
-    }
-    if (scm3) {
-      commands.push("13*");
-    }
-    if (scm4) {
-      commands.push("14*");
-    }
-    this.commandQueue.push(...commands);
-    await this.processQueue();
   }
   async processQueue() {
     if (this.isProcessingQueue) {
@@ -759,7 +778,8 @@ class Solarviewdatareader extends utils.Adapter {
             this.isProcessingCmd = true;
             await this.executeCommand(cmd);
           } catch (error) {
-            this.log.error(`processQueue.executeCommand: ${error}`);
+            this.errorHandler(`processQueue ${cmd}`, error);
+            throw error;
           }
         }
       }
@@ -775,7 +795,7 @@ class Solarviewdatareader extends utils.Adapter {
       this.conn.write(cmd);
       this.log.debug(`Command successfully sent: ${cmd}`);
     } catch (error) {
-      this.log.error(`Error executing command ${cmd}: ${error.message}`);
+      this.errorHandler(`Error executing command ${cmd}`, error);
       throw error;
     }
   }
@@ -788,8 +808,18 @@ class Solarviewdatareader extends utils.Adapter {
       this.log.info("cleaned everything up...");
       callback();
     } catch (error) {
-      this.log.info(`onUnload: ${error.message}`);
+      this.errorHandler("onUnload", error);
       callback();
+    }
+  }
+  errorHandler(errTitle, error) {
+    if (error instanceof Error) {
+      this.log.error(`${errTitle}: ${error.message}
+Stacktrace: ${error.stack}`);
+    } else if (typeof error === "string") {
+      this.log.error(`${errTitle}: ${error}`);
+    } else {
+      this.log.error(`${errTitle}: Unknown error occurred: {error}`);
     }
   }
 }

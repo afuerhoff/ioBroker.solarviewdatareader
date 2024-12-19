@@ -9,7 +9,7 @@ import * as utils from '@iobroker/adapter-core';
 // Load your modules here, e.g.:
 import * as net from 'net';
 
-interface ChecksumResult {
+interface IChecksumResult {
     result: boolean;
     chksum: number;
     ind: number;
@@ -17,54 +17,30 @@ interface ChecksumResult {
 }
 
 class Solarviewdatareader extends utils.Adapter {
-    tout!: NodeJS.Timeout;
-    jobSchedule!: NodeJS.Timeout;
-    chkCnt = 0;
-    conn!: net.Socket;
-    lastCommand: string | null = null;
-    private commandQueue: string[] = [];
-    private isProcessingQueue = false;
-    private isProcessingCmd = false;
+    private tout!: NodeJS.Timeout;
+    private jobSchedule!: NodeJS.Timeout;
+    private chkCnt: number;
+    private conn!: net.Socket;
+    private lastCommand: string;
+    private commandQueue: string[];
+    private isProcessingQueue: boolean;
+    private isProcessingCmd: boolean;
 
     public constructor(options: Partial<utils.AdapterOptions> = {}) {
         super({
             ...options,
             name: 'solarviewdatareader',
         });
-        //this.pTimeoutcnt = 0;
         this.on('ready', this.onReady.bind(this));
         this.on('unload', this.onUnload.bind(this));
+        this.lastCommand = '';
+        this.commandQueue = [];
+        this.isProcessingQueue = false;
+        this.isProcessingCmd = false;
+        this.chkCnt = 0;
     }
 
-    // Nullen voranstellen - add Leading Zero
-    aLZ(n: number): string {
-        return n <= 9 ? `0${n}` : n.toString();
-    }
-
-    calcChecksum(inputString: string): ChecksumResult {
-        const buffer = Buffer.from(inputString);
-        let sum = 0;
-        let index = 0;
-
-        for (let i = 0; i < buffer.length; i++) {
-            sum = (sum + buffer[i]) % 128;
-            if (buffer[i] === 125) {
-                index = i + 2;
-                break;
-            }
-        }
-
-        const result: ChecksumResult = {
-            result: buffer[index] === sum,
-            chksum: sum,
-            ind: index,
-            data: buffer,
-        };
-
-        return result;
-    }
-
-    async createObject(id: string, obj: ioBroker.SettableObject): Promise<void> {
+    private async createObject(id: string, obj: ioBroker.SettableObject): Promise<void> {
         await this.setObjectNotExistsAsync(id, obj);
         await this.extendObject(id, obj);
 
@@ -75,7 +51,7 @@ class Solarviewdatareader extends utils.Adapter {
         }
     }
 
-    async createGlobalObjects(): Promise<void> {
+    private async createGlobalObjects(): Promise<void> {
         const options: [string, ioBroker.SettableObject][] = [
             [
                 'info.connection',
@@ -118,7 +94,7 @@ class Solarviewdatareader extends utils.Adapter {
         }
     }
 
-    async createSolarviewObjects(device: string, additional: boolean = false): Promise<void> {
+    private async createSolarviewObjects(device: string, additional: boolean = false): Promise<void> {
         let options: [string, ioBroker.SettableObject][] = [
             [device, { type: 'channel', common: { name: device }, native: {} }],
             [
@@ -474,7 +450,8 @@ class Solarviewdatareader extends utils.Adapter {
         }
     }
 
-    async adjustIntervalToSeconds(): Promise<void> {
+    //for compatibility reasons. Minute interval changed to seconds.
+    private async adjustIntervalToSeconds(): Promise<void> {
         const adapterObj: ioBroker.Object | null | undefined = await this.getForeignObjectAsync(
             `system.adapter.${this.namespace}`,
         );
@@ -489,13 +466,41 @@ class Solarviewdatareader extends utils.Adapter {
         }
     }
 
-    preprocessSolarviewData(response: Buffer): string[] {
+    // Nullen voranstellen - add Leading Zero
+    private aLZ(n: number): string {
+        return n <= 9 ? `0${n}` : n.toString();
+    }
+
+    private calcChecksum(inputString: string): IChecksumResult {
+        const buffer = Buffer.from(inputString);
+        let sum = 0;
+        let index = 0;
+
+        for (let i = 0; i < buffer.length; i++) {
+            sum = (sum + buffer[i]) % 128;
+            if (buffer[i] === 125) {
+                index = i + 2;
+                break;
+            }
+        }
+
+        const result: IChecksumResult = {
+            result: buffer[index] === sum,
+            chksum: sum,
+            ind: index,
+            data: buffer,
+        };
+
+        return result;
+    }
+
+    private preprocessSolarviewData(response: Buffer): string[] {
         let sv_data = response.toString('ascii');
         sv_data = sv_data.replace(/[{}]+/g, ''); // Remove "{}"
         return sv_data.split(',');
     }
 
-    getSolarviewPrefix(dataCode: string): string {
+    private getSolarviewPrefix(dataCode: string): string {
         const prefixMap: { [key: string]: string } = {
             '00': 'pvig.',
             '01': 'pvi1.',
@@ -513,7 +518,7 @@ class Solarviewdatareader extends utils.Adapter {
         return prefixMap[dataCode] || '';
     }
 
-    async updateSolarviewStates(sv_data: string[], sv_prefix: string): Promise<void> {
+    private async updateSolarviewStates(sv_data: string[], sv_prefix: string): Promise<void> {
         try {
             this.updateState(`${sv_prefix}current`, sv_data, 10);
             if (sv_prefix === 'pvig.') {
@@ -527,20 +532,26 @@ class Solarviewdatareader extends utils.Adapter {
             if (sv_data.length >= 23) {
                 this.updateExtendedStates(sv_data, sv_prefix);
             }
-        } catch (error: any) {
-            this.log.error(`updateSolarviewStates: ${error}`);
+        } catch (error: unknown) {
+            this.errorHandler(`updateSolarviewStates`, error);
+            throw error;
         }
     }
 
-    async handleCCUUpdate(sv_data: string[]): Promise<void> {
-        if (this.config.setCCU) {
-            const obj = await this.findForeignObjectAsync(this.config.CCUSystemV, 'state');
-            if (obj && obj.name) {
-                this.log.debug(`set CCU system variable: ${this.config.CCUSystemV}`);
-                this.setForeignState(this.config.CCUSystemV, { val: Number(sv_data[10]), ack: false });
-            } else {
-                this.log.error(`CCU system variable ${this.config.CCUSystemV} does not exist!`);
+    private async handleCCUUpdate(sv_data: string[]): Promise<void> {
+        try {
+            if (this.config.setCCU) {
+                const obj = await this.findForeignObjectAsync(this.config.CCUSystemV, 'state');
+                if (obj && obj.name) {
+                    this.log.debug(`set CCU system variable: ${this.config.CCUSystemV}`);
+                    this.setForeignState(this.config.CCUSystemV, { val: Number(sv_data[10]), ack: false });
+                } else {
+                    this.log.error(`CCU system variable ${this.config.CCUSystemV} does not exist!`);
+                }
             }
+        } catch (error: unknown) {
+            this.errorHandler(`handleCCUUpdate`, error);
+            throw error;
         }
     }
 
@@ -645,36 +656,37 @@ class Solarviewdatareader extends utils.Adapter {
                     this.log.error(`onReady.schedule: ${error.message}`);
                 }
             }, this.config.intervalVal * 1000);
-        } catch (error: any) {
-            this.log.error(`onReady: ${error.message}`);
+        } catch (error: unknown) {
+            this.errorHandler(`onReady`, error);
         }
     }
 
-    async onDataHandler(data: any): Promise<void> {
+    private async onDataHandler(data: any): Promise<void> {
         try {
             await this.processData(data);
             this.conn.end();
-        } catch (error: any) {
-            this.log.error(`conn.on data: ${error.message}`);
+        } catch (error: unknown) {
+            this.errorHandler(`conn.on data`, error);
         }
     }
 
-    processData = async (data: Buffer): Promise<void> => {
+    private processData = async (data: Buffer): Promise<void> => {
         try {
             const strdata: string[] = this.preprocessSolarviewData(data);
             const id = this.getSolarviewPrefix(strdata[0]);
-            const cs: ChecksumResult = this.calcChecksum(data.toString('ascii'));
+            const cs: IChecksumResult = this.calcChecksum(data.toString('ascii'));
             if (cs.result) {
                 await this.handleChecksumSuccess(strdata, id, data);
             } else {
                 this.handleChecksumFailure(strdata, cs);
             }
-        } catch (error: any) {
-            this.log.error(`processData: ${error.message}`);
+        } catch (error: unknown) {
+            this.errorHandler(`processData`, error);
+            throw error;
         }
     };
 
-    async handleChecksumSuccess(sv_data: string[], sv_prefix: string, response: Buffer): Promise<void> {
+    private async handleChecksumSuccess(sv_data: string[], sv_prefix: string, response: Buffer): Promise<void> {
         try {
             this.chkCnt = 0;
             this.log.debug(`${response.toString('ascii')}`);
@@ -684,12 +696,13 @@ class Solarviewdatareader extends utils.Adapter {
             const sDate = `${sv_data[3]}-${this.aLZ(parseInt(sv_data[2]))}-${this.aLZ(parseInt(sv_data[1]))} ${this.aLZ(parseInt(sv_data[4]))}:${this.aLZ(parseInt(sv_data[5]))}`;
             this.setStateChanged('info.lastUpdate', { val: sDate, ack: true });
             this.setStateChanged('info.connection', { val: true, ack: true });
-        } catch (error: any) {
-            this.log.error(`handleChecksumSuccess: ${error}`);
+        } catch (error: unknown) {
+            this.errorHandler(`handleChecksumSuccess`, error);
+            throw error;
         }
     }
 
-    handleChecksumFailure(sv_data: string[], csum: ChecksumResult): void {
+    private handleChecksumFailure(sv_data: string[], csum: IChecksumResult): void {
         if (csum.chksum !== 0) {
             if (csum.data.toString('ascii') != ';-)\n') {
                 this.chkCnt += 1;
@@ -714,20 +727,20 @@ class Solarviewdatareader extends utils.Adapter {
                 this.log.warn('Solarview Server is not reachable');
                 this.chkCnt = 0;
             }
-        } catch (error: any) {
-            this.log.error(`conn.on close: ${error.message}`);
+        } catch (error: unknown) {
+            this.errorHandler(`conn.on close`, error);
         }
     }
 
-    onErrorHandler(err: any): void {
-        this.log.error(`conn.on error - cmd: ${this.lastCommand} - ${err.message}`);
+    private onErrorHandler(error: unknown): void {
+        this.errorHandler(`conn.on error - cmd: ${this.lastCommand}`, error);
     }
 
-    _sleep(milliseconds: number): Promise<void> {
+    private _sleep(milliseconds: number): Promise<void> {
         return new Promise(resolve => setTimeout(resolve, milliseconds));
     }
 
-    connectAsync = (port: number, ip_address: string): Promise<void> => {
+    private connectAsync = (port: number, ip_address: string): Promise<void> => {
         return new Promise((resolve, reject) => {
             this.conn.connect(port, ip_address, () => {
                 resolve();
@@ -738,65 +751,70 @@ class Solarviewdatareader extends utils.Adapter {
         });
     };
 
-    async setCmdQueue(): Promise<void> {
-        const commands: string[] = [];
-        const { d0converter, scm0, scm1, scm2, scm3, scm4, pvi1, pvi2, pvi3, pvi4, intervalstart, intervalend } =
-            this.config;
+    private async setCmdQueue(): Promise<void> {
+        try {
+            const commands: string[] = [];
+            const { d0converter, scm0, scm1, scm2, scm3, scm4, pvi1, pvi2, pvi3, pvi4, intervalstart, intervalend } =
+                this.config;
 
-        const starttime = intervalstart.split(':').slice(0, 2).join(':');
-        let endtime = intervalend.split(':').slice(0, 2).join(':');
-        endtime = endtime === '00:00' ? '23:59' : endtime;
+            const starttime = intervalstart.split(':').slice(0, 2).join(':');
+            let endtime = intervalend.split(':').slice(0, 2).join(':');
+            endtime = endtime === '00:00' ? '23:59' : endtime;
 
-        const dnow = new Date();
-        const dstart = new Date(`${dnow.getFullYear()}-${dnow.getMonth() + 1}-${dnow.getDate()} ${starttime}`);
-        const dend = new Date(`${dnow.getFullYear()}-${dnow.getMonth() + 1}-${dnow.getDate()} ${endtime}`);
+            const dnow = new Date();
+            const dstart = new Date(`${dnow.getFullYear()}-${dnow.getMonth() + 1}-${dnow.getDate()} ${starttime}`);
+            const dend = new Date(`${dnow.getFullYear()}-${dnow.getMonth() + 1}-${dnow.getDate()} ${endtime}`);
 
-        if (dnow >= dstart && dnow <= dend) {
-            commands.push('00*'); // pvig
+            if (dnow >= dstart && dnow <= dend) {
+                commands.push('00*'); // pvig
+                if (d0converter) {
+                    commands.push('21*');
+                }
+                if (pvi1) {
+                    commands.push('01*');
+                }
+                if (pvi2) {
+                    commands.push('02*');
+                }
+                if (pvi3) {
+                    commands.push('03*');
+                }
+                if (pvi4) {
+                    commands.push('04*');
+                }
+            }
+
             if (d0converter) {
-                commands.push('21*');
+                commands.push('22*');
             }
-            if (pvi1) {
-                commands.push('01*');
+            if (scm0) {
+                commands.push('10*');
             }
-            if (pvi2) {
-                commands.push('02*');
+            if (scm1) {
+                commands.push('11*');
             }
-            if (pvi3) {
-                commands.push('03*');
+            if (scm2) {
+                commands.push('12*');
             }
-            if (pvi4) {
-                commands.push('04*');
+            if (scm3) {
+                commands.push('13*');
             }
-        }
+            if (scm4) {
+                commands.push('14*');
+            }
 
-        if (d0converter) {
-            commands.push('22*');
-        }
-        if (scm0) {
-            commands.push('10*');
-        }
-        if (scm1) {
-            commands.push('11*');
-        }
-        if (scm2) {
-            commands.push('12*');
-        }
-        if (scm3) {
-            commands.push('13*');
-        }
-        if (scm4) {
-            commands.push('14*');
-        }
+            // Befehle zur Warteschlange hinzufügen
+            this.commandQueue.push(...commands);
 
-        // Befehle zur Warteschlange hinzufügen
-        this.commandQueue.push(...commands);
-
-        // Verarbeite die Warteschlange
-        await this.processQueue();
+            // Verarbeite die Warteschlange
+            await this.processQueue();
+        } catch (error: unknown) {
+            this.errorHandler(`setCmdQueue`, error);
+            throw error;
+        }
     }
 
-    async processQueue(): Promise<void> {
+    private async processQueue(): Promise<void> {
         if (this.isProcessingQueue) {
             this.log.warn(`processQueue: queue not empty! Waiting ...`);
             return;
@@ -810,8 +828,9 @@ class Solarviewdatareader extends utils.Adapter {
                     try {
                         this.isProcessingCmd = true;
                         await this.executeCommand(cmd);
-                    } catch (error: any) {
-                        this.log.error(`processQueue.executeCommand: ${error}`);
+                    } catch (error: unknown) {
+                        this.errorHandler(`processQueue ${cmd}`, error);
+                        throw error;
                     }
                 }
             }
@@ -827,8 +846,8 @@ class Solarviewdatareader extends utils.Adapter {
             this.lastCommand = cmd;
             this.conn.write(cmd);
             this.log.debug(`Command successfully sent: ${cmd}`);
-        } catch (error: any) {
-            this.log.error(`Error executing command ${cmd}: ${error.message}`);
+        } catch (error: unknown) {
+            this.errorHandler(`Error executing command ${cmd}`, error);
             throw error;
         }
     }
@@ -841,9 +860,19 @@ class Solarviewdatareader extends utils.Adapter {
             this.setStateChanged('info.connection', { val: false, ack: true });
             this.log.info('cleaned everything up...');
             callback();
-        } catch (error: any) {
-            this.log.info(`onUnload: ${error.message}`);
+        } catch (error: unknown) {
+            this.errorHandler('onUnload', error);
             callback();
+        }
+    }
+
+    private errorHandler(errTitle: string, error: unknown): void {
+        if (error instanceof Error) {
+            this.log.error(`${errTitle}: ${error.message}\nStacktrace: ${error.stack}`);
+        } else if (typeof error === 'string') {
+            this.log.error(`${errTitle}: ${error}`);
+        } else {
+            this.log.error(`${errTitle}: Unknown error occurred: {error}`);
         }
     }
 }
