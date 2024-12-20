@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "solarviewdatareader",
-    "version": "1.1.4",
+    "version": "1.2.0",
     "news": {
+      "1.2.0": {
+        "en": "dependencies updated\nMigration to ESLint 9 and @iobroker/eslint-config - issue [#189]\neslint: code optimized\nfixing chksum message if inverter 2 - 4 is not available\nlogging optimized\nnet handling optimized",
+        "de": "aktualisierte abhängigkeiten\nMigration auf ESLint 9 und @iobroker/eslint-config - Ausgabe [#189]\neslint: code optimiert\nbefestigen der chksum-nachricht, wenn der wechselrichter 2 - 4 nicht verfügbar ist\nprotokollierung optimiert\nnetzhandling optimiert",
+        "ru": "обновленная информация о зависимостях\nMigration to ESLint 9 and @iobroker/eslint-config - issue [#189]\neslint: оптимизирован код\nфиксация сообщения chksum, если инвертор 2 - 4 недоступен\nблог оптимизирован\nоптимизированная обработка",
+        "pt": "dependências atualizadas\nMigração para ESLint 9 e @iobroker/eslint-config - questão [#189]\neslint: código otimizado\ncorrigir mensagem de chksum se o inversor 2 - 4 não está disponível\nlog otimizado\nmanuseio de rede otimizado",
+        "nl": "afhankelijkheden bijgewerkt\nMigratie naar ESLint 9 en @iobroker/eslint-config - nummer [#189]\neslint: code geoptimaliseerd\nfixing chksum bericht als omvormer 2 - 4 niet beschikbaar is\nlogging geoptimaliseerd\ngeoptimaliseerde nethandling",
+        "fr": "dépendances mises à jour\nMigration vers ESLint 9 et @iobroker/eslint-config - numéro [#189]\neslint: code optimisé\nfixer le message chksum si l'onduleur 2 - 4 n'est pas disponible\nenregistrement optimisé\ntraitement net optimisé",
+        "it": "dipendenze aggiornate\nMigrazione a ESLint 9 e @iobroker/eslint-config - numero [#189]\neslint: codice ottimizzato\nfissare il messaggio di chksum se inverter 2 - 4 non è disponibile\nlogging ottimizzato\ngestione netta ottimizzata",
+        "es": "dependencias actualizadas\nMigración a ESLint 9 y @iobroker/eslint-config - asunto [#189]\neslint: código optimizado\nfijar mensaje de chksum si inverter 2 - 4 no está disponible\nlogging optimizado\nmanejo neto optimizado",
+        "pl": "zaktualizowane zależności\nMigracja do ESLint 9 i @ iobroker / eslint- config - wydanie [# 189]\neslint: zoptymalizowany kod\nnaprawianie wiadomości chksum, jeśli inwerter 2 - 4 nie jest dostępny\nzoptymalizowane logowanie\nzoptymalizowana obsługa sieci",
+        "uk": "оновлені залежності\nМіграція в ESLint 9 і @iobroker/eslint-config - problem [#189]\neslint: код оптимізований\nфіксація chksum повідомлення, якщо інвертор 2 - 4 не доступний\nоптимізоване завантаження\nоптимізоване використання сітки",
+        "zh-cn": "更新依赖关系\n迁移到ESLint 9 和 @iobroduc/eslint-config - 发行 [#189]\neslint: 代码优化\n如果不可用反转器 2 - 4 , 则修复 chksum 消息\n记录优化\n净处理优化"
+      },
       "1.1.4": {
         "en": "dependencies updated\nFixes [#182](https://github.com/afuerhoff/ioBroker.solarviewdatareader/issues/182)",
         "de": "aktualisierte abhängigkeiten\n[#182](https://github.com/afuerhoff/ioBroker.solarviewdatareader/issues/182)",
@@ -80,19 +93,6 @@
         "pl": "zaktualizowane zależności\naktualizacja tłumaczeń",
         "uk": "оновлені залежності\nпереклади оновлені",
         "zh-cn": "更新依赖关系\n更新翻译"
-      },
-      "1.0.7": {
-        "en": "dependencies updated",
-        "de": "aktualisierte abhängigkeiten",
-        "ru": "зависимости обновлены",
-        "pt": "dependências atualizadas",
-        "nl": "afhankelijkheid geüpdateerd",
-        "fr": "dépendances mises à jour",
-        "it": "dipendenze aggiornate",
-        "es": "dependencias actualizadas",
-        "pl": "aktualizacja",
-        "uk": "оновлені залежності",
-        "zh-cn": "b. 更新的依赖"
       }
     },
     "titleLang": {

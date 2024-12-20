@@ -1,4 +1,11 @@
 # Older changes
+## 1.1.0 (2024-05-29)
+* (afuerhoff) code optimizations
+* (afuerhoff) jsonConfig added
+* (afuerhoff) dependencies updated
+* (afuerhoff) node >= 18, js-controller >= 5.0.19
+* (afuerhoff) admin >= 6.17.13 due to timePicker failure
+
 ## 1.0.8 (2024-01-18)
 * (afuerhoff) dependencies updated
 * (afuerhoff) translations updated
