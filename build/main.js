@@ -620,6 +620,7 @@ class Solarviewdatareader extends utils.Adapter {
       this.conn.on("data", this.onDataHandler.bind(this));
       this.conn.on("close", this.onCloseHandler.bind(this));
       this.conn.on("error", this.onErrorHandler.bind(this));
+      this.conn.on("timeout", this.onTimeoutHandler.bind(this));
       await this.setCmdQueue();
       this.jobSchedule = setInterval(async () => {
         try {
@@ -631,6 +632,10 @@ class Solarviewdatareader extends utils.Adapter {
     } catch (error) {
       this.errorHandler(`onReady`, error);
     }
+  }
+  onTimeoutHandler() {
+    this.log.error("onTimeoutHandler: socket timeout");
+    this.conn.end();
   }
   async onDataHandler(data) {
     try {
@@ -761,12 +766,12 @@ class Solarviewdatareader extends utils.Adapter {
       await this.processQueue();
     } catch (error) {
       this.errorHandler(`setCmdQueue`, error);
-      throw error;
     }
   }
   async processQueue() {
     if (this.isProcessingQueue) {
-      this.log.warn(`processQueue: queue not empty! Waiting ...`);
+      this.chkCnt += 1;
+      this.log.warn(`processQueue: command queue not empty! Waiting for server ... ${this.chkCnt}`);
       return;
     }
     this.isProcessingQueue = true;
@@ -778,8 +783,9 @@ class Solarviewdatareader extends utils.Adapter {
             this.isProcessingCmd = true;
             await this.executeCommand(cmd);
           } catch (error) {
-            this.errorHandler(`processQueue ${cmd}`, error);
-            throw error;
+            this.commandQueue.length = 0;
+            this.isProcessingQueue = false;
+            this.isProcessingCmd = false;
           }
         }
       }
@@ -789,15 +795,10 @@ class Solarviewdatareader extends utils.Adapter {
   }
   async executeCommand(cmd) {
     this.log.debug(`Attempting to execute command: ${cmd}`);
-    try {
-      await this.connectAsync(this.config.port, this.config.ipaddress);
-      this.lastCommand = cmd;
-      this.conn.write(cmd);
-      this.log.debug(`Command successfully sent: ${cmd}`);
-    } catch (error) {
-      this.errorHandler(`Error executing command ${cmd}`, error);
-      throw error;
-    }
+    this.lastCommand = cmd;
+    await this.connectAsync(this.config.port, this.config.ipaddress);
+    this.conn.write(cmd);
+    this.log.debug(`Command successfully sent: ${cmd}`);
   }
   onUnload(callback) {
     try {
@@ -814,8 +815,12 @@ class Solarviewdatareader extends utils.Adapter {
   }
   errorHandler(errTitle, error) {
     if (error instanceof Error) {
-      this.log.error(`${errTitle}: ${error.message}
+      if (error.message.includes("EHOSTUNREACH") || error.message.includes("ECONNREFUSED")) {
+        this.log.warn(`${errTitle}: Solarview server is not reachable! Please check the server.`);
+      } else {
+        this.log.error(`${errTitle}: ${error.message}
 Stacktrace: ${error.stack}`);
+      }
     } else if (typeof error === "string") {
       this.log.error(`${errTitle}: ${error}`);
     } else {
