@@ -32,6 +32,7 @@ class Solarviewdatareader extends utils.Adapter {
   commandQueue;
   isProcessingQueue;
   isProcessingCmd;
+  isError;
   constructor(options = {}) {
     super({
       ...options,
@@ -44,6 +45,7 @@ class Solarviewdatareader extends utils.Adapter {
     this.isProcessingQueue = false;
     this.isProcessingCmd = false;
     this.chkCnt = 0;
+    this.isError = false;
   }
   async createObject(id, obj) {
     await this.setObjectNotExistsAsync(id, obj);
@@ -782,7 +784,12 @@ class Solarviewdatareader extends utils.Adapter {
           try {
             this.isProcessingCmd = true;
             await this.executeCommand(cmd);
-          } catch (error) {
+            if (this.isError === true) {
+              this.log.warn("Server connection is now working again!");
+              this.isError = false;
+            }
+          } catch {
+            this.isError = true;
             this.commandQueue.length = 0;
             this.isProcessingQueue = false;
             this.isProcessingCmd = false;
