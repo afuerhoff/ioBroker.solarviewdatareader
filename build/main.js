@@ -772,8 +772,7 @@ class Solarviewdatareader extends utils.Adapter {
   }
   async processQueue() {
     if (this.isProcessingQueue) {
-      this.chkCnt += 1;
-      this.log.warn(`processQueue: command queue not empty! Waiting for server ... ${this.chkCnt}`);
+      this.log.warn(`processQueue: command queue not empty! Waiting for solarview server ...`);
       return;
     }
     this.isProcessingQueue = true;
@@ -785,7 +784,7 @@ class Solarviewdatareader extends utils.Adapter {
             this.isProcessingCmd = true;
             await this.executeCommand(cmd);
             if (this.isError === true) {
-              this.log.warn("Server connection is now working again!");
+              this.log.info("Server connection is now working again!");
               this.isError = false;
             }
           } catch {
