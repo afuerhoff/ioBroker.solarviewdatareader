@@ -60,7 +60,7 @@ UL3, IL3 = mains voltage, mains power phase 3
 TKK= Temperature inverter
 
 ## Changelog
-### **WORK IN PROGRESS**
+### 1.2.1 (2025-02-26)
 * (afuerhoff) dependencies updated
 
 ### 1.2.0 (2024-12-20)
@@ -83,12 +83,6 @@ TKK= Temperature inverter
 * (afuerhoff) adapter checker changes
 * (afuerhoff) dependencies updated
 * (afuerhoff) automatic restart [#170](https://github.com/afuerhoff/ioBroker.solarviewdatareader/issues/170)
-
-### 1.1.1 (2024-06-28)
-* (afuerhoff) change to typescript
-* (afuerhoff) dependencies updated
-* (afuerhoff) bugfix CCU variable
-* (afuerhoff) documentation changed
 
 ## License
 MIT License

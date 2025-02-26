@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "solarviewdatareader",
-    "version": "1.2.0",
+    "version": "1.2.1",
     "news": {
+      "1.2.1": {
+        "en": "dependencies updated",
+        "de": "aktualisierte abhängigkeiten",
+        "ru": "обновленные зависимости",
+        "pt": "dependências atualizadas",
+        "nl": "afhankelijkheden bijgewerkt",
+        "fr": "dépendances mises à jour",
+        "it": "dipendenze aggiornate",
+        "es": "dependencias actualizadas",
+        "pl": "zaktualizowane zależności",
+        "uk": "оновлені залежності",
+        "zh-cn": "更新依赖关系"
+      },
       "1.2.0": {
         "en": "dependencies updated\nMigration to ESLint 9 and @iobroker/eslint-config - issue [#189]\neslint: code optimized\nfixing chksum message if inverter 2 - 4 is not available\nlogging optimized\nnet handling optimized",
         "de": "aktualisierte abhängigkeiten\nMigration auf ESLint 9 und @iobroker/eslint-config - Ausgabe [#189]\neslint: code optimiert\nbefestigen der chksum-nachricht, wenn der wechselrichter 2 - 4 nicht verfügbar ist\nprotokollierung optimiert\nnetzhandling optimiert",
@@ -80,19 +93,6 @@
         "pl": "optymalizacja kodu\njsonConfig dodany\nzaktualizowane zależności\nwęzeł > = 18, kontroler sms > = 5. 0. 19\nadmin > = 6.17.13 z powodu awarii timePicker",
         "uk": "оптимізація коду\njsonConfig додано\nоновлені залежності\nвузол >= 18, js-controller >= 5,0.19\nadmin >= 6.17.13 через часНездатність файлу",
         "zh-cn": "代码优化\n添加了 json 图形\n更新依赖关系\n18号节点,js控制器 5.0.19 (中文(简体) )\n6.17.13 由于时间选择失败"
-      },
-      "1.0.8": {
-        "en": "dependencies updated\ntranslations updated",
-        "de": "aktualisierte abhängigkeiten\nübersetzungen aktualisiert",
-        "ru": "обновленная информация о зависимостях\nобновленные переводы",
-        "pt": "dependências atualizadas\ntraduções atualizadas",
-        "nl": "afhankelijkheden bijgewerkt\nvertalingen bijgewerkt",
-        "fr": "dépendances mises à jour\ntraductions mises à jour",
-        "it": "dipendenze aggiornate\ntraduzioni aggiornate",
-        "es": "dependencias actualizadas\ntraducciones actualizadas",
-        "pl": "zaktualizowane zależności\naktualizacja tłumaczeń",
-        "uk": "оновлені залежності\nпереклади оновлені",
-        "zh-cn": "更新依赖关系\n更新翻译"
       }
     },
     "titleLang": {

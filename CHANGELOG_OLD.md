@@ -1,4 +1,10 @@
 # Older changes
+## 1.1.1 (2024-06-28)
+* (afuerhoff) change to typescript
+* (afuerhoff) dependencies updated
+* (afuerhoff) bugfix CCU variable
+* (afuerhoff) documentation changed
+
 ## 1.1.0 (2024-05-29)
 * (afuerhoff) code optimizations
 * (afuerhoff) jsonConfig added
