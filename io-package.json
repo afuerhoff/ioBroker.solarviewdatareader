@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "solarviewdatareader",
-    "version": "1.2.1",
+    "version": "1.2.2",
     "news": {
+      "1.2.2": {
+        "en": "dependencies updated\ntesting updated [#217](https://github.com/afuerhoff/ioBroker.solarviewdatareader/issues/217)\n@iobroker-bot warning fixed [#209](https://github.com/afuerhoff/ioBroker.solarviewdatareader/issues/209)",
+        "de": "aktualisierte abhängigkeiten\nprüfung aktualisiert [#217](https://github.com/afuerhoff/ioBroker.solarviewdatareader/issues/217)\n@iobroker-bot warnen behoben [#209](https://github.com/afuerhoff/ioBroker.solarviewdatareader/issues/209)",
+        "ru": "обновленные зависимости\nобновление [#217](https://github.com/afuerhoff/ioBroker.solarviewdatareader/issues/217)\n@iobroker-bot warning fixed [#209] (https://github.com/afuerhoff/ioBroker.solarviewdatareader/issues/209)",
+        "pt": "dependências atualizadas\ntestes atualizados [#217](https://github.com/afuerhoff/ioBroker.solarviewdatareader/issues/217)\n@iobroker-bot aviso fixo [#209](https://github.com/afuerhoff/ioBroker.solarviewdatareader/issues/209)",
+        "nl": "afhankelijkheden bijgewerkt\nhet testen van bijgewerkte [#217](https://github.com/afuerhoff/ioBroker.solarviewdatareader/issues/217)\n@iobroker-bot warning fixed [#209](https://github.com/afuerhoff/ioBroker.solarviewdatareader/issues/209)",
+        "fr": "dépendances mises à jour\ntesting updated [#217](https://github.com/afuerhoff/ioBroker.solarviewdatareader/issues/217)\n@iobroker-bot avertissement corrigé [#209](https://github.com/afuerhoff/ioBroker.solarviewdatareader/issues/209)",
+        "it": "dipendenze aggiornate\ntest aggiornato [#217](https://github.com/afuerhoff/ioBroker.solarviewdatareader/issues/217)\n@iobroker-bot avviso fisso [#209](https://github.com/afuerhoff/ioBroker.solarviewdatareader/issues/209)",
+        "es": "dependencias actualizadas\n(https://github.com/afuerhoff/ioBroker.solarviewdatareader/issues/217)\n@iobroker-bot warning fixed [#209](https://github.com/afuerhoff/ioBroker.solarviewdatareader/issues/209)",
+        "pl": "zaktualizowane zależności\nw załączniku II wprowadza się następujące zmiany:\nData umieszczenia w wykazie",
+        "uk": "оновлені залежності\n[#217](https://github.com/afuerhoff/ioBroker.solarviewdatareader/products/217)\n@iobroker-bot попередження фіксована [#209] (https://github.com/afuerhoff/ioBroker.solarviewdatareader/products/209)",
+        "zh-cn": "更新依赖关系\n(https://github.com/afuerhoff/ioBroker.solarviewdatareader/issues/217) (中文(简体) )\n@iobroctor-bot 警告固定 [# 209] (https://github.com/afuerhoff/ioBroker.solarviewdatareader/issues/209) 互联网档案馆的存檔,存档日期2014-09-02"
+      },
       "1.2.1": {
         "en": "dependencies updated",
         "de": "aktualisierte abhängigkeiten",
@@ -80,19 +93,6 @@
         "pl": "zmiana na maszynopis\nzaktualizowane zależności\nzmienna CCU bugfix\nzmiana dokumentacji",
         "uk": "зміна за замовчуванням\nоновлені залежності\njavaScript licenses API Веб-сайт\nдокументація",
         "zh-cn": "更改为打字符\n更新依赖关系\nbugfix CCU 变量\n文件已更改"
-      },
-      "1.1.0": {
-        "en": "code optimizations\njsonConfig added\ndependencies updated\nnode >= 18, js-controller >= 5.0.19\nadmin >= 6.17.13 due to timePicker failure",
-        "de": "codeoptimierungen\njsonConfig hinzugefügt\naktualisierte abhängigkeiten\nknoten >= 18, js-controller >= 5.19\nadmin >= 6.17.13 aufgrund von timePicker Ausfall",
-        "ru": "оптимизация кода\njsonConfig добавлен\nобновленная информация о зависимостях\nnode >= 18, js-контроллер >= 5.0.19\nadmin >= 6.17.13 из-за отказа TimePicker",
-        "pt": "otimizações de código\njsonConfig adicionado\ndependências atualizadas\nnode >= 18, js-controller >= 5.0.19\nadmin >= 6.17.13 devido à falha do timePicker",
-        "nl": "code optimalisaties\njsonConfig toegevoegd\nafhankelijkheden bijgewerkt\nvoor de toepassing van deze onderverdeling wordt verstaan onder: 5.0.19\nadmin < 6,17.13 als gevolg van timePicker-fout",
-        "fr": "optimisation des codes\njsonConfig ajouté\ndépendances mises à jour\nnoeud >= 18, js-controller >= 5.0.19\nadmin >= 6.17.13 en raison de la panne de temps",
-        "it": "ottimizzazioni del codice\njsonConfig aggiunto\ndipendenze aggiornate\n>= 18, js-controller 5.0.19\nadmin >= 6.17.13 a causa di guasto timePicker",
-        "es": "optimizaciones de código\njsonConfig añadido\ndependencias actualizadas\nnodo >= 18, js-controller 5.0.19\nadmin= 6.17.13 debido al tiempo Fallo del pirata",
-        "pl": "optymalizacja kodu\njsonConfig dodany\nzaktualizowane zależności\nwęzeł > = 18, kontroler sms > = 5. 0. 19\nadmin > = 6.17.13 z powodu awarii timePicker",
-        "uk": "оптимізація коду\njsonConfig додано\nоновлені залежності\nвузол >= 18, js-controller >= 5,0.19\nadmin >= 6.17.13 через часНездатність файлу",
-        "zh-cn": "代码优化\n添加了 json 图形\n更新依赖关系\n18号节点,js控制器 5.0.19 (中文(简体) )\n6.17.13 由于时间选择失败"
       }
     },
     "titleLang": {

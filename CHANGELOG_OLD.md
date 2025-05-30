@@ -1,4 +1,9 @@
 # Older changes
+## 1.1.2 (2024-09-13)
+* (afuerhoff) adapter checker changes
+* (afuerhoff) dependencies updated
+* (afuerhoff) automatic restart [#170](https://github.com/afuerhoff/ioBroker.solarviewdatareader/issues/170)
+
 ## 1.1.1 (2024-06-28)
 * (afuerhoff) change to typescript
 * (afuerhoff) dependencies updated
