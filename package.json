@@ -19,7 +19,7 @@
     "url": "https://github.com/afuerhoff/ioBroker.solarviewdatareader"
   },
   "dependencies": {
-    "@iobroker/adapter-core": "^3.2.3"
+    "@iobroker/adapter-core": "^3.3.2"
   },
   "devDependencies": {
     "@alcalzone/release-script": "^3.8.0",
