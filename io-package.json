@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "solarviewdatareader",
-    "version": "1.2.2",
+    "version": "1.2.3",
     "news": {
+      "1.2.3": {
+        "en": "dependencies updated\nrepository checker issues fixed\ntypescript error fixed",
+        "de": "Abhängigkeiten aktualisiert\nProbleme mit dem Repository-Checker behoben\nTypescript-Fehler behoben",
+        "ru": "обновлены зависимости\nисправлены проблемы с проверкой репозитория\nисправлена ошибка TypeScript",
+        "pt": "dependências atualizadas\nproblemas do verificador do repositório corrigidos\nErro do TypeScript corrigido",
+        "nl": "afhankelijkheden bijgewerkt\nProblemen met de repository checker zijn opgelost.\nTypeScript-fout opgelost",
+        "fr": "dépendances mises à jour\nproblèmes du vérificateur de dépôt résolus\nErreur TypeScript corrigée",
+        "it": "dipendenze aggiornate\nRisolti problemi del controllo del repository\nErrore di typescript corretto",
+        "es": "dependencias actualizadas\nSe han solucionado problemas con el verificador de repositorios.\nError de TypeScript corregido",
+        "pl": "aktualizacja zależności\nNaprawione problemy z kontrolerem repozytorium\nNaprawiono błąd TypeScript",
+        "uk": "оновлення залежностей\nвиправлені проблеми з перевіркою репозиторію\nвиправлено помилку у TypeScript",
+        "zh-cn": "依赖项已更新\n修复了存储库检查器的问题\n修复了TypeScript错误"
+      },
       "1.2.2": {
         "en": "dependencies updated\ntesting updated [#217](https://github.com/afuerhoff/ioBroker.solarviewdatareader/issues/217)\n@iobroker-bot warning fixed [#209](https://github.com/afuerhoff/ioBroker.solarviewdatareader/issues/209)",
         "de": "aktualisierte abhängigkeiten\nprüfung aktualisiert [#217](https://github.com/afuerhoff/ioBroker.solarviewdatareader/issues/217)\n@iobroker-bot warnen behoben [#209](https://github.com/afuerhoff/ioBroker.solarviewdatareader/issues/209)",
@@ -80,19 +93,6 @@
         "pl": "zmiany w kontrolerze adaptera\nzaktualizowane zależności\nw załączniku II wprowadza się następujące zmiany:",
         "uk": "зміни адаптера\nоновлені залежності\nавтоматичний перезапуск [#170] (https://github.com/afuerhoff/ioBroker.solarviewdatareader/products/170)",
         "zh-cn": "适配器检查器更改\n更新依赖关系\n自动重启 [# 170] (https://github.com/afuerhoff/ioBroker.solarviewdatareader/issues/170) (中文(简体) )"
-      },
-      "1.1.1": {
-        "en": "change to typescript\ndependencies updated\nbugfix CCU variable\ndocumentation changed",
-        "de": "änderung der schrift\naktualisierte abhängigkeiten\nbugfix CCU Variable\ndokumentation geändert",
-        "ru": "изменения в типографию\nобновленная информация о зависимостях\nbugfix переменная CCU\nдокументация изменена",
-        "pt": "mudar para typescript\ndependências atualizadas\nvariável de bugfix CCU\ndocumentação alterada",
-        "nl": "wijzigen naar typescript\nafhankelijkheden bijgewerkt\nbugfix CCU variabele\ndocumentatie gewijzigd",
-        "fr": "changement de code\ndépendances mises à jour\nbugfix variable CCU\nmodification de la documentation",
-        "it": "cambiamento a typescript\ndipendenze aggiornate\nbugfix CCU variabile\ndocumentazione modificata",
-        "es": "cambio a la escritura\ndependencias actualizadas\nbugfix CCU variable\ndocumentación modificada",
-        "pl": "zmiana na maszynopis\nzaktualizowane zależności\nzmienna CCU bugfix\nzmiana dokumentacji",
-        "uk": "зміна за замовчуванням\nоновлені залежності\njavaScript licenses API Веб-сайт\nдокументація",
-        "zh-cn": "更改为打字符\n更新依赖关系\nbugfix CCU 变量\n文件已更改"
       }
     },
     "titleLang": {
