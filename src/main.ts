@@ -543,7 +543,7 @@ class Solarviewdatareader extends utils.Adapter {
     private async handleCCUUpdate(sv_data: string[]): Promise<void> {
         try {
             if (this.config.setCCU) {
-                const obj = await this.findForeignObjectAsync(this.config.CCUSystemV, 'state');
+                const obj = await this.findForeignObjectAsync(this.config.CCUSystemV);
                 if (obj && obj.name) {
                     this.log.debug(`set CCU system variable: ${this.config.CCUSystemV}`);
                     this.setForeignState(this.config.CCUSystemV, { val: Number(sv_data[10]), ack: false });
