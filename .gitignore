@@ -23,5 +23,8 @@ iob_npm.done
 scripts/gulp.sh
 scripts/upload.sh
 
+# S906:
+.commitinfo
+
 # ioBroker dev-server
 .dev-server/
