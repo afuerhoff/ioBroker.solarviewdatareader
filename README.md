@@ -60,6 +60,9 @@ UL3, IL3 = mains voltage, mains power phase 3
 TKK= Temperature inverter
 
 ## Changelog
+### **WORK IN PROGRESS**
+* (afuerhoff) dependencies updated
+
 ### 1.2.3 (2025-09-19)
 * (afuerhoff) dependencies updated
 * (afuerhoff) repository checker issues fixed
