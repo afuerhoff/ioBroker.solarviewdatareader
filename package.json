@@ -37,7 +37,7 @@
     "@types/node": "^22.18.6",
     "chai": "^4.5.0",
     "chai-as-promised": "^7.1.2",
-    "mocha": "^10.8.2",
+    "mocha": "^11.7.3",
     "rimraf": "^6.0.1",
     "sinon": "^18.0.1",
     "sinon-chai": "^3.7.0",
