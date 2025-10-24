@@ -1,4 +1,8 @@
 # Older changes
+## 1.1.4 (2024-10-17)
+* (afuerhoff) dependencies updated
+* (afuerhoff) Fixes [#182](https://github.com/afuerhoff/ioBroker.solarviewdatareader/issues/182)
+
 ## 1.1.3 (2024-09-17)
 * (afuerhoff) adapter checker changes [#176](https://github.com/afuerhoff/ioBroker.solarviewdatareader/issues/176)
 * (afuerhoff) dependencies updated

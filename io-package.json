@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "solarviewdatareader",
-    "version": "1.2.3",
+    "version": "1.2.4",
     "news": {
+      "1.2.4": {
+        "en": "dependencies updated\nnpm security changes\nrepository checker warnings fixed",
+        "de": "aktualisierte abhängigkeiten\nnpm sicherheitsänderungen\nrepository checker warnungen fixiert",
+        "ru": "обновленные зависимости\nизменения в безопасности pm\nrepository checker предупреждения",
+        "pt": "dependências atualizadas\nalterações de segurança do npm\navisos de verificação de repositórios corrigidos",
+        "nl": "afhankelijkheden bijgewerkt\nnpm beveiligingswijzigingen\nrepository checker waarschuwingen vast",
+        "fr": "dépendances mises à jour\nnpm changements de sécurité\nalertes du contrôleur du dépôt corrigées",
+        "it": "dipendenze aggiornate\nnpm modifiche di sicurezza\nrepository checker avvisi fissi",
+        "es": "dependencias actualizadas\nnpm cambios de seguridad\nadvertencias de repositorio fijo",
+        "pl": "zaktualizowane zależności\nnpm zmiany bezpieczeństwa\nstałe ostrzeżenia o sprawdzaniu repozytorium",
+        "uk": "оновлені залежності\nзміни безпеки npm\nпопередження репозиторійних перевірок фіксованих",
+        "zh-cn": "更新依赖关系\nnpm 安全变化\n已确定仓库检查器警告"
+      },
       "1.2.3": {
         "en": "dependencies updated\nrepository checker issues fixed\ntypescript error fixed",
         "de": "Abhängigkeiten aktualisiert\nProbleme mit dem Repository-Checker behoben\nTypescript-Fehler behoben",
@@ -80,19 +93,6 @@
         "pl": "zAŁĄCZNIK II\nzaktualizowane zależności",
         "uk": "[#176](https://github.com/afuerhoff/ioBroker.solarviewdatareader/products/176)\nоновлені залежності",
         "zh-cn": "适配器检查器改变 [# 176] (https://github.com/afuerhoff/ioBroker.solarviewdatareader/issues/ 1976) (中文(简体) )\n更新依赖关系"
-      },
-      "1.1.2": {
-        "en": "adapter checker changes\ndependencies updated\nautomatic restart [#170](https://github.com/afuerhoff/ioBroker.solarviewdatareader/issues/170)",
-        "de": "adapter checker änderungen\naktualisierte abhängigkeiten\nautomatischer Neustart [#170](https://github.com/afuerhoff/ioBroker.solarviewdatareader/issues/170)",
-        "ru": "изменения адаптера\nобновленная информация о зависимостях\nавтоматический перезапуск [#170] (https://github.com/afuerhoff/ioBroker.solarviewdatareader/issues/170)",
-        "pt": "alterações do verificador do adaptador\ndependências atualizadas\nautomatic restart [#170](https://github.com/afuerhoff/ioBroker.solarviewdatareader/issues/170)",
-        "nl": "wijzigingen in de adaptercontrole\nafhankelijkheden bijgewerkt\nautomatische herstart [#170](https://github.com/afuerhoff/ioBroker.solarviewdatareader/issues/170)",
-        "fr": "changement d'adaptateur\ndépendances mises à jour\nredémarrage automatique [#170](https://github.com/afuerhoff/ioBroker.solarviewdatareader/issues/170)",
-        "it": "adattatore checker modifiche\ndipendenze aggiornate\nriavvio automatico [#170](https://github.com/afuerhoff/ioBroker.solarviewdatareader/issues/170)",
-        "es": "cambios de control de adaptador\ndependencias actualizadas\nreinicio automático [#170](https://github.com/afuerhoff/ioBroker.solarviewdatareader/issues/170)",
-        "pl": "zmiany w kontrolerze adaptera\nzaktualizowane zależności\nw załączniku II wprowadza się następujące zmiany:",
-        "uk": "зміни адаптера\nоновлені залежності\nавтоматичний перезапуск [#170] (https://github.com/afuerhoff/ioBroker.solarviewdatareader/products/170)",
-        "zh-cn": "适配器检查器更改\n更新依赖关系\n自动重启 [# 170] (https://github.com/afuerhoff/ioBroker.solarviewdatareader/issues/170) (中文(简体) )"
       }
     },
     "titleLang": {

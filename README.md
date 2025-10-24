@@ -60,7 +60,7 @@ UL3, IL3 = mains voltage, mains power phase 3
 TKK= Temperature inverter
 
 ## Changelog
-### **WORK IN PROGRESS**
+### 1.2.4 (2025-10-24)
 * (afuerhoff) dependencies updated
 * (afuerhoff) npm security changes
 * (afuerhoff) repository checker warnings fixed
@@ -85,10 +85,6 @@ TKK= Temperature inverter
 * (afuerhoff) fixing chksum message if inverter 2 - 4 is not available
 * (afuerhoff) logging optimized
 * (afuerhoff) net handling optimized
-
-### 1.1.4 (2024-10-17)
-* (afuerhoff) dependencies updated
-* (afuerhoff) Fixes [#182](https://github.com/afuerhoff/ioBroker.solarviewdatareader/issues/182)
 
 ## License
 MIT License
