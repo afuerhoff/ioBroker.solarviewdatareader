@@ -31,7 +31,7 @@
     "@iobroker/testing": "^5.2.2",
     "@iobroker/types": "^7.1.0",
     "@tsconfig/node20": "^20.1.8",
-    "@types/node": "^22.19.2",
+    "@types/node": "^25.0.3",
     "rimraf": "^6.1.2",
     "source-map-support": "^0.5.21",
     "ts-node": "^10.9.2",
