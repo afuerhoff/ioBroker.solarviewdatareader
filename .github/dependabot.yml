@@ -16,22 +16,6 @@ updates:
       - dependency-name: '@types/node'
         update-types:
           - 'version-update:semver-major'
-
-  - package-ecosystem: github-actions
-    directory: '/'
-    schedule:
-      interval: monthly
-      time: '04:00'
-      timezone: Europe/Berlin
-
-  - package-ecosystem: 'npm'
-    directory: '/'
-    schedule:
-      interval: 'monthly'
-      time: '04:00'
-      timezone: 'Europe/Berlin'
-    open-pull-requests-limit: 5
-    versioning-strategy: 'increase'
     cooldown:
       default-days: 7
 
