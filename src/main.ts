@@ -7,7 +7,7 @@
 import * as utils from '@iobroker/adapter-core';
 
 // Load your modules here, e.g.:
-import * as net from 'net';
+import * as net from 'node:net';
 
 interface IChecksumResult {
     result: boolean;
