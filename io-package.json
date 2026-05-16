@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "solarviewdatareader",
-    "version": "1.2.4",
+    "version": "1.2.5",
     "news": {
+      "1.2.5": {
+        "en": "Adapter requires node.js >= 22 now\ndependencies updated\ndependabot.yml fixed [#246](https://github.com/afuerhoff/ioBroker.solarviewdatareader/issues/246)\nlicense information updated",
+        "de": "Adapter benötigt node.js >= 22 jetzt\naktualisierte abhängigkeiten\nabhängigkeitabot.yml behoben [#246](https://github.com/afuerhoff/ioBroker.solarviewdatareader/issues/246)\nlizenzinformationen aktualisiert",
+        "ru": "Адаптер требует node.js >= 22 сейчас\nобновленные зависимости\nhttps://github.com/afuerhoff/ioBroker.solarviewdatareader/issues/246\nлицензионная информация обновлена",
+        "pt": "Adaptador requer nod.js >= 22 agora\ndependências atualizadas\ndependebot.yml fixa [#246](https://github.com/afuerhoff/ioBroker.solarviewdatareader/issues/246)\ninformação atualizada da licença",
+        "nl": "Voor de adapter zijn node.js < 22 nu nodig\nafhankelijkheden bijgewerkt\nafhankelijkabot.yml fixed [#246](https://github.com/afuerhoff/ioBroker.solarviewdatareader/issues/246)\nlicentieinformatie bijgewerkt",
+        "fr": "Adaptateur nécessite node.js >= 22 maintenant\ndépendances mises à jour\ndependabot.yml corrigé [#246](https://github.com/afuerhoff/ioBroker.solarviewdatareader/issues/246)\ninformations de licence mises à jour",
+        "it": "Adattatore richiede node.js >= 22 ora\ndipendenze aggiornate\ndipendeabot.yml fissato [#246](https://github.com/afuerhoff/ioBroker.solarviewdatareader/issues/246)\ninformazioni sulla licenza aggiornate",
+        "es": "Adaptador requiere node.js ю= 22 ahora\ndependencias actualizadas\ndependabot.yml fixed [#246](https://github.com/afuerhoff/ioBroker.solarviewdatareader/issues/246)\ninformación actualizada sobre licencias",
+        "pl": "Adapter wymaga node.js > = 22\nzaktualizowane zależności\nconsiderabot.yml fixed [# 246] (https: / / github.com / afuerhoff / ioBroker.solarviewdatarader / issues / 246)\naktualizacja informacji licencyjnych",
+        "uk": "Адаптер вимагає node.js >= 22 тепер\nоновлені залежності\njavaScript licenses API Веб-сайт Go1.13.8\nінформація про ліцензію оновлено",
+        "zh-cn": "适配器需要节点.js 现在22\n更新依赖关系\ndeskabot.yml 已固定 [# 246] (https://github.com/afuerhoff/ioBroker.solarviewdatareader/issues/246) (中文(简体) )\n更新许可证信息"
+      },
       "1.2.4": {
         "en": "dependencies updated\nnpm security changes\nrepository checker warnings fixed",
         "de": "aktualisierte abhängigkeiten\nnpm sicherheitsänderungen\nrepository checker warnungen fixiert",
@@ -80,19 +93,6 @@
         "pl": "zaktualizowane zależności\nFixes [# 182] (https: / / github.com / afuerhoff / ioBroker.solarviewdatarader / issues / 182)",
         "uk": "оновлені залежності\nВиправлення [#182](https://github.com/afuerhoff/ioBroker.solarviewdatareader/products/182)",
         "zh-cn": "更新依赖关系\nFixs [#182] (https://github.com/afuerhoff/ioBroker.solarviewdatareader/issues/182) (英语)"
-      },
-      "1.1.3": {
-        "en": "adapter checker changes [#176](https://github.com/afuerhoff/ioBroker.solarviewdatareader/issues/176)\ndependencies updated",
-        "de": "adapter-Checker ändert [#176](https://github.com/afuerhoff/ioBroker.solarviewdatareader/issues/176)\naktualisierte abhängigkeiten",
-        "ru": "изменение адаптера [#176] (https://github.com/afuerhoff/ioBroker.solarviewdatareader/issues/176)\nобновленная информация о зависимостях",
-        "pt": "alterações do verificador do adaptador [#176](https://github.com/afuerhoff/ioBroker.solarviewdatareader/issues/176)\ndependências atualizadas",
-        "nl": "wijzigingen van de adaptercontrole [#176](https://github.com/afuerhoff/ioBroker.solarviewdatareader/issues/176)\nafhankelijkheden bijgewerkt",
-        "fr": "changement d'adaptateur [#176](https://github.com/afuerhoff/ioBroker.solarviewdatareader/issues/176)\ndépendances mises à jour",
-        "it": "modifica dell'adattatore [#176](https://github.com/afuerhoff/ioBroker.solarviewdatareader/issues/176)\ndipendenze aggiornate",
-        "es": "adapter checker changes [#176](https://github.com/afuerhoff/ioBroker.solarviewdatareader/issues/176)\ndependencias actualizadas",
-        "pl": "zAŁĄCZNIK II\nzaktualizowane zależności",
-        "uk": "[#176](https://github.com/afuerhoff/ioBroker.solarviewdatareader/products/176)\nоновлені залежності",
-        "zh-cn": "适配器检查器改变 [# 176] (https://github.com/afuerhoff/ioBroker.solarviewdatareader/issues/ 1976) (中文(简体) )\n更新依赖关系"
       }
     },
     "titleLang": {
