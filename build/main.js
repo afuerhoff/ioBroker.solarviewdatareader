@@ -22,7 +22,7 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
   mod
 ));
 var utils = __toESM(require("@iobroker/adapter-core"));
-var net = __toESM(require("net"));
+var net = __toESM(require("node:net"));
 class Solarviewdatareader extends utils.Adapter {
   tout;
   jobSchedule;
