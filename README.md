@@ -61,6 +61,7 @@ TKK= Temperature inverter
 
 ## Changelog
 ### **WORK IN PROGRESS**
+- (copilot) Adapter requires node.js >= 22 now
 * (afuerhoff) dependencies updated
 * (afuerhoff) dependabot.yml fixed [#246](https://github.com/afuerhoff/ioBroker.solarviewdatareader/issues/246)
 * (afuerhoff) license information updated
