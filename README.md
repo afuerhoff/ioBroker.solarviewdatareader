@@ -92,6 +92,8 @@ TKK= Temperature inverter
 * (afuerhoff) logging optimized
 * (afuerhoff) net handling optimized
 
+[Older changelogs can be found there](CHANGELOG_OLD.md)
+
 ## License
 MIT License
 
