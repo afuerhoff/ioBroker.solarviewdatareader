@@ -17,8 +17,8 @@ interface IChecksumResult {
 }
 
 class Solarviewdatareader extends utils.Adapter {
-    private tout!: NodeJS.Timeout;
-    private jobSchedule!: NodeJS.Timeout;
+    private tout!: ioBroker.Timeout;
+    private jobSchedule!: ioBroker.Interval | undefined;
     private chkCnt: number;
     private conn!: net.Socket;
     private lastCommand: string;
@@ -652,7 +652,7 @@ class Solarviewdatareader extends utils.Adapter {
             //First start
             await this.setCmdQueue();
 
-            this.jobSchedule = setInterval(async () => {
+            this.jobSchedule = this.setInterval(async () => {
                 try {
                     await this.setCmdQueue();
                 } catch (error: any) {
@@ -745,7 +745,7 @@ class Solarviewdatareader extends utils.Adapter {
     }
 
     private _sleep(milliseconds: number): Promise<void> {
-        return new Promise(resolve => setTimeout(resolve, milliseconds));
+        return new Promise(resolve => this.setTimeout(resolve, milliseconds));
     }
 
     private connectAsync = (port: number, ip_address: string): Promise<void> => {
@@ -862,8 +862,8 @@ class Solarviewdatareader extends utils.Adapter {
 
     private onUnload(callback: () => void): void {
         try {
-            clearInterval(this.jobSchedule);
-            clearTimeout(this.tout);
+            this.clearInterval(this.jobSchedule);
+            this.clearTimeout(this.tout);
             this.conn.destroy();
             this.setStateChanged('info.connection', { val: false, ack: true });
             this.log.info('cleaned everything up...');

@@ -624,7 +624,7 @@ class Solarviewdatareader extends utils.Adapter {
       this.conn.on("error", this.onErrorHandler.bind(this));
       this.conn.on("timeout", this.onTimeoutHandler.bind(this));
       await this.setCmdQueue();
-      this.jobSchedule = setInterval(async () => {
+      this.jobSchedule = this.setInterval(async () => {
         try {
           await this.setCmdQueue();
         } catch (error) {
@@ -706,7 +706,7 @@ class Solarviewdatareader extends utils.Adapter {
     this.errorHandler(`conn.on error - cmd: ${this.lastCommand}`, error);
   }
   _sleep(milliseconds) {
-    return new Promise((resolve) => setTimeout(resolve, milliseconds));
+    return new Promise((resolve) => this.setTimeout(resolve, milliseconds));
   }
   connectAsync = (port, ip_address) => {
     return new Promise((resolve, reject) => {
@@ -808,8 +808,8 @@ class Solarviewdatareader extends utils.Adapter {
   }
   onUnload(callback) {
     try {
-      clearInterval(this.jobSchedule);
-      clearTimeout(this.tout);
+      this.clearInterval(this.jobSchedule);
+      this.clearTimeout(this.tout);
       this.conn.destroy();
       this.setStateChanged("info.connection", { val: false, ack: true });
       this.log.info("cleaned everything up...");
