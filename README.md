@@ -60,6 +60,9 @@ UL3, IL3 = mains voltage, mains power phase 3
 TKK= Temperature inverter
 
 ## Changelog
+### **WORK IN PROGRESS**
+* (afuerhoff) dependencies updated
+
 ### 1.2.5 (2026-05-16)
 * (copilot) Adapter requires node.js >= 22 now
 * (afuerhoff) dependencies updated
