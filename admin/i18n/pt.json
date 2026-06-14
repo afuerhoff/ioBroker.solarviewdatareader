@@ -8,6 +8,7 @@
     "Inverter 2": "Inversor 2",
     "Inverter 3": "Inversor 3",
     "Inverter 4": "Inversor 4",
+    "Main settings": "Configurações principais",
     "Please check if inverter 1 available": "Por favor, verifique se o inversor 1 está disponível",
     "Please check if inverter 2 available": "Por favor, verifique se o inversor 2 está disponível",
     "Please check if inverter 3 available": "Por favor, verifique se o inversor 3 está disponível",
@@ -25,6 +26,7 @@
     "Please enter the interval end (e.g. 23:59)": "Insira o fim do intervalo (por exemplo, 23:59)",
     "Please enter the interval start (e.g. 00:00)": "Insira o início do intervalo (por exemplo, 00:00)",
     "Please enter the port": "Por favor, insira o porto",
+    "Port": "Porta",
     "Self consumption meter 1": "Medidor de auto consumo 1",
     "Self consumption meter 2": "Medidor de autoconsumo 2",
     "Self consumption meter 3": "Medidor de autoconsumo 3",
@@ -35,6 +37,7 @@
     "SolarView is a data logger for several inverter. Further informations can be get over the link.": "O SolarView é um data logger para vários inversores. ",
     "System variable": "Variável do sistema",
     "System variable e.g. hm-rega.0.12345": "Variável do sistema, por ex. hm-rega.0.12345",
+    "d0-converter": "conversor d0",
     "polling interval in seconds": "intervalo de sondagem em segundos",
     "solarviewdatareader adapter settings": "Configurações do adaptador para solarviewdatareader"
 }

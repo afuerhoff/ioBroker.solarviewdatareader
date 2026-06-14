@@ -131,8 +131,7 @@
     ],
     "licenseInformation": {
       "license": "MIT",
-      "type": "free",
-      "link": "https://github.com/afuerhoff/ioBroker.solarviewdatareader/blob/master/LICENSE"
+      "type": "free"
     },
     "tier": 3,
     "platform": "Javascript/Node.js",
