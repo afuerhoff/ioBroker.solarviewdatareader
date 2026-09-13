@@ -62,7 +62,7 @@ TKK= Temperature inverter
 ## Changelog
 ### **WORK IN PROGRESS**
 * (afuerhoff) dependencies updated
-* (afuerhoff) issues detected by repository checker fixed [#289]
+* (afuerhoff) issues detected by repository checker fixed [#289], [#305]
 
 ### 1.2.5 (2026-05-16)
 * (copilot) Adapter requires node.js >= 22 now
