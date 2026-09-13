@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "solarviewdatareader",
-    "version": "1.2.5",
+    "version": "1.2.6",
     "news": {
+      "1.2.6": {
+        "en": "dependencies updated\nissues detected by repository checker fixed [#289], [#305]",
+        "de": "Abhängigkeiten aktualisiert\nRepository-Checker hat Probleme behoben [#289], [#305]",
+        "ru": "зависимости обновлены\nисправлены проблемы, обнаруженные средством проверки репозитория [#289], [#305]",
+        "pt": "dependências atualizadas\nproblemas detectados pelo repositório corrigidos [#289], [#305]",
+        "nl": "afhankelijkheden bijgewerkt\nproblemen die door de repository checker zijn ontdekt, zijn opgelost [#289], [#305]",
+        "fr": "dépendances mises à jour\nproblèmes détectés par Repository Checker résolus [#289], [#305]",
+        "it": "dipendenze aggiornate\nproblemi rilevati da Repository Checker risolti [#289], [#305]",
+        "es": "dependencias actualizadas\nproblemas detectados por Repository Checker [#289], [#305]",
+        "pl": "aktualizacja zależności\nnaprawiono problemy wykryte przez moduł sprawdzający repozytorium [#289], [#305]",
+        "uk": "залежності оновлені\nВиправлені проблеми, виявлені перевіркою сховища [#289], [#305]",
+        "zh-cn": "依赖关系已更新\n存储库检查器检测到的问题已修复 [#289]、[#305]"
+      },
       "1.2.5": {
         "en": "Adapter requires node.js >= 22 now\ndependencies updated\ndependabot.yml fixed [#246](https://github.com/afuerhoff/ioBroker.solarviewdatareader/issues/246)\nlicense information updated",
         "de": "Adapter benötigt node.js >= 22 jetzt\naktualisierte abhängigkeiten\nabhängigkeitabot.yml behoben [#246](https://github.com/afuerhoff/ioBroker.solarviewdatareader/issues/246)\nlizenzinformationen aktualisiert",
@@ -80,19 +93,6 @@
         "pl": "zaktualizowane zależności\nMigracja do ESLint 9 i @ iobroker / eslint- config - wydanie [# 189]\neslint: zoptymalizowany kod\nnaprawianie wiadomości chksum, jeśli inwerter 2 - 4 nie jest dostępny\nzoptymalizowane logowanie\nzoptymalizowana obsługa sieci",
         "uk": "оновлені залежності\nМіграція в ESLint 9 і @iobroker/eslint-config - problem [#189]\neslint: код оптимізований\nфіксація chksum повідомлення, якщо інвертор 2 - 4 не доступний\nоптимізоване завантаження\nоптимізоване використання сітки",
         "zh-cn": "更新依赖关系\n迁移到ESLint 9 和 @iobroduc/eslint-config - 发行 [#189]\neslint: 代码优化\n如果不可用反转器 2 - 4 , 则修复 chksum 消息\n记录优化\n净处理优化"
-      },
-      "1.1.4": {
-        "en": "dependencies updated\nFixes [#182](https://github.com/afuerhoff/ioBroker.solarviewdatareader/issues/182)",
-        "de": "aktualisierte abhängigkeiten\n[#182](https://github.com/afuerhoff/ioBroker.solarviewdatareader/issues/182)",
-        "ru": "обновленная информация о зависимостях\nFixes [#182] (https://github.com/afuerhoff/ioBroker.solarviewdatareader/issues/182)",
-        "pt": "dependências atualizadas\nCorrige [#182](https://github.com/afuerhoff/ioBroker.solarviewdatareader/issues/182)",
-        "nl": "afhankelijkheden bijgewerkt\nFixes [#182](https://github.com/afuerhoff/ioBroker.solarviewdatareader/issues/182)",
-        "fr": "dépendances mises à jour\nCorrections [#182](https://github.com/afuerhoff/ioBroker.solarviewdatareader/issues/182)",
-        "it": "dipendenze aggiornate\n[#182](https://github.com/afuerhoff/ioBroker.solarviewdatareader/issues/182)",
-        "es": "dependencias actualizadas\nFixes [#182](https://github.com/afuerhoff/ioBroker.solarviewdatareader/issues/182)",
-        "pl": "zaktualizowane zależności\nFixes [# 182] (https: / / github.com / afuerhoff / ioBroker.solarviewdatarader / issues / 182)",
-        "uk": "оновлені залежності\nВиправлення [#182](https://github.com/afuerhoff/ioBroker.solarviewdatareader/products/182)",
-        "zh-cn": "更新依赖关系\nFixs [#182] (https://github.com/afuerhoff/ioBroker.solarviewdatareader/issues/182) (英语)"
       }
     },
     "titleLang": {

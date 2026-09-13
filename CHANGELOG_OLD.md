@@ -1,4 +1,7 @@
 # Older changes
+## 1.2.1 (2025-02-26)
+* (afuerhoff) dependencies updated
+
 ## 1.2.0 (2024-12-20)
 * (afuerhoff) dependencies updated
 * (afuerhoff) Migration to ESLint 9 and @iobroker/eslint-config - issue [#189]
