@@ -41,6 +41,7 @@
   "type": "commonjs",
   "files": [
     "admin{,/!(src)/**}/!(tsconfig|tsconfig.*).json",
+    "admin{,/!(src)/**}/*.json5",
     "admin{,/!(src)/**}/*.{html,css,png,svg,jpg,js}",
     "build/",
     "www/",
