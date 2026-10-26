@@ -82,7 +82,7 @@ The `info` channel contains the connection status (`info.connection`) and the
 timestamp of the last successful update (`info.lastUpdate`).
 
 ## Changelog
-### **WORK IN PROGRESS**
+### 1.3.0 (2026-10-26)
 * (afuerhoff) legacy polling intervals are migrated from minutes to seconds
 * (afuerhoff) socket error handling and connection status reporting improved
 * (afuerhoff) configuration organized into tabs with improved validation and help texts
@@ -107,11 +107,6 @@ timestamp of the last successful update (`info.lastUpdate`).
 * (afuerhoff) dependencies updated
 * (afuerhoff) repository checker issues fixed
 * (afuerhoff) typescript error fixed
-
-### 1.2.2 (2025-05-30)
-* (afuerhoff) dependencies updated
-* (afuerhoff) testing updated [#217](https://github.com/afuerhoff/ioBroker.solarviewdatareader/issues/217)
-* (afuerhoff) @iobroker-bot warning fixed [#209](https://github.com/afuerhoff/ioBroker.solarviewdatareader/issues/209)
 
 [Older changelogs can be found there](CHANGELOG_OLD.md)
 

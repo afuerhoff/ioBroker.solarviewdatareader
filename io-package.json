@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "solarviewdatareader",
-    "version": "1.2.6",
+    "version": "1.3.0",
     "news": {
+      "1.3.0": {
+        "en": "legacy polling intervals are migrated from minutes to seconds\nsocket error handling and connection status reporting improved\nconfiguration organized into tabs with improved validation and help texts\nconfiguration translations updated",
+        "de": "Alte Abfrageintervalle wurden von Minuten auf Sekunden umgestellt\nSocket-Fehler- und Verbindungsstatusberichte verbessert\nKonfiguration in Tabs mit verbesserter Validierung und Hilfetexten\nNeue Konfigurationsübersetzungen",
+        "ru": "устаревшие интервалы опроса перенесены с нескольких минут на несколько секунд\nулучшена обработка ошибок сокета и отчеты о состоянии соединения\nконфигурация, организованная в виде вкладок с улучшенной проверкой и справочными текстами\nобновлены переводы конфигураций",
+        "pt": "intervalos de pesquisa antigos são migrados de minutos para segundos\nMelhor gerenciamento de erros de soquete e status de conexão\nconfiguração em abas com melhor validação e textos de ajuda\nconfigurações atualizadas",
+        "nl": "De tussenpozen van oude peilingen worden overgezet van minuten naar seconden\nDe verwerking van socketfouten en de rapportage van de verbindingsstatus zijn verbeterd\nconfiguratie georganiseerd in tabbladen met verbeterde validatie en helpteksten\nvertalingen van de configuratie bijgewerkt",
+        "fr": "les anciens intervalles de vote sont passés de minutes à secondes\ngestion des erreurs de socket et état de connexion améliorés\nconfiguration organisée en onglets avec textes d'aide et de validation améliorés\ntraductions de configuration mises à jour",
+        "it": "i sondaggi precedenti sono migrati da minuti a secondi\ngestione degli errori del socket e della connessione migliorati\nconfigurazione organizzata in schede con validazione e aiuto migliorati\ntraduzioni di configurazione aggiornate",
+        "es": "los intervalos de sondeo antiguos migran de minutos a segundos\nGestión de errores de enchufe e informes de estado de conexión mejorados\nconfiguración organizada en pestañas con textos de validación y ayuda mejorados\ntraducciones de configuración actualizadas",
+        "pl": "starsze interwały głosowania są migrowane z minut na sekundy\npoprawiono obsługę błędów gniazda i raportowanie statusu połączenia\nkonfiguracja zorganizowana w karty z ulepszoną walidacją i tekstami pomocy\naktualizacja tłumaczeń konfiguracji",
+        "uk": "застарілі інтервали опитування мігруються з хвилин до секунд\nПокращено обробку помилок сокета та звіт про стан з'єднання\nконфігурація організована у вкладки з покращеною перевіркою та текстами довідки\nконфігурація перекладів оновлено",
+        "zh-cn": "传统轮询间隔从几分钟迁移到几秒\n套接字错误处理和连接状态报告得到改进\n配置以选项卡形式组织，改进了验证和帮助文本\n配置翻译已更新"
+      },
       "1.2.6": {
         "en": "dependencies updated\nissues detected by repository checker fixed [#289], [#305]",
         "de": "Abhängigkeiten aktualisiert\nRepository-Checker hat Probleme behoben [#289], [#305]",
@@ -80,19 +93,6 @@
         "pl": "zaktualizowane zależności",
         "uk": "оновлені залежності",
         "zh-cn": "更新依赖关系"
-      },
-      "1.2.0": {
-        "en": "dependencies updated\nMigration to ESLint 9 and @iobroker/eslint-config - issue [#189]\neslint: code optimized\nfixing chksum message if inverter 2 - 4 is not available\nlogging optimized\nnet handling optimized",
-        "de": "aktualisierte abhängigkeiten\nMigration auf ESLint 9 und @iobroker/eslint-config - Ausgabe [#189]\neslint: code optimiert\nbefestigen der chksum-nachricht, wenn der wechselrichter 2 - 4 nicht verfügbar ist\nprotokollierung optimiert\nnetzhandling optimiert",
-        "ru": "обновленная информация о зависимостях\nMigration to ESLint 9 and @iobroker/eslint-config - issue [#189]\neslint: оптимизирован код\nфиксация сообщения chksum, если инвертор 2 - 4 недоступен\nблог оптимизирован\nоптимизированная обработка",
-        "pt": "dependências atualizadas\nMigração para ESLint 9 e @iobroker/eslint-config - questão [#189]\neslint: código otimizado\ncorrigir mensagem de chksum se o inversor 2 - 4 não está disponível\nlog otimizado\nmanuseio de rede otimizado",
-        "nl": "afhankelijkheden bijgewerkt\nMigratie naar ESLint 9 en @iobroker/eslint-config - nummer [#189]\neslint: code geoptimaliseerd\nfixing chksum bericht als omvormer 2 - 4 niet beschikbaar is\nlogging geoptimaliseerd\ngeoptimaliseerde nethandling",
-        "fr": "dépendances mises à jour\nMigration vers ESLint 9 et @iobroker/eslint-config - numéro [#189]\neslint: code optimisé\nfixer le message chksum si l'onduleur 2 - 4 n'est pas disponible\nenregistrement optimisé\ntraitement net optimisé",
-        "it": "dipendenze aggiornate\nMigrazione a ESLint 9 e @iobroker/eslint-config - numero [#189]\neslint: codice ottimizzato\nfissare il messaggio di chksum se inverter 2 - 4 non è disponibile\nlogging ottimizzato\ngestione netta ottimizzata",
-        "es": "dependencias actualizadas\nMigración a ESLint 9 y @iobroker/eslint-config - asunto [#189]\neslint: código optimizado\nfijar mensaje de chksum si inverter 2 - 4 no está disponible\nlogging optimizado\nmanejo neto optimizado",
-        "pl": "zaktualizowane zależności\nMigracja do ESLint 9 i @ iobroker / eslint- config - wydanie [# 189]\neslint: zoptymalizowany kod\nnaprawianie wiadomości chksum, jeśli inwerter 2 - 4 nie jest dostępny\nzoptymalizowane logowanie\nzoptymalizowana obsługa sieci",
-        "uk": "оновлені залежності\nМіграція в ESLint 9 і @iobroker/eslint-config - problem [#189]\neslint: код оптимізований\nфіксація chksum повідомлення, якщо інвертор 2 - 4 не доступний\nоптимізоване завантаження\nоптимізоване використання сітки",
-        "zh-cn": "更新依赖关系\n迁移到ESLint 9 和 @iobroduc/eslint-config - 发行 [#189]\neslint: 代码优化\n如果不可用反转器 2 - 4 , 则修复 chksum 消息\n记录优化\n净处理优化"
       }
     },
     "titleLang": {

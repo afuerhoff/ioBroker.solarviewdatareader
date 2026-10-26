@@ -1,4 +1,9 @@
 # Older changes
+## 1.2.2 (2025-05-30)
+* (afuerhoff) dependencies updated
+* (afuerhoff) testing updated [#217](https://github.com/afuerhoff/ioBroker.solarviewdatareader/issues/217)
+* (afuerhoff) @iobroker-bot warning fixed [#209](https://github.com/afuerhoff/ioBroker.solarviewdatareader/issues/209)
+
 ## 1.2.1 (2025-02-26)
 * (afuerhoff) dependencies updated
 
