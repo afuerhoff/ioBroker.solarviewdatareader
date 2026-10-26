@@ -38,6 +38,18 @@
     "System variable": "System variable",
     "System variable e.g. hm-rega.0.12345": "System variable e.g. hm-rega.0.12345",
     "d0-converter": "d0-converter",
+    "Devices and CCU": "Devices and CCU",
     "polling interval in seconds": "polling interval in seconds",
-    "solarviewdatareader adapter settings": "Adapter settings for solarviewdatareader"
+    "solarviewdatareader adapter settings": "Adapter settings for solarviewdatareader",
+    "Enter the IP address or hostname of your SolarView data logger.": "Enter the IP address or hostname of your SolarView data logger.",
+    "Enter the TCP port used by the data logger (default: 15000).": "Enter the TCP port used by the data logger (default: 15000).",
+    "Set how often the adapter requests data (10 to 3600 seconds).": "Set how often the adapter requests data (10 to 3600 seconds).",
+    "Start time for reading inverter data.": "Start time for reading inverter data.",
+    "End time for reading inverter data. Self-consumption and D0 consumption data are still read outside this period.": "End time for reading inverter data. Self-consumption and D0 consumption data are still read outside this period.",
+    "Enable if a D0 converter is connected.": "Enable if a D0 converter is connected.",
+    "Enable if SolarView provides the total self-consumption meter.": "Enable if SolarView provides the total self-consumption meter.",
+    "Enable if the corresponding self-consumption meter is configured in SolarView.": "Enable if the corresponding self-consumption meter is configured in SolarView.",
+    "Enable if the corresponding inverter is configured in SolarView.": "Enable if the corresponding inverter is configured in SolarView.",
+    "Enable to write the current PV power to a Homematic CCU system variable.": "Enable to write the current PV power to a Homematic CCU system variable.",
+    "Enter the ioBroker state ID of the CCU variable (e.g. hm-rega.0.12345).": "Enter the ioBroker state ID of the CCU variable (e.g. hm-rega.0.12345)."
 }

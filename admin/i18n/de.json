@@ -1,4 +1,5 @@
 {
+    "Devices and CCU": "Geräte und CCU",
     "Here you can define the polling interval [between 10 to 3600 seconds]": "Hier können Sie das Polling-Intervall festlegen [zwischen 10 bis 3600 Sekunden]",
     "IP-Address": "IP Adresse",
     "Interval": "Intervall",
@@ -39,5 +40,16 @@
     "System variable e.g. hm-rega.0.12345": "Systemvariable z.B. hm-rega.0.12345",
     "d0-converter": "d0-Konverter",
     "polling interval in seconds": "Abfrageintervall in Sekunden",
-    "solarviewdatareader adapter settings": "Adaptereinstellungen für solarviewdatareader"
+    "solarviewdatareader adapter settings": "Adaptereinstellungen für solarviewdatareader",
+    "Enter the IP address or hostname of your SolarView data logger.": "Geben Sie die IP-Adresse oder den Hostnamen Ihres SolarView-Datenloggers ein.",
+    "Enter the TCP port used by the data logger (default: 15000).": "Geben Sie den TCP-Port des Datenloggers ein (Standard: 15000).",
+    "Set how often the adapter requests data (10 to 3600 seconds).": "Legen Sie fest, wie oft der Adapter Daten abfragt (10 bis 3600 Sekunden).",
+    "Start time for reading inverter data.": "Uhrzeit, ab der Wechselrichterdaten abgefragt werden.",
+    "End time for reading inverter data. Self-consumption and D0 consumption data are still read outside this period.": "Uhrzeit, bis zu der Wechselrichterdaten abgefragt werden. Eigenverbrauchs- und D0-Bezugsdaten werden auch außerhalb dieses Zeitraums abgefragt.",
+    "Enable if a D0 converter is connected.": "Aktivieren, wenn ein D0-Konverter angeschlossen ist.",
+    "Enable if SolarView provides the total self-consumption meter.": "Aktivieren, wenn SolarView den Gesamtzähler für den Eigenverbrauch bereitstellt.",
+    "Enable if the corresponding self-consumption meter is configured in SolarView.": "Aktivieren, wenn der jeweilige Eigenverbrauchszähler in SolarView eingerichtet ist.",
+    "Enable if the corresponding inverter is configured in SolarView.": "Aktivieren, wenn der jeweilige Wechselrichter in SolarView eingerichtet ist.",
+    "Enable to write the current PV power to a Homematic CCU system variable.": "Aktivieren, um die aktuelle PV-Leistung in eine Homematic-CCU-Systemvariable zu schreiben.",
+    "Enter the ioBroker state ID of the CCU variable (e.g. hm-rega.0.12345).": "Geben Sie die ioBroker-State-ID der CCU-Variablen ein (z. B. hm-rega.0.12345)."
 }

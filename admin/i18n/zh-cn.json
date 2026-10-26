@@ -1,4 +1,5 @@
 {
+    "Devices and CCU": "设备和 CCU",
     "Here you can define the polling interval [between 10 to 3600 seconds]": "在这里您可以定义轮询间隔 [10 到 3600 秒之间]",
     "IP-Address": "IP地址",
     "Interval": "间隔",
@@ -39,5 +40,16 @@
     "System variable e.g. hm-rega.0.12345": "系统变量例如hm-rega.0.12345",
     "d0-converter": "d0转换器",
     "polling interval in seconds": "以秒为单位的轮询间隔",
-    "solarviewdatareader adapter settings": "solarviewdatareader的适配器设置"
+    "solarviewdatareader adapter settings": "solarviewdatareader的适配器设置",
+    "Enter the IP address or hostname of your SolarView data logger.": "请输入 SolarView 数据记录器的 IP 地址或主机名。",
+    "Enter the TCP port used by the data logger (default: 15000).": "请输入数据记录器使用的 TCP 端口（默认值：15000）。",
+    "Set how often the adapter requests data (10 to 3600 seconds).": "设置适配器请求数据的频率（10 至 3600 秒）。",
+    "Start time for reading inverter data.": "开始读取逆变器数据的时间。",
+    "End time for reading inverter data. Self-consumption and D0 consumption data are still read outside this period.": "结束读取逆变器数据的时间。此时间段之外仍会读取自用电量和 D0 用电数据。",
+    "Enable if a D0 converter is connected.": "连接了 D0 转换器时启用。",
+    "Enable if SolarView provides the total self-consumption meter.": "SolarView 提供总自用电量表时启用。",
+    "Enable if the corresponding self-consumption meter is configured in SolarView.": "在 SolarView 中配置了相应的自用电量表时启用。",
+    "Enable if the corresponding inverter is configured in SolarView.": "在 SolarView 中配置了相应的逆变器时启用。",
+    "Enable to write the current PV power to a Homematic CCU system variable.": "启用后，将当前光伏功率写入 Homematic CCU 系统变量。",
+    "Enter the ioBroker state ID of the CCU variable (e.g. hm-rega.0.12345).": "请输入 CCU 变量对应的 ioBroker 状态 ID（例如 hm-rega.0.12345）。"
 }

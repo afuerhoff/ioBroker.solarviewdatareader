@@ -12,7 +12,7 @@
           "ipaddress": {
             "type": "text",
             "label": "IP-Address",
-            "tooltip": "Please enter the IP-Address from your SolarView data logger",
+            "help": "Enter the IP address or hostname of your SolarView data logger.",
             "xs": 12,
             "sm": 6,
             "md": 6,
@@ -22,111 +22,9 @@
           "port": {
             "type": "port",
             "min": 1,
-            "max": 65565,
+            "max": 65535,
             "label": "Port",
-            "tooltip": "Please enter the port",
-            "xs": 12,
-            "sm": 6,
-            "md": 6,
-            "lg": 3,
-            "xl": 3
-          },
-          "d0converter": {
-            "type": "checkbox",
-            "label": "d0-converter",
-            "tooltip": "Please enter if you have a d0-converter",
-            "xs": 12,
-            "sm": 6,
-            "md": 6,
-            "lg": 3,
-            "xl": 3
-          },
-          "scm0": {
-            "type": "checkbox",
-            "label": "Self consumption meter sum",
-            "tooltip": "Please check if you use the self consumption meter sum",
-            "xs": 12,
-            "sm": 6,
-            "md": 6,
-            "lg": 3,
-            "xl": 3
-          },
-          "scm1": {
-            "newLine": true,
-            "type": "checkbox",
-            "label": "Self consumption meter 1",
-            "tooltip": "Please check if self consumption meter 1 is available",
-            "xs": 12,
-            "sm": 6,
-            "md": 6,
-            "lg": 3,
-            "xl": 3
-          },
-          "scm2": {
-            "type": "checkbox",
-            "label": "Self consumption meter 2",
-            "tooltip": "Please check if self consumption meter 2 is available",
-            "xs": 12,
-            "sm": 6,
-            "md": 6,
-            "lg": 3,
-            "xl": 3
-          },
-          "scm3": {
-            "type": "checkbox",
-            "label": "Self consumption meter 3",
-            "tooltip": "Please check if self consumption meter 3 is available",
-            "xs": 12,
-            "sm": 6,
-            "md": 6,
-            "lg": 3,
-            "xl": 3
-          },
-          "scm4": {
-            "type": "checkbox",
-            "label": "Self consumption meter 4",
-            "tooltip": "Please check if self consumption meter 4 is available",
-            "xs": 12,
-            "sm": 6,
-            "md": 6,
-            "lg": 3,
-            "xl": 3
-          },
-          "pvi1": {
-            "newLine": true,
-            "type": "checkbox",
-            "label": "Inverter 1",
-            "tooltip": "Please check if inverter 1 available",
-            "xs": 12,
-            "sm": 6,
-            "md": 6,
-            "lg": 3,
-            "xl": 3
-          },
-          "pvi2": {
-            "type": "checkbox",
-            "label": "Inverter 2",
-            "tooltip": "Please check if inverter 2 available",
-            "xs": 12,
-            "sm": 6,
-            "md": 6,
-            "lg": 3,
-            "xl": 3
-          },
-          "pvi3": {
-            "type": "checkbox",
-            "label": "Inverter 3",
-            "tooltip": "Please check if inverter 3 available",
-            "xs": 12,
-            "sm": 6,
-            "md": 6,
-            "lg": 3,
-            "xl": 3
-          },
-          "pvi4": {
-            "type": "checkbox",
-            "label": "Inverter 4",
-            "tooltip": "Please check if inverter 4 available",
+            "help": "Enter the TCP port used by the data logger (default: 15000).",
             "xs": 12,
             "sm": 6,
             "md": 6,
@@ -137,7 +35,10 @@
             "newLine": true,
             "type": "number",
             "label": "polling interval in seconds",
-            "tooltip": "Here you can define the polling interval [between 10 to 3600 seconds]",
+            "help": "Set how often the adapter requests data (10 to 3600 seconds).",
+            "min": 10,
+            "max": 3600,
+            "step": 1,
             "xs": 12,
             "sm": 12,
             "md": 12,
@@ -147,7 +48,7 @@
           "intervalstart": {
             "type": "timePicker",
             "label": "Interval start",
-            "tooltip": "Please enter the interval start (e.g. 00:00)",
+            "help": "Start time for reading inverter data.",
             "format": "HH:mm",
             "returnFormat": "HH:mm:ss",
             "views": ["hours", "minutes"],
@@ -161,7 +62,7 @@
           "intervalend": {
             "type": "timePicker",
             "label": "Interval end",
-            "tooltip": "Please enter the interval end (e.g. 23:59)",
+            "help": "End time for reading inverter data. Self-consumption and D0 consumption data are still read outside this period.",
             "format": "HH:mm",
             "returnFormat": "HH:mm:ss",
             "views": ["hours", "minutes"],
@@ -172,11 +73,119 @@
             "lg": 3,
             "xl": 3
           },
+        }
+      },
+      "tab-devices": {
+        "type": "panel",
+        "label": "Devices and CCU",
+        "items": {
+          "d0converter": {
+            "type": "checkbox",
+            "label": "d0-converter",
+            "help": "Enable if a D0 converter is connected.",
+            "xs": 12,
+            "sm": 6,
+            "md": 6,
+            "lg": 3,
+            "xl": 3
+          },
+          "scm0": {
+            "type": "checkbox",
+            "label": "Self consumption meter sum",
+            "help": "Enable if SolarView provides the total self-consumption meter.",
+            "xs": 12,
+            "sm": 6,
+            "md": 6,
+            "lg": 3,
+            "xl": 3
+          },
+          "scm1": {
+            "newLine": true,
+            "type": "checkbox",
+            "label": "Self consumption meter 1",
+            "help": "Enable if the corresponding self-consumption meter is configured in SolarView.",
+            "xs": 12,
+            "sm": 6,
+            "md": 6,
+            "lg": 3,
+            "xl": 3
+          },
+          "scm2": {
+            "type": "checkbox",
+            "label": "Self consumption meter 2",
+            "help": "Enable if the corresponding self-consumption meter is configured in SolarView.",
+            "xs": 12,
+            "sm": 6,
+            "md": 6,
+            "lg": 3,
+            "xl": 3
+          },
+          "scm3": {
+            "type": "checkbox",
+            "label": "Self consumption meter 3",
+            "help": "Enable if the corresponding self-consumption meter is configured in SolarView.",
+            "xs": 12,
+            "sm": 6,
+            "md": 6,
+            "lg": 3,
+            "xl": 3
+          },
+          "scm4": {
+            "type": "checkbox",
+            "label": "Self consumption meter 4",
+            "help": "Enable if the corresponding self-consumption meter is configured in SolarView.",
+            "xs": 12,
+            "sm": 6,
+            "md": 6,
+            "lg": 3,
+            "xl": 3
+          },
+          "pvi1": {
+            "newLine": true,
+            "type": "checkbox",
+            "label": "Inverter 1",
+            "help": "Enable if the corresponding inverter is configured in SolarView.",
+            "xs": 12,
+            "sm": 6,
+            "md": 6,
+            "lg": 3,
+            "xl": 3
+          },
+          "pvi2": {
+            "type": "checkbox",
+            "label": "Inverter 2",
+            "help": "Enable if the corresponding inverter is configured in SolarView.",
+            "xs": 12,
+            "sm": 6,
+            "md": 6,
+            "lg": 3,
+            "xl": 3
+          },
+          "pvi3": {
+            "type": "checkbox",
+            "label": "Inverter 3",
+            "help": "Enable if the corresponding inverter is configured in SolarView.",
+            "xs": 12,
+            "sm": 6,
+            "md": 6,
+            "lg": 3,
+            "xl": 3
+          },
+          "pvi4": {
+            "type": "checkbox",
+            "label": "Inverter 4",
+            "help": "Enable if the corresponding inverter is configured in SolarView.",
+            "xs": 12,
+            "sm": 6,
+            "md": 6,
+            "lg": 3,
+            "xl": 3
+          },
           "setCCU": {
             "newLine": true,
             "type": "checkbox",
             "label": "Set system variable CCU",
-            "tooltip": "Please check if you want to set a system variable in the CCU",
+            "help": "Enable to write the current PV power to a Homematic CCU system variable.",
             "xs": 12,
             "sm": 6,
             "md": 6,
@@ -186,13 +195,14 @@
           "CCUSystemV": {
             "type": "text",
             "label": "System variable",
-            "tooltip": "System variable e.g. hm-rega.0.12345",
+            "help": "Enter the ioBroker state ID of the CCU variable (e.g. hm-rega.0.12345).",
+            "hidden": "!data.setCCU",
             "xs": 12,
             "sm": 6,
             "md": 6,
             "lg": 3,
             "xl": 3
-          }		
+          }
         }
       }
     }

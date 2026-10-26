@@ -1,4 +1,5 @@
 {
+    "Devices and CCU": "Устройства и CCU",
     "Here you can define the polling interval [between 10 to 3600 seconds]": "Здесь вы можете определить интервал опроса [от 10 до 3600 секунд]",
     "IP-Address": "Айпи адрес",
     "Interval": "интервал",
@@ -39,5 +40,16 @@
     "System variable e.g. hm-rega.0.12345": "Системная переменная, например. хм-rega.0.12345",
     "d0-converter": "d0-конвертер",
     "polling interval in seconds": "интервал опроса в секундах",
-    "solarviewdatareader adapter settings": "Настройки адаптера для solarviewdatareader"
+    "solarviewdatareader adapter settings": "Настройки адаптера для solarviewdatareader",
+    "Enter the IP address or hostname of your SolarView data logger.": "Введите IP-адрес или имя узла регистратора данных SolarView.",
+    "Enter the TCP port used by the data logger (default: 15000).": "Введите TCP-порт регистратора данных (по умолчанию: 15000).",
+    "Set how often the adapter requests data (10 to 3600 seconds).": "Укажите, как часто адаптер запрашивает данные (от 10 до 3600 секунд).",
+    "Start time for reading inverter data.": "Время начала опроса данных инверторов.",
+    "End time for reading inverter data. Self-consumption and D0 consumption data are still read outside this period.": "Время окончания опроса данных инверторов. Данные собственного потребления и потребления D0 опрашиваются и за пределами этого периода.",
+    "Enable if a D0 converter is connected.": "Включите, если подключён конвертер D0.",
+    "Enable if SolarView provides the total self-consumption meter.": "Включите, если SolarView предоставляет общий счётчик собственного потребления.",
+    "Enable if the corresponding self-consumption meter is configured in SolarView.": "Включите, если соответствующий счётчик собственного потребления настроен в SolarView.",
+    "Enable if the corresponding inverter is configured in SolarView.": "Включите, если соответствующий инвертор настроен в SolarView.",
+    "Enable to write the current PV power to a Homematic CCU system variable.": "Включите, чтобы записывать текущую мощность ФЭМ в системную переменную Homematic CCU.",
+    "Enter the ioBroker state ID of the CCU variable (e.g. hm-rega.0.12345).": "Введите ID состояния ioBroker для переменной CCU (например, hm-rega.0.12345)."
 }

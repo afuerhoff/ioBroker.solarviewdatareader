@@ -1,4 +1,5 @@
 {
+    "Devices and CCU": "Dispositivos y CCU",
     "Here you can define the polling interval [between 10 to 3600 seconds]": "Aquí puede definir el intervalo de sondeo [entre 10 y 3600 segundos]",
     "IP-Address": "Dirección IP",
     "Interval": "Intervalo",
@@ -39,5 +40,16 @@
     "System variable e.g. hm-rega.0.12345": "Variable del sistema, p. hm-rega.0.12345",
     "d0-converter": "convertidor d0",
     "polling interval in seconds": "intervalo de sondeo en segundos",
-    "solarviewdatareader adapter settings": "Ajustes del adaptador para solarviewdatareader"
+    "solarviewdatareader adapter settings": "Ajustes del adaptador para solarviewdatareader",
+    "Enter the IP address or hostname of your SolarView data logger.": "Introduzca la dirección IP o el nombre de host del registrador SolarView.",
+    "Enter the TCP port used by the data logger (default: 15000).": "Introduzca el puerto TCP del registrador (predeterminado: 15000).",
+    "Set how often the adapter requests data (10 to 3600 seconds).": "Defina cada cuánto solicita datos el adaptador (de 10 a 3600 segundos).",
+    "Start time for reading inverter data.": "Hora de inicio de la lectura de datos de los inversores.",
+    "End time for reading inverter data. Self-consumption and D0 consumption data are still read outside this period.": "Hora de fin de la lectura de datos de los inversores. Los datos de autoconsumo y consumo D0 siguen consultándose fuera de este horario.",
+    "Enable if a D0 converter is connected.": "Actívelo si hay conectado un convertidor D0.",
+    "Enable if SolarView provides the total self-consumption meter.": "Actívelo si SolarView proporciona el contador total de autoconsumo.",
+    "Enable if the corresponding self-consumption meter is configured in SolarView.": "Actívelo si el contador de autoconsumo correspondiente está configurado en SolarView.",
+    "Enable if the corresponding inverter is configured in SolarView.": "Actívelo si el inversor correspondiente está configurado en SolarView.",
+    "Enable to write the current PV power to a Homematic CCU system variable.": "Actívelo para escribir la potencia fotovoltaica actual en una variable del sistema Homematic CCU.",
+    "Enter the ioBroker state ID of the CCU variable (e.g. hm-rega.0.12345).": "Introduzca el ID de estado de ioBroker de la variable CCU (p. ej., hm-rega.0.12345)."
 }

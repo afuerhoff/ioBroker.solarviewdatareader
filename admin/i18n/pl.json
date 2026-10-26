@@ -1,4 +1,5 @@
 {
+    "Devices and CCU": "Urządzenia i CCU",
     "Here you can define the polling interval [between 10 to 3600 seconds]": "Tutaj możesz zdefiniować interwał odpytywania [od 10 do 3600 sekund]",
     "IP-Address": "Adres IP",
     "Interval": "Interwał",
@@ -39,5 +40,16 @@
     "System variable e.g. hm-rega.0.12345": "Zmienna systemowa, np. hm-rega.0.12345",
     "d0-converter": "konwerter d0",
     "polling interval in seconds": "interwał odpytywania w sekundach",
-    "solarviewdatareader adapter settings": "Ustawienia adaptera dla solarviewdatareader"
+    "solarviewdatareader adapter settings": "Ustawienia adaptera dla solarviewdatareader",
+    "Enter the IP address or hostname of your SolarView data logger.": "Wprowadź adres IP lub nazwę hosta rejestratora SolarView.",
+    "Enter the TCP port used by the data logger (default: 15000).": "Wprowadź port TCP rejestratora (domyślnie: 15000).",
+    "Set how often the adapter requests data (10 to 3600 seconds).": "Ustaw częstotliwość pobierania danych przez adapter (od 10 do 3600 sekund).",
+    "Start time for reading inverter data.": "Godzina rozpoczęcia odczytu danych falowników.",
+    "End time for reading inverter data. Self-consumption and D0 consumption data are still read outside this period.": "Godzina zakończenia odczytu danych falowników. Dane o zużyciu własnym i poborze D0 są odczytywane również poza tym przedziałem.",
+    "Enable if a D0 converter is connected.": "Włącz, jeśli podłączony jest konwerter D0.",
+    "Enable if SolarView provides the total self-consumption meter.": "Włącz, jeśli SolarView udostępnia sumaryczny licznik zużycia własnego.",
+    "Enable if the corresponding self-consumption meter is configured in SolarView.": "Włącz, jeśli dany licznik zużycia własnego jest skonfigurowany w SolarView.",
+    "Enable if the corresponding inverter is configured in SolarView.": "Włącz, jeśli dany falownik jest skonfigurowany w SolarView.",
+    "Enable to write the current PV power to a Homematic CCU system variable.": "Włącz, aby zapisywać bieżącą moc instalacji PV do zmiennej systemowej Homematic CCU.",
+    "Enter the ioBroker state ID of the CCU variable (e.g. hm-rega.0.12345).": "Wprowadź identyfikator stanu ioBroker zmiennej CCU (np. hm-rega.0.12345)."
 }
