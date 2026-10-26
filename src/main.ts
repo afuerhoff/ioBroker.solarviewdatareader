@@ -452,20 +452,36 @@ class Solarviewdatareader extends utils.Adapter {
         }
     }
 
-    //for compatibility reasons. Minute interval changed to seconds.
-    private async adjustIntervalToSeconds(): Promise<void> {
-        const adapterObj: ioBroker.Object | null | undefined = await this.getForeignObjectAsync(
-            `system.adapter.${this.namespace}`,
-        );
-        if (!this.config.interval_seconds) {
-            if (adapterObj) {
-                adapterObj.native.interval_seconds = true;
-                adapterObj.native.intervalVal *= 60;
-                this.log.warn('Interval changed to seconds!');
-                this.log.info('Interval attribute changed! Please check the configuration');
-                this.log.info('Adapter restarts');
-            }
+    private async migrateIntervalToSeconds(): Promise<number> {
+        const adapterId = `system.adapter.${this.namespace}`;
+        const adapterObj = await this.getForeignObjectAsync(adapterId);
+        if (!adapterObj) {
+            throw new Error(`Adapter configuration ${adapterId} not found`);
         }
+
+        const interval = Number(adapterObj.native.intervalVal);
+        if (!Number.isFinite(interval) || interval <= 0) {
+            throw new Error(`Invalid polling interval: ${adapterObj.native.intervalVal}`);
+        }
+
+        if (adapterObj.native.interval_seconds === true) {
+            return interval;
+        }
+
+        const intervalSeconds = interval * 60;
+        if (!Number.isFinite(intervalSeconds)) {
+            throw new Error(`Polling interval is too large to migrate: ${interval}`);
+        }
+
+        await this.extendForeignObjectAsync(adapterId, {
+            native: {
+                intervalVal: intervalSeconds,
+                interval_seconds: true,
+            },
+        });
+
+        this.log.info(`Polling interval migrated from ${interval} minutes to ${intervalSeconds} seconds`);
+        return intervalSeconds;
     }
 
     // Nullen voranstellen - add Leading Zero
@@ -591,11 +607,12 @@ class Solarviewdatareader extends utils.Adapter {
 
     private async onReady(): Promise<void> {
         try {
+            const intervalSeconds = await this.migrateIntervalToSeconds();
             const starttime = this.config.intervalstart.split(':').slice(0, 2).join(':');
             const endtime = this.config.intervalend.split(':').slice(0, 2).join(':');
 
             this.log.info(
-                `start solarview ${this.config.ipaddress}:${this.config.port} - polling interval: ${this.config.intervalVal}s (${starttime} to ${
+                `start solarview ${this.config.ipaddress}:${this.config.port} - polling interval: ${intervalSeconds}s (${starttime} to ${
                     endtime
                 })`,
             );
@@ -638,10 +655,6 @@ class Solarviewdatareader extends utils.Adapter {
                 await this.createSolarviewObjects('pvi4', true);
             }
 
-            if (!this.config.interval_seconds) {
-                await this.adjustIntervalToSeconds.call(this);
-            }
-
             this.conn = new net.Socket();
             this.conn.setTimeout(2000);
             this.conn.on('data', this.onDataHandler.bind(this));
@@ -658,13 +671,14 @@ class Solarviewdatareader extends utils.Adapter {
                 } catch (error: any) {
                     this.log.error(`onReady.schedule: ${error.message}`);
                 }
-            }, this.config.intervalVal * 1000);
+            }, intervalSeconds * 1000);
         } catch (error: unknown) {
             this.errorHandler(`onReady`, error);
         }
     }
 
     private onTimeoutHandler(): void {
+        this.setStateChanged('info.connection', { val: false, ack: true });
         this.log.error('onTimeoutHandler: socket timeout');
         this.conn.end();
     }
@@ -741,6 +755,7 @@ class Solarviewdatareader extends utils.Adapter {
     }
 
     private onErrorHandler(error: unknown): void {
+        this.setStateChanged('info.connection', { val: false, ack: true });
         this.errorHandler(`conn.on error - cmd: ${this.lastCommand}`, error);
     }
 
@@ -748,16 +763,32 @@ class Solarviewdatareader extends utils.Adapter {
         return new Promise(resolve => this.setTimeout(resolve, milliseconds));
     }
 
-    private connectAsync = (port: number, ip_address: string): Promise<void> => {
-        return new Promise((resolve, reject) => {
-            this.conn.connect(port, ip_address, () => {
+    private connectAsync = (port: number, ip_address: string): Promise<void> =>
+        new Promise((resolve, reject) => {
+            let cleanup = (): void => undefined;
+            const onConnect = (): void => {
+                cleanup();
                 resolve();
-            });
-            this.conn.on('error', err => {
-                reject(err);
-            });
+            };
+            const onError = (error: Error): void => {
+                cleanup();
+                reject(error);
+            };
+            cleanup = (): void => {
+                this.conn.off('connect', onConnect);
+                this.conn.off('error', onError);
+            };
+
+            this.conn.once('connect', onConnect);
+            this.conn.once('error', onError);
+
+            try {
+                this.conn.connect(port, ip_address);
+            } catch (error: unknown) {
+                cleanup();
+                reject(error instanceof Error ? error : new Error(String(error)));
+            }
         });
-    };
 
     private async setCmdQueue(): Promise<void> {
         try {

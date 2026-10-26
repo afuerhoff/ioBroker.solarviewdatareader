@@ -450,20 +450,31 @@ class Solarviewdatareader extends utils.Adapter {
       await this.createObject(...option);
     }
   }
-  //for compatibility reasons. Minute interval changed to seconds.
-  async adjustIntervalToSeconds() {
-    const adapterObj = await this.getForeignObjectAsync(
-      `system.adapter.${this.namespace}`
-    );
-    if (!this.config.interval_seconds) {
-      if (adapterObj) {
-        adapterObj.native.interval_seconds = true;
-        adapterObj.native.intervalVal *= 60;
-        this.log.warn("Interval changed to seconds!");
-        this.log.info("Interval attribute changed! Please check the configuration");
-        this.log.info("Adapter restarts");
-      }
+  async migrateIntervalToSeconds() {
+    const adapterId = `system.adapter.${this.namespace}`;
+    const adapterObj = await this.getForeignObjectAsync(adapterId);
+    if (!adapterObj) {
+      throw new Error(`Adapter configuration ${adapterId} not found`);
     }
+    const interval = Number(adapterObj.native.intervalVal);
+    if (!Number.isFinite(interval) || interval <= 0) {
+      throw new Error(`Invalid polling interval: ${adapterObj.native.intervalVal}`);
+    }
+    if (adapterObj.native.interval_seconds === true) {
+      return interval;
+    }
+    const intervalSeconds = interval * 60;
+    if (!Number.isFinite(intervalSeconds)) {
+      throw new Error(`Polling interval is too large to migrate: ${interval}`);
+    }
+    await this.extendForeignObjectAsync(adapterId, {
+      native: {
+        intervalVal: intervalSeconds,
+        interval_seconds: true
+      }
+    });
+    this.log.info(`Polling interval migrated from ${interval} minutes to ${intervalSeconds} seconds`);
+    return intervalSeconds;
   }
   // Nullen voranstellen - add Leading Zero
   aLZ(n) {
@@ -573,10 +584,11 @@ class Solarviewdatareader extends utils.Adapter {
   }
   async onReady() {
     try {
+      const intervalSeconds = await this.migrateIntervalToSeconds();
       const starttime = this.config.intervalstart.split(":").slice(0, 2).join(":");
       const endtime = this.config.intervalend.split(":").slice(0, 2).join(":");
       this.log.info(
-        `start solarview ${this.config.ipaddress}:${this.config.port} - polling interval: ${this.config.intervalVal}s (${starttime} to ${endtime})`
+        `start solarview ${this.config.ipaddress}:${this.config.port} - polling interval: ${intervalSeconds}s (${starttime} to ${endtime})`
       );
       this.log.info(`d0 converter: ${this.config.d0converter.toString()}`);
       await this.createGlobalObjects();
@@ -614,9 +626,6 @@ class Solarviewdatareader extends utils.Adapter {
       if (this.config.pvi4) {
         await this.createSolarviewObjects("pvi4", true);
       }
-      if (!this.config.interval_seconds) {
-        await this.adjustIntervalToSeconds.call(this);
-      }
       this.conn = new net.Socket();
       this.conn.setTimeout(2e3);
       this.conn.on("data", this.onDataHandler.bind(this));
@@ -630,12 +639,13 @@ class Solarviewdatareader extends utils.Adapter {
         } catch (error) {
           this.log.error(`onReady.schedule: ${error.message}`);
         }
-      }, this.config.intervalVal * 1e3);
+      }, intervalSeconds * 1e3);
     } catch (error) {
       this.errorHandler(`onReady`, error);
     }
   }
   onTimeoutHandler() {
+    this.setStateChanged("info.connection", { val: false, ack: true });
     this.log.error("onTimeoutHandler: socket timeout");
     this.conn.end();
   }
@@ -703,21 +713,35 @@ class Solarviewdatareader extends utils.Adapter {
     }
   }
   onErrorHandler(error) {
+    this.setStateChanged("info.connection", { val: false, ack: true });
     this.errorHandler(`conn.on error - cmd: ${this.lastCommand}`, error);
   }
   _sleep(milliseconds) {
     return new Promise((resolve) => this.setTimeout(resolve, milliseconds));
   }
-  connectAsync = (port, ip_address) => {
-    return new Promise((resolve, reject) => {
-      this.conn.connect(port, ip_address, () => {
-        resolve();
-      });
-      this.conn.on("error", (err) => {
-        reject(err);
-      });
-    });
-  };
+  connectAsync = (port, ip_address) => new Promise((resolve, reject) => {
+    let cleanup = () => void 0;
+    const onConnect = () => {
+      cleanup();
+      resolve();
+    };
+    const onError = (error) => {
+      cleanup();
+      reject(error);
+    };
+    cleanup = () => {
+      this.conn.off("connect", onConnect);
+      this.conn.off("error", onError);
+    };
+    this.conn.once("connect", onConnect);
+    this.conn.once("error", onError);
+    try {
+      this.conn.connect(port, ip_address);
+    } catch (error) {
+      cleanup();
+      reject(error instanceof Error ? error : new Error(String(error)));
+    }
+  });
   async setCmdQueue() {
     try {
       const commands = [];
