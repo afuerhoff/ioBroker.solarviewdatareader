@@ -48,7 +48,7 @@
           "intervalstart": {
             "type": "timePicker",
             "label": "Interval start",
-            "help": "Start time for reading inverter data.",
+            "tooltip": "Start time for polling PV generation, inverter data, and (if enabled) D0 feed-in data.",
             "format": "HH:mm",
             "returnFormat": "HH:mm:ss",
             "views": ["hours", "minutes"],
@@ -62,7 +62,7 @@
           "intervalend": {
             "type": "timePicker",
             "label": "Interval end",
-            "help": "End time for reading inverter data. Self-consumption and D0 consumption data are still read outside this period.",
+            "tooltip": "End time for polling PV generation, inverter data, and (if enabled) D0 feed-in data. Self-consumption meter and D0 consumption data are polled all day.",
             "format": "HH:mm",
             "returnFormat": "HH:mm:ss",
             "views": ["hours", "minutes"],
